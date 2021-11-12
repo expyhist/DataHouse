@@ -1,0 +1,2 @@
+const ctrlDecorators = (...rest) => {
+}
