@@ -8,7 +8,7 @@ import { FiltersNum } from "./FiltersNum";
 import { FiltersOption } from "./FiltersOption";
 import { defineConfig } from "@/../config/config.js";
 import { useAddNewFilterMutation } from "./filtersSlice";
-import withModelForm from "@/utils/withModelForm";
+import withModalForm from "@/utils/withModalForm";
 
 const filtersInfo = defineConfig.filtersInfo;
 
@@ -16,13 +16,13 @@ const FiltersForm = (props) => {
   const { form, url, filtersNum } = props;
   return (
     <>
-      <FiltersNum />
+      <FiltersNum initialValues={filtersNum}/>
       <FiltersOption form={form} url={url} filtersNum={filtersNum} />
     </>
   );
 }
 
-const FiltersCreateForm = withModelForm(FiltersForm);
+const FiltersCreateForm = withModalForm(FiltersForm);
 
 const AddFiltersForm = (props) => {
   

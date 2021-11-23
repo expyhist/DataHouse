@@ -15,7 +15,7 @@ const createFilter = async (req, res) => {
 
     const r = await ApiTable.findById(body.apiTableId);
 
-    if (r.connection?.filters) {
+    if (r.connection.get("filters")) {
         return res.status(400).json({
             success: false,
             error: "Filter already exist"

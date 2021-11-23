@@ -12,7 +12,7 @@ export const defineConfig = {
     },
     text: {
       divider: "text",
-      values: ["title", "text"],
+      values: ["title", "content"],
       cn: "字符串"
     },
     enum: {

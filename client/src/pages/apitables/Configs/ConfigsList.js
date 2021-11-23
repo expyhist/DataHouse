@@ -22,7 +22,7 @@ const ConfigsTable = (props) => {
   const apiTablesColumnsInfo = defineConfig.apiTablesColumnsInfo;
 
   const columns = Object.entries(apiTablesColumnsInfo.ConfigsListColumns)
-    .map(([key,value]) => ({
+    .map(([key, value]) => ({
       title: value, 
       dataIndex: key, 
       key: key,

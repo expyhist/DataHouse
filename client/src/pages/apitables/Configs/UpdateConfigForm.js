@@ -4,7 +4,7 @@ import { Form, Input, Button, message } from "antd";
 
 import { defineConfig } from "@/../config/config";
 import { useUpdateConfigMutation } from "./configsSlice";
-import withModelForm from "@/utils/withModelForm";
+import withModalForm from "@/utils/withModalForm";
 
 const layout = {
   labelCol: {
@@ -36,7 +36,7 @@ const ConfigForm = (props) => {
       }}
     >
       {
-        Object.entries(apiTablesColumnsInfo.UpdateConfigFormColumns).map(([key,value]) => {
+        Object.entries(apiTablesColumnsInfo.UpdateConfigFormColumns).map(([key, value]) => {
           return (
             <Form.Item
               key={key}
@@ -57,7 +57,7 @@ const ConfigForm = (props) => {
   ); 
 }
 
-const ConfigUpdateForm = withModelForm(ConfigForm);
+const ConfigUpdateForm = withModalForm(ConfigForm);
 
 const UpdateConfigForm = (props) => {
 

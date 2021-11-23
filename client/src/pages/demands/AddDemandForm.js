@@ -4,7 +4,7 @@ import { Form, Input, Button, message } from "antd";
 
 import { defineConfig } from "@/../config/config";
 import { useAddNewDemandMutation } from "./demandsSlice";
-import withModelForm from "@/utils/withModelForm";
+import withModalForm from "@/utils/withModalForm";
 
 const layout = {
   labelCol: {
@@ -47,7 +47,7 @@ const DemandForm = (props) => {
   ); 
 }
 
-const DemandCreateForm = withModelForm(DemandForm);
+const DemandCreateForm = withModalForm(DemandForm);
 
 const AddDemandForm = () => {
 

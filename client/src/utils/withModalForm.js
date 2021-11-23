@@ -2,7 +2,7 @@ import React from "react";
 
 import { Form, Modal, message } from "antd";
 
-const withModelForm = (WrappedComponent) => {
+const withModalForm = (WrappedComponent) => {
 
   const HOC = ({ ...props }) => {
 
@@ -35,4 +35,4 @@ const withModelForm = (WrappedComponent) => {
   return HOC;
 };
 
-export default withModelForm;
+export default withModalForm;

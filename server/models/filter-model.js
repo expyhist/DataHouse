@@ -15,7 +15,7 @@ const Filter = new mongoose.Schema(
         }],
         text: [{
             title:{type: String},
-            text:{type: String}
+            content:{type: String}
         }],
         enum: [{
             title:{type: String},

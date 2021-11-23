@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { Form, Input, Button, message, Select } from "antd";
 
 import { defineConfig } from "@/../config/config";
-import { useAddNewMenuMutation } from "./sysConfigsSlice";
-import withModelForm from "@/utils/withModelForm";
+import { useAddNewMenuMutation, useGetMenusQuery } from "./sysConfigsSlice";
+import withModalForm from "@/utils/withModalForm";
 
 const layout = {
   labelCol: {
@@ -21,7 +21,14 @@ const MenuForm = (props) => {
   const { form } = props;
   const { Option } = Select;
   const sysConfigsColumnsInfo = defineConfig.sysConfigsColumnsInfo;
-  const options = ["/demands", "/demands/list", "/tables", "/tables/databoard:id", "/tables/databoard/614f566883266f42b019da13", "/tables/configs/list", "/sysconfigs"]
+
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useGetMenusQuery();
 
   return (
     <Form
@@ -35,10 +42,11 @@ const MenuForm = (props) => {
             const content = key === "parent" ? (
               <Select placeholder="Please select a value">
               {
-              options
-                .map(option => (
-                  <Option value={option} key={option}>
-                    {option}
+                isSuccess 
+                && 
+                data.data.map(aData => (
+                  <Option value={aData.path} key={aData.path}>
+                    {aData.path}
                   </Option>
                   )
                 )
@@ -63,7 +71,7 @@ const MenuForm = (props) => {
   ); 
 }
 
-const MenuCreateForm = withModelForm(MenuForm);
+const MenuCreateForm = withModalForm(MenuForm);
 
 const AddMenuForm = () => {
 

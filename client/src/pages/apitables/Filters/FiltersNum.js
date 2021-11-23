@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import { useDispatch } from "react-redux";
 
 import { Form, Input, Button, Space } from "antd";
@@ -8,8 +8,9 @@ import { defineConfig } from "@/../config/config.js";
 
 const filtersInfo = defineConfig.filtersInfo;
 
-export const FiltersNum = () => {
+export const FiltersNum = (props) => {
 
+  const { initialValues } = props
   const dispatch = useDispatch();
 
   const onFinish = (formData) => {
@@ -19,6 +20,7 @@ export const FiltersNum = () => {
   return (
     <Form 
       name="filter-option-num"
+      initialValues={initialValues}
       onFinish={onFinish}
     >
       <Space wrap>
@@ -28,7 +30,6 @@ export const FiltersNum = () => {
             .map(value => {
               return (
                 <Form.Item
-                  initialValue={0}
                   key={value}
                   label={value}
                   name={value}

@@ -5,7 +5,7 @@ import { Form, Input, Button, message } from "antd";
 import { defineConfig } from "@/../config/config";
 import { useAddNewConfigMutation } from "./configsSlice";
 import { useAddNewMenuMutation } from "@/pages/sysConfigs/sysConfigsSlice";
-import withModelForm from "@/utils/withModelForm";
+import withModalForm from "@/utils/withModalForm";
 
 const layout = {
   labelCol: {
@@ -51,7 +51,7 @@ const ConfigForm = (props) => {
   ); 
 }
 
-const ConfigCreateForm = withModelForm(ConfigForm);
+const ConfigCreateForm = withModalForm(ConfigForm);
 
 const AddConfigForm = () => {
 

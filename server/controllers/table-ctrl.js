@@ -10,10 +10,19 @@ const getApiTableDataById = async(req, res) => {
 
         try {
             const apiUrl = await ApiUrl.findById(req.params.id);
+            
+            if (!new RegExp("appCode").test(apiUrl)) {
+                const resp = await axios.get(apiUrl.url);
+                return res.status(200).json({
+                    success: true,
+                    data: resp.data
+                })
+            }
+
             const baseUrl = apiUrl.url.match(/(.*)(?=\?)/g)[0];
             const resp = await axios.get(baseUrl, {params: req.body});
             
-            if(resp.data.data.totalNum !== 0) {
+            if(resp.data.data.totalNum) {
                 let result = resp.data.data.rows;
                 result.map(data => data["uuid"] = uuidv4());
 
