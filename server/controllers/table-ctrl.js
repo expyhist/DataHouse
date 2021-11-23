@@ -12,10 +12,14 @@ const getApiTableDataById = async(req, res) => {
             const apiUrl = await ApiUrl.findById(req.params.id);
             
             if (!new RegExp("appCode").test(apiUrl)) {
+
                 const resp = await axios.get(apiUrl.url);
+                let result = resp.data;
+                result.forEach(data => data["uuid"] = uuidv4());
+
                 return res.status(200).json({
                     success: true,
-                    data: resp.data
+                    data: result
                 })
             }
 
@@ -23,8 +27,9 @@ const getApiTableDataById = async(req, res) => {
             const resp = await axios.get(baseUrl, {params: req.body});
             
             if(resp.data.data.totalNum) {
+                
                 let result = resp.data.data.rows;
-                result.map(data => data["uuid"] = uuidv4());
+                result.forEach(data => data["uuid"] = uuidv4());
 
                 return res.status(200).json({
                     success: true,

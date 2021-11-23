@@ -1,20 +1,21 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
-import { Form, Input, Button, message } from "antd";
+import { Button, message } from "antd";
 
 import { FiltersNum } from "./FiltersNum";
 import { FiltersOption } from "./FiltersOption";
-import { SingleFiltersOption } from "./SingleFiltersOption";
 import { useUpdateFilterMutation } from "./filtersSlice";
-import { defineConfig } from "@/../config/config";
+import { parseFilterFormData } from "./parseFilterFormData";
 import withModalForm from "@/utils/withModalForm";
 
 const FilterForm = (props) => {
 
-  const { form, url, filtersNum } = props;
+  const { form, url, initialValues, filtersNum } = props;
+
   return (
     <>
-      <FiltersNum initialValues={filtersNum}/>
+      <FiltersNum initialValues={initialValues} />
       <FiltersOption form={form} url={url} filtersNum={filtersNum} />
     </>
   );
@@ -23,8 +24,8 @@ const FilterForm = (props) => {
 const FilterUpdateForm = withModalForm(FilterForm);
 
 const UpdateFilterForm = (props) => {
-
-  const { singleFilter, url } = props;
+  
+  const { filterId, singleFilter, url } = props;
   const [visible, setVisible] = useState(false);
   const [updateFilter] = useUpdateFilterMutation();
 
@@ -37,9 +38,15 @@ const UpdateFilterForm = (props) => {
     }
   });
 
+  const filtersNum = useSelector(state => state.filtersNum);
+  const lastFiltersNum = filtersNum[filtersNum.length-1];
+
   const onCreate = async (formData) => {
+    
+    const payload = parseFilterFormData(lastFiltersNum, "id", filterId, formData);
+
     try {
-      await updateFilter(formData)
+      await updateFilter(payload)
         .unwrap()
         .then(() => {
           setVisible(false);
@@ -70,7 +77,8 @@ const UpdateFilterForm = (props) => {
           okText={"Update"}
           data={singleFilter}
           url={url}
-          filtersNum={nowFiltersNum}
+          initialValues={nowFiltersNum}
+          filtersNum={lastFiltersNum}
         />
     </div>
   );

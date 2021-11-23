@@ -10,11 +10,11 @@ const filtersInfo = defineConfig.filtersInfo;
 
 export const FiltersNum = (props) => {
 
-  const { initialValues } = props
+  const { initialValues } = props;
   const dispatch = useDispatch();
 
   const onFinish = (formData) => {
-    dispatch(filtersNumAdded(formData))
+    dispatch(filtersNumAdded(formData));
   }
 
   return (

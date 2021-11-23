@@ -1,22 +1,21 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import produce from "immer";
 
 import { Button, message } from "antd";
 
 import { FiltersNum } from "./FiltersNum";
 import { FiltersOption } from "./FiltersOption";
-import { defineConfig } from "@/../config/config.js";
 import { useAddNewFilterMutation } from "./filtersSlice";
+import { parseFilterFormData } from "./parseFilterFormData";
 import withModalForm from "@/utils/withModalForm";
 
-const filtersInfo = defineConfig.filtersInfo;
-
 const FiltersForm = (props) => {
+
   const { form, url, filtersNum } = props;
+
   return (
     <>
-      <FiltersNum initialValues={filtersNum}/>
+      <FiltersNum initialValues={filtersNum} />
       <FiltersOption form={form} url={url} filtersNum={filtersNum} />
     </>
   );
@@ -36,27 +35,7 @@ const AddFiltersForm = (props) => {
 
   const onCreate = async (formData) => {
 
-    const emptyPayload = produce(filtersInfo, draft => {
-      Object.keys(filtersInfo).map(key => {
-        draft[key] = [];
-      });
-    });
-
-    const payload = produce(emptyPayload, draft => {
-      draft["apiTableId"] = id;
-      Object.entries(lastFiltersNum).forEach(([key, value]) => {
-        let singlePayload = [];
-        for (let i=0; i<parseInt(value); i++) {
-          let singleFormData = {};
-          filtersInfo[key]["values"].forEach(filterValue => {
-            const unique = i + "-" + key + "-" + filterValue;
-            singleFormData[filterValue] = formData[unique];
-          });
-          singlePayload.push(singleFormData);
-        }
-        draft[key] = singlePayload;
-      });
-    });
+    const payload = parseFilterFormData(lastFiltersNum, "apiTalbeId", id, formData);
 
     try {
       await addNewFilter(payload)

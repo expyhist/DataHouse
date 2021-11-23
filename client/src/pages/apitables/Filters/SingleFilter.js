@@ -31,7 +31,7 @@ const SingleFilter = (props) => {
               marginBottom: 32,
             }}
             bordered
-            extra={<UpdateFilterForm singleFilter={singleFilter} url={url} />}
+            extra={<UpdateFilterForm filterId={id} singleFilter={singleFilter} url={url} />}
           >
             {
               Object.entries(singleFilter).map(([key, value]) => {

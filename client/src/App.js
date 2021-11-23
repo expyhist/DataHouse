@@ -2,9 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import Header from "./components/Header";
-import DemandsPage from "@/pages/demands";
-import ApiTablesPage from "@/pages/apitables";
-import SysConfigsPage from "@/pages/sysConfigs";
+import DemandsPage from "./pages/demands";
+import ApiTablesPage from "./pages/apitables";
+import SysConfigsPage from "./pages/sysConfigs";
 
 const App = () => {
   return (

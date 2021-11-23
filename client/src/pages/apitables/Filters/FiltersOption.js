@@ -13,25 +13,32 @@ export const FiltersOption = (props) => {
   const regex = new RegExp("appCode|pageNum|pageSize");
   const options = JSON.parse(JSON.stringify(urlParamsJson, (k, v) => { if (typeof k === "string" && regex.test(k)) { return undefined } return v }));
 
+  let content = []
+
+  if (filtersNum) {
+    Object.entries(filtersNum).forEach(([key, value]) => {
+      for (let i=0; i<parseInt(value); i++) {
+        content.push(<SingleFiltersOption keyName={key} rank={i} options={options} key={key+i} />);
+      }
+    })
+  }
+
   return (
-    <Form 
-      name="filter-option"
-      form = {form}
-    >
+    <>
       {
         options && 
         Object.keys(options).map(key => {
           return (<Tag color="cyan" key={key}>{key}</Tag>);
         })
       }
-      {
-        filtersNum && 
-        Object.entries(filtersNum).map(([key, value]) => {
-          for (let i=0; i<parseInt(value); i++) {
-            return (<SingleFiltersOption keyName={key} rank={i} options={options} key={key+i} />);
-          }
-        })
-      }
-    </Form>
+      <Form 
+        name="filter-option"
+        form = {form}
+      >
+        {
+          filtersNum && content
+        }
+      </Form>
+    </>
   );
 }
