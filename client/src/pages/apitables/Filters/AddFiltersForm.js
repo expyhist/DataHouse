@@ -35,7 +35,7 @@ const AddFiltersForm = (props) => {
 
   const onCreate = async (formData) => {
 
-    const payload = parseFilterFormData(lastFiltersNum, "apiTalbeId", id, formData);
+    const payload = parseFilterFormData(lastFiltersNum, "apiTableId", id, formData);
 
     try {
       await addNewFilter(payload)

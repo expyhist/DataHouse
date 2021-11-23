@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import config from "config";
-console.log(config);
+
 export const apisSlice = createApi({
   reducerPath: "datahouse",
   baseQuery: fetchBaseQuery({ baseUrl: config.baseUrl }),
