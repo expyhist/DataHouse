@@ -18,8 +18,7 @@ const layout = {
 
 const ConfigForm = (props) => {
 
-  const { form, data } = props;
-  const { _id, url, author, title, applicant } = data;
+  const { form, initialValues } = props;
   const apiTablesColumnsInfo = defineConfig.apiTablesColumnsInfo;
 
   return (
@@ -27,13 +26,7 @@ const ConfigForm = (props) => {
       {...layout}
       form={form}
       name="config_update_form_in_modal"
-      initialValues={{
-        id: _id,
-        url: url,
-        title: title,
-        author: author,
-        applicant: applicant
-      }}
+      initialValues={initialValues}
     >
       {
         Object.entries(apiTablesColumnsInfo.UpdateConfigFormColumns).map(([key, value]) => {
@@ -48,7 +41,7 @@ const ConfigForm = (props) => {
                 : [{ required: true, message: `请输入 ${value}!` }]
               }
             >
-              { key === "id" ? <Input disabled={true}/> : <Input /> }
+              { key === "_id" ? <Input disabled={true}/> : <Input /> }
             </Form.Item>
           );
         })
@@ -96,7 +89,7 @@ const UpdateConfigForm = (props) => {
             setVisible(false);
           }}
           okText={"Update"}
-          data={singleConfig}
+          initialValues={singleConfig}
         />
     </div>
   );

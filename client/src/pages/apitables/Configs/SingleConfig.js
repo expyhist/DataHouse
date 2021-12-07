@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router";
 
 import { Card, Descriptions } from "antd";
@@ -23,31 +23,29 @@ const SingleConfig = (props) => {
   const singleConfig = isSuccess && JSON.parse(JSON.stringify(data.data, ["_id", "url", "author", "title", "applicant", "createdAt", "updatedAt"]));
 
   return (
-    <>
-      <Card bordered={false}>
-        {
-          isSuccess && (
-            <Descriptions
-              title="配置详情"
-              style={{
-                marginBottom: 32,
-              }}
-              bordered
-              extra={<UpdateConfigForm singleConfig={singleConfig} />}
-            >
-              {
-                Object.entries(singleConfig).map(([key, value]) => {
-                  return (
-                    <Descriptions.Item label={key} key={key}>{value}</Descriptions.Item>
-                  );
-                })
-              }
-            </Descriptions>
-          )
-        }
-      </Card>
-      {isSuccess && <SingleFilter id={data.data.connection.filters} url={singleConfig.url}/>}
-    </>
+    isSuccess && (
+      <>
+        <Card bordered={false}>
+          <Descriptions
+            title="配置详情"
+            style={{
+              marginBottom: 32,
+            }}
+            bordered
+            extra={<UpdateConfigForm singleConfig={singleConfig} />}
+          >
+            {
+              Object.entries(singleConfig).map(([key, value]) => {
+                return (
+                  <Descriptions.Item label={key} key={key}>{value}</Descriptions.Item>
+                );
+              })
+            }
+          </Descriptions>
+        </Card>
+        <SingleFilter id={data.data.connection.filters} url={singleConfig.url}/>
+      </>
+    )
   );
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router";
 
-import { Card, Descriptions, Collapse } from "antd";
+import { Card, Descriptions } from "antd";
 
 import UpdateFilterForm from "./UpdateFilterForm";
 import { useGetFilterQuery } from "./filtersSlice";
@@ -18,23 +18,22 @@ const SingleFilter = (props) => {
     error
   } = useGetFilterQuery(id);
 
-  const regex = new RegExp("rangeDate|singleDate|text|enum");
-  const singleFilter = isSuccess && JSON.parse(JSON.stringify(data.data));
+  const regex = /rangeDate|singleDate|text|enum/;
 
   return (
     <Card bordered={false}>
       {
         isSuccess && (
           <Descriptions
-            title="配置详情"
+            title="筛选条件详情"
             style={{
               marginBottom: 32,
             }}
             bordered
-            extra={<UpdateFilterForm filterId={id} singleFilter={singleFilter} url={url} />}
+            extra={<UpdateFilterForm filterId={id} singleFilter={data.data} url={url} />}
           >
             {
-              Object.entries(singleFilter).map(([key, value]) => {
+              Object.entries(data.data).map(([key, value]) => {
                 if (regex.test(key)) {
                   return (
                     <Descriptions.Item label={key} key={key}>

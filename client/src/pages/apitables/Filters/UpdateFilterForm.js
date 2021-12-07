@@ -30,7 +30,7 @@ const UpdateFilterForm = (props) => {
   const [updateFilter] = useUpdateFilterMutation();
 
   const nowFiltersNum = {};
-  const regex = new RegExp("rangeDate|singleDate|text|enum");
+  const regex = /rangeDate|singleDate|text|enum/;
 
   Object.entries(singleFilter).map(([key, value]) => {
     if (regex.test(key)) {

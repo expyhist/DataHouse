@@ -10,7 +10,7 @@ export const FiltersOption = (props) => {
 
   const urlParams = url.match(/(?<=\?)(.*)/g)[0];
   const urlParamsJson = JSON.parse(`{"` + urlParams.replaceAll(`=`, `":"`).replaceAll(`&`, `","`) + `"}`);
-  const regex = new RegExp("appCode|pageNum|pageSize");
+  const regex = /appCode|pageNum|pageSize/;
   const options = JSON.parse(JSON.stringify(urlParamsJson, (k, v) => { if (typeof k === "string" && regex.test(k)) { return undefined } return v }));
 
   let content = []

@@ -1,32 +1,31 @@
-
-const mongoose = require("mongoose");
-const uniqueValidator = require("mongoose-unique-validator");
+const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const Filter = new mongoose.Schema(
-    {
-        rangeDate: [{
-            title:{type: String},
-            startDate:{type: String},
-            endDate:{type: String}
-        }],
-        singleDate: [{
-            title:{type: String},
-            date:{type: String}
-        }],
-        text: [{
-            title:{type: String},
-            content:{type: String}
-        }],
-        enum: [{
-            title:{type: String},
-            enum:{type: Array}
-        }]
-    },
-    {
-        timestamps: true
-    }
+  {
+    rangeDate: [{
+      title: { type: String },
+      startDate: { type: String },
+      endDate: { type: String },
+    }],
+    singleDate: [{
+      title: { type: String },
+      date: { type: String },
+    }],
+    text: [{
+      title: { type: String },
+      content: { type: String },
+    }],
+    enum: [{
+      title: { type: String },
+      enum: { type: Array },
+    }],
+  },
+  {
+    timestamps: true,
+  },
 );
 
 Filter.plugin(uniqueValidator);
 
-module.exports = mongoose.model("filters", Filter);
+module.exports = mongoose.model('filters', Filter);

@@ -6,7 +6,7 @@ const withModalForm = (WrappedComponent) => {
 
   const HOC = ({ ...props }) => {
 
-    const { visible, title, onCancel, onCreate, okText } = props;
+    const { visible, title, onCancel, onCreate, okText, ...other } = props;
     const [form] = Form.useForm();
     
     return (
@@ -28,7 +28,7 @@ const withModalForm = (WrappedComponent) => {
           }
         }
       >
-        <WrappedComponent form={form} {...props} />
+        <WrappedComponent form={form} {...other} />
       </Modal>
     );
   }

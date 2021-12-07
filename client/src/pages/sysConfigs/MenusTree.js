@@ -25,7 +25,6 @@ const MenusTree = () => {
   };
 
   const onCheck = (checkedKeysValue) => {
-    console.log("onCheck", checkedKeysValue);
   };
 
   let content;

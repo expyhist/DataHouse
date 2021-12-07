@@ -24,7 +24,7 @@ export const defineConfig = {
   apiTablesColumnsInfo: {
     ConfigsListColumns: {"url": "url链接", "title": "标题", "author": "创建人", "applicant": "申请人", "createdAt": "创建时间"},
     AddConfigFormColumns: {"url": "url链接", "title": "标题", "author": "创建人", "applicant": "申请人"},
-    UpdateConfigFormColumns: {"id": "id", "url": "url链接", "title": "标题", "author": "创建人", "applicant": "申请人"}
+    UpdateConfigFormColumns: {"_id": "id", "url": "url链接", "title": "标题", "author": "创建人", "applicant": "申请人"}
   },
   demandsColumnsInfo: {
     DemandsListColumns: {"description": "需求详情", "content": "需求字段", "applicant": "申请人", "status": "需求状态", "createdAt": "创建时间"},

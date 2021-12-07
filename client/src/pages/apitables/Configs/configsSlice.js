@@ -32,9 +32,9 @@ export const configsSlice = apisSlice.injectEndpoints({
     }),
     updateConfig: builder.mutation({
       query(data) {
-        const {id, ...body} = data;
+        const {_id, ...body} = data;
         return {
-          url: `/apitable/${id}`,
+          url: `/apitable/${_id}`,
           method: "PUT",
           body
         }
