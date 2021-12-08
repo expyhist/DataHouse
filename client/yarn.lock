@@ -4485,6 +4485,11 @@ sockjs@^0.3.21:
     uuid "^3.4.0"
     websocket-driver "^0.7.4"
 
+source-list-map@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npm.taobao.org/source-list-map/download/source-list-map-2.0.1.tgz#3993bd873bfc48479cca9ea3a547835c7c154b34"
+  integrity sha1-OZO9hzv8SEecyp6jpUeDXHwVSzQ=
+
 source-map-js@^0.6.2:
   version "0.6.2"
   resolved "https://registry.npm.taobao.org/source-map-js/download/source-map-js-0.6.2.tgz#0bb5de631b41cfbda6cfba8bd05a80efdfd2385e"
@@ -4873,6 +4878,14 @@ webpack-dev-server@^4.2.0:
     webpack-dev-middleware "^5.1.0"
     ws "^8.1.0"
 
+webpack-manifest-plugin@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.nlark.com/webpack-manifest-plugin/download/webpack-manifest-plugin-4.0.2.tgz?cache=0&sync_timestamp=1627559200878&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fwebpack-manifest-plugin%2Fdownload%2Fwebpack-manifest-plugin-4.0.2.tgz#a7ee46219a6c820a5cdae0f7ddb7cb04837448fb"
+  integrity sha1-p+5GIZpsggpc2uD33bfLBIN0SPs=
+  dependencies:
+    tapable "^2.0.0"
+    webpack-sources "^2.2.0"
+
 webpack-merge@^5.7.3:
   version "5.8.0"
   resolved "https://registry.nlark.com/webpack-merge/download/webpack-merge-5.8.0.tgz#2b39dbf22af87776ad744c390223731d30a68f61"
@@ -4880,6 +4893,14 @@ webpack-merge@^5.7.3:
   dependencies:
     clone-deep "^4.0.1"
     wildcard "^2.0.0"
+
+webpack-sources@^2.2.0:
+  version "2.3.1"
+  resolved "https://registry.npmmirror.com/webpack-sources/download/webpack-sources-2.3.1.tgz?cache=0&sync_timestamp=1636982763649&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fwebpack-sources%2Fdownload%2Fwebpack-sources-2.3.1.tgz#570de0af163949fe272233c2cefe1b56f74511fd"
+  integrity sha1-Vw3grxY5Sf4nIjPCzv4bVvdFEf0=
+  dependencies:
+    source-list-map "^2.0.1"
+    source-map "^0.6.1"
 
 webpack-sources@^3.2.0:
   version "3.2.0"
