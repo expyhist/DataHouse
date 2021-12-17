@@ -49,8 +49,8 @@ const updateApiTableById = async (req, res) => {
     try {
       const resp = await ApiTable.findByIdAndUpdate(req.params.id, req.body);
       const apiTableInfo = await ApiTable.findById(req.params.id);
-      const menuId = apiTableInfo.connection.get("menus");
-      await Menu.findByIdAndUpdate(menuId, { "name": req.body.title });
+      const menuId = apiTableInfo.connection.get('menus');
+      await Menu.findByIdAndUpdate(menuId, { name: req.body.title });
       return res.status(201).json({
         success: true,
         id: resp._id,

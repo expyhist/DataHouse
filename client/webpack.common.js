@@ -1,54 +1,54 @@
-const path = require("path");
+const path = require('path');
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: './src/index.js',
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src")
+      '@': path.resolve(__dirname, 'src')
     },
-    extensions: [".ts", ".tsx", ".js", ".json", ".css"]
+    extensions: ['.ts', '.tsx', '.js', '.json', '.css']
   },
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: true
   },
+  optimization: {
+		minimize: false,
+		minimizer: [
+			new ESBuildMinifyPlugin({
+        target: 'es2015',
+        css: true,
+      }),
+		]
+	},
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
-      },
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"]
-      },
-      {
-        test: /\.less$/,
-        use: ["less-loader", "style-loader", "css-loader"]
-      },
-      {
-        test: /\.(png|jpe?g|gif)$/,
         use: [
           {
-            loader: "url-loader",
+            loader: 'esbuild-loader',
             options: {
-              limit: 8000,
-              name: "images/[name].[ext]"
-            }
+              loader: 'jsx',
+              target: 'es2015',
+            },
           }
         ]
       },
       {
-        test: /\.svg/,
-        use: {
-          loader: "svg-url-loader",
-          options: {
-            stripdeclarations: true
+        test: /\.css$/,
+        use: [
+          'style-loader', 
+          'css-loader',
+          {
+            loader: 'esbuild-loader',
+            options: {
+              loader: 'css',
+              minify: true
+            }
           }
-        }
-      }
+        ]
+      },
     ]
   },
 }

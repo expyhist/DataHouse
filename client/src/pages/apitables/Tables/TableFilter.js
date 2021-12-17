@@ -56,24 +56,24 @@ const SingleTableFilter = (props) => {
   );
 }
 
-const parseFormData = (filtersType, filterOption, formData) => {
+const parseFormData = (filtersType, filtersOption, formData) => {
 
-  const title = filterOption.title;
+  const title = filtersOption.title;
   let payload = {};
 
   switch (filtersType) {
     case "rangeDate":
       const rangeData = [formData[title][0].format("YYYY-MM-DD"), formData[title][1].format("YYYY-MM-DD")];
-      payload[filterOption.startData] = rangeData[0]
-      payload[filterOption.endDate] = rangeData[1]
+      payload[filtersOption.startData] = rangeData[0]
+      payload[filtersOption.endDate] = rangeData[1]
       break;
     case "singleDate":
       const singleDate = formData[title].format("YYYY-MM-DD");
-      payload[filterOption.date] = singleDate;
+      payload[filtersOption.date] = singleDate;
       break;
     case "text":
       const text = formData[title];
-      payload[filterOption.text] = text
+      payload[filtersOption.content] = text
       break;
   
     default:
@@ -103,12 +103,12 @@ const TableFilter = (props) => {
     return null;
   }
 
-  const filterOptions = isSuccess ? data.data: null;
+  const filtersOption = isSuccess ? data.data: null;
 
   const ManyTableFilter = () => {
     let manyTableFilterList = [];
     if (isSuccess) {
-      Object.entries(filterOptions).forEach(([key, value])=> {
+      Object.entries(filtersOption).forEach(([key, value])=> {
         if(Array.isArray(value) && value.length !==0) {
           for (let i = 0; i < value.length; i++) {
             manyTableFilterList.push(<SingleTableFilter filtersType={key} filtersOption={value[i]} key={key+i}/>)
@@ -126,10 +126,10 @@ const TableFilter = (props) => {
     }
 
     const newPayLoad = produce(payload, draft => {
-      Object.entries(filterOptions).forEach(([key, value]) => {
+      Object.entries(filtersOption).forEach(([key, value]) => {
         if(Array.isArray(value) && value.length !==0) {
           for (let i = 0; i < value.length; i++) {
-            const newFormData = parseFormData(key, value[i], formData)
+            const newFormData = parseFormData(key, value[i], formData);
             Object.entries(newFormData).forEach(([key, value]) => {
               draft[key] = value
             });
