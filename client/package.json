@@ -1,5 +1,5 @@
 {
-  "name": "datahouse",
+  "name": "datahouse-client",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -29,7 +29,7 @@
     "webpack-manifest-plugin": "^4.0.2"
   },
   "scripts": {
-    "start": "webpack serve --progress --config webpack.dev.js",
+    "start": "webpack serve --progress --config webpack.dev.js --open",
     "build": "webpack --progress --config webpack.prod.js"
   }
 }

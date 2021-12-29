@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 
-const db = require('./models');
+const mongoose = require('mongoose');
 const dbConfig = require('./config/db-config');
-const Router = require('./routes/router');
+const router = require('./routes');
 
 const app = express();
 
@@ -14,11 +14,9 @@ const corsOptions = {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors(corsOptions));
-app.use('/api', Router);
-require('./routes/auth-routes')(app);
-require('./routes/user-routes')(app);
+app.use('/api', router);
 
-db.mongoose
+mongoose
   .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, dbConfig.CONNECTIONOPTIONS)
   .then(() => {
     console.log('Successfully connect to MongoDB.');
@@ -27,8 +25,6 @@ db.mongoose
     console.error('Connection error', err);
     process.exit();
   });
-
-
 
 const Port = process.env.PORT || 3000;
 const server = app.listen(Port, () => console.log(`Server running on port ${Port}`));

@@ -1,3 +1,3 @@
 module.exports = {
-  secret: "datahouse-rsecret-key"
+  secret: 'datahouse-rsecret-key',
 };

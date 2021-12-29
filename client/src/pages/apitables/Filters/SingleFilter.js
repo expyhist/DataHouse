@@ -23,7 +23,7 @@ const SingleFilter = (props) => {
   return (
     <Card bordered={false}>
       {
-        isSuccess && (
+        isSuccess && data.data !== null && (
           <Descriptions
             title="筛选条件详情"
             style={{
