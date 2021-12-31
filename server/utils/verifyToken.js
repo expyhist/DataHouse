@@ -1,11 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/auth-config.js');
-const db = require('../models');
 
-const User = db.user;
-const Role = db.role;
-
-const verifyToken = (req, res, next) => {
+module.exports = (req, res, next) => {
   const token = req.headers['x-access-token'];
 
   if (!token) {
@@ -20,9 +16,4 @@ const verifyToken = (req, res, next) => {
     req.userId = decoded.id;
     next();
   });
-};
-
-module.exports = {
-  verifyToken,
-  isAdmin
 };

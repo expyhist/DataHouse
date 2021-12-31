@@ -1,10 +1,22 @@
-module.exports = (model, methodRegx) => async (req, res, next) => {
-  const isExists = await model.exists({ _id: req.params.id });
-  if (methodRegx.test(req.method) && /\/\w+/.test(req.url) && isExists) {
-    return res.status(400).json({
-      success: false,
-      error: 'The apitable do not existent',
-    });
+module.exports = (model) => async (req, res, next) => {
+  try {
+    const id = await req.params.id;
+    if (id.length !== 24) {
+      return res.status(400).json({
+        success: false,
+        error: 'The id is error',
+      });
+    }
+
+    const isExists = await model.exists({ _id: id });
+    if (!isExists) {
+      return res.status(400).json({
+        success: false,
+        error: 'The id is not existent',
+      });
+    }
+    next();
+  } catch (error) {
+    next();
   }
-  next();
 };

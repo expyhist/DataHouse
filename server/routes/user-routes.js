@@ -1,26 +1,24 @@
 const User = require('../models/user-model');
 const userCtrl = require('../controllers/user-ctrl');
-const verifyExistsByProperty = require('../utils/verifyExistsByProperty');
+const verifyExistsByPayload = require('../utils/verifyExistsByPayload');
 const verifyExistsById = require('../utils/verifyExistsById');
-const verifyExistsByValue = require('../utils/verifyExistsByValue');
 const verifyHeaders = require('../utils/verifyHeaders');
 
 module.exports = (router) => {
   router
     .use(
       '/user',
-      verifyExistsByProperty(['username', 'email', 'password']),
-      verifyExistsByValue(null, 'user'),
-      verifyExistsById(User, /PUT|DELETE/),
+      verifyExistsByPayload(['username', 'password'], null),
       verifyHeaders,
     )
-    .post('/user', userCtrl.createUser);
+    .post('/user/signup', userCtrl.createUser)
+    .post('/user/signin', userCtrl.getUser);
 
   router
     .route('/user/:id')
+    .all(verifyExistsById(User))
     .put(userCtrl.updateUserById)
-    .delete(userCtrl.deleteUserById)
-    .get(userCtrl.getUser);
+    .delete(userCtrl.deleteUserById);
 
   router.get('/users', userCtrl.getAllUsers);
 };

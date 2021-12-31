@@ -67,11 +67,11 @@ const getUser = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: resp.id }, config.secret, { expiresIn: 86400 });
+    const token = jwt.sign({ id: resp.id }, config.secret, { expiresIn: 5000 });
 
     const authorities = [];
 
-    for (let i = 0; i < resp.roles.length; i++) {
+    for (let i = 0; i < resp.roles.length; i += 1) {
       authorities.push(`ROLE_${resp.roles[i].name.toUpperCase()}`);
     }
 
