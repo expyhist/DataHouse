@@ -3,9 +3,9 @@ const bcrypt = require('bcryptjs');
 const config = require('../config/auth-config');
 const User = require('../models/user-model');
 
-const createUser = async (req, res) => {
+const signup = async (req, res) => {
   try {
-    const resp = await User.create(req.body);
+    const resp = await User.create({ ...req.body, ...{password: bcrypt.hashSync(req.body.password, 8)} });
     return res.status(201).json({
       success: true,
       id: resp._id,
@@ -51,9 +51,9 @@ const deleteUserById = async (req, res) => {
   }
 };
 
-const getUser = async (req, res) => {
+const signin = async (req, res) => {
   try {
-    const resp = await User.findOne({ username: req.body.username });
+    const resp = await User.findOne({ email: req.body.email });
 
     const passwordIsValid = bcrypt.compareSync(
       req.body.password,
@@ -78,7 +78,6 @@ const getUser = async (req, res) => {
     return res.status(200).json({
       success: true,
       id: resp._id,
-      username: resp.username,
       email: resp.email,
       roles: authorities,
       accessToken: token,
@@ -107,9 +106,9 @@ const getAllUsers = async (req, res) => {
 };
 
 module.exports = {
-  createUser,
+  signup,
   updateUserById,
   deleteUserById,
-  getUser,
+  signin,
   getAllUsers,
 };

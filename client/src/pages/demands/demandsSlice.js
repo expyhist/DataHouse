@@ -25,7 +25,7 @@ export const demandsSlice = apisSlice.injectEndpoints({
       query(id) {
         return {
           url: `/demand/${id}`,
-          method: "delete"
+          method: "DElETE"
         }
       },
       invalidatesTags: ["Demand"]

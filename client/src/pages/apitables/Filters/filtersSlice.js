@@ -41,7 +41,7 @@ export const filtersSlice = apisSlice.injectEndpoints({
       query(id) {
         return {
           url: `/filter/${id}`,
-          method: "delete"
+          method: "DElETE"
         }
       },
       invalidatesTags: ["Filter"]

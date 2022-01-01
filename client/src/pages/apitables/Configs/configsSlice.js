@@ -25,7 +25,7 @@ export const configsSlice = apisSlice.injectEndpoints({
       query(id) {
         return {
           url: `/apitable/${id}`,
-          method: "delete"
+          method: "DElETE"
         }
       },
       invalidatesTags: ["Config", "Menu"]

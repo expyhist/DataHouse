@@ -20,7 +20,7 @@ export const sysConfigsSlice = apisSlice.injectEndpoints({
       query(id) {
         return {
           url: `/menu/${id}`,
-          method: "delete"
+          method: "DElETE"
         }
       },
       invalidatesTags: ["Menu"]

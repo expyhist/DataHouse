@@ -1,21 +1,23 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
-import Header from "./components/Header";
+import { PrivateRoute } from "@/utils/PrivateRoute";
+import PrivateLayout from "@/components/PrivateLayout";
 import DemandsPage from "./pages/demands";
 import ApiTablesPage from "./pages/apitables";
 import SysConfigsPage from "./pages/sysConfigs";
+import UsersPage from "./pages/users";
 
 const App = () => {
   return (
     <Router>
       <div>
-        <Header />
         <Switch>
-          <Route path="/demands" children={<DemandsPage />} />
-          <Route path="/tables" children={<ApiTablesPage />} />
-          <Route path="/sysconfigs" children={<SysConfigsPage />} />
-          <Redirect to="/demands" />
+          <Route path="/users" children={<UsersPage />} />
+          <PrivateRoute path="/demands" component={() => <PrivateLayout><DemandsPage /></PrivateLayout>} />
+          <PrivateRoute path="/tables" component={() => <PrivateLayout><ApiTablesPage /></PrivateLayout>} />
+          <PrivateRoute path="/sysconfigs" component={() => <PrivateLayout><SysConfigsPage /></PrivateLayout>} />
+          <Redirect to="/users" />
         </Switch>
       </div>
     </Router>

@@ -8,11 +8,11 @@ module.exports = (router) => {
   router
     .use(
       '/user',
-      verifyExistsByPayload(['username', 'password'], null),
+      verifyExistsByPayload(['email', 'password'], null),
       verifyHeaders,
     )
-    .post('/user/signup', userCtrl.createUser)
-    .post('/user/signin', userCtrl.getUser);
+    .post('/user/signup', userCtrl.signup)
+    .post('/user/signin', userCtrl.signin);
 
   router
     .route('/user/:id')

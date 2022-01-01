@@ -1,7 +1,6 @@
 import React from "react";
-import { Switch, Route, useRouteMatch, Redirect } from "react-router-dom";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 
-import SiderMenu from "@/components/SiderMenu";
 import MenusTree from "./MenusTree";
 
 const SysConfigsPage = () => {
@@ -11,8 +10,7 @@ const SysConfigsPage = () => {
   return (
     <div>
       <Switch>
-        <Route exact path={`${path}`} children={<SiderMenu singlePath={`${path}`} />} />
-        <Route path={`${path}/menustree`} children={<SiderMenu singlePath={`${path}`}><MenusTree /></SiderMenu>} />
+        <Route path={`${path}/menustree`} children={<MenusTree />} />
       </Switch>
     </div>
   );

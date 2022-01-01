@@ -48,7 +48,6 @@ const SiderMenu = (props) => {
 
   return (
     <Layout style={{ minHeight: "90vh" }}>
-      
       <Sider
         collapsible
         collapsed={collapsed} 
