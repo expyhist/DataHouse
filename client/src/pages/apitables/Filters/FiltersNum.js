@@ -8,7 +8,7 @@ import { defineConfig } from "@/../config/config.js";
 
 const filtersInfo = defineConfig.filtersInfo;
 
-export const FiltersNum = (props) => {
+const FiltersNum = (props) => {
 
   const { initialValues } = props;
   const dispatch = useDispatch();
@@ -53,3 +53,5 @@ export const FiltersNum = (props) => {
     </Form>
   );
 }
+
+export default FiltersNum;

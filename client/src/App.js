@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
-import { PrivateRoute } from "@/utils/PrivateRoute";
+import PrivateRoute from "@/utils/PrivateRoute";
 import PrivateLayout from "@/components/PrivateLayout";
 import DemandsPage from "./pages/demands";
 import ApiTablesPage from "./pages/apitables";

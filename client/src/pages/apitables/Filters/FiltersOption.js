@@ -2,14 +2,14 @@ import React from "react"
 
 import { Form, Tag } from "antd";
 
-import { SingleFiltersOption } from "./SingleFiltersOption";
+import SingleFiltersOption from "./SingleFiltersOption";
+import { parseParamFromURL } from "@/utils/parseParamFromURL";
 
-export const FiltersOption = (props) => {
+const FiltersOption = (props) => {
 
   const { url, form, filtersNum } = props;
 
-  const urlParams = url.match(/(?<=\?)(.*)/g)[0];
-  const urlParamsJson = JSON.parse(`{"` + urlParams.replaceAll(`=`, `":"`).replaceAll(`&`, `","`) + `"}`);
+  const urlParamsJson = parseParamFromURL(url);
   const regex = /appCode|pageNum|pageSize/;
   const options = JSON.parse(JSON.stringify(urlParamsJson, (k, v) => { if (typeof k === "string" && regex.test(k)) { return undefined } return v }));
 
@@ -42,3 +42,5 @@ export const FiltersOption = (props) => {
     </>
   );
 }
+
+export default FiltersOption;

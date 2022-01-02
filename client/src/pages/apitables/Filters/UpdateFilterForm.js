@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 
 import { Button, message } from "antd";
 
-import { FiltersNum } from "./FiltersNum";
-import { FiltersOption } from "./FiltersOption";
+import FiltersNum from "./FiltersNum";
+import FiltersOption from "./FiltersOption";
 import { useUpdateFilterMutation } from "./filtersSlice";
 import { parseFilterFormData } from "./parseFilterFormData";
 import withModalForm from "@/utils/withModalForm";

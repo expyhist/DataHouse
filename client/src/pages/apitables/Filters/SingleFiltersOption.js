@@ -6,7 +6,7 @@ import { defineConfig } from "@/../config/config";
 
 const filtersInfo = defineConfig.filtersInfo;
 
-export const SingleFiltersOption = (props) => {
+const SingleFiltersOption = (props) => {
 
   const { keyName, rank, options } = props;
   const { Option } = Select;
@@ -46,3 +46,5 @@ export const SingleFiltersOption = (props) => {
     </>
   );
 }
+
+export default SingleFiltersOption;

@@ -1,6 +1,5 @@
 import { apisSlice } from "@/utils/apisSlice";
-import { createSlice, nanoid } from "@reduxjs/toolkit";
-
+import { createSlice } from "@reduxjs/toolkit";
 
 export const filtersNumSlice = createSlice({
   name: "filtersNum",
