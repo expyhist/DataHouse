@@ -10,6 +10,6 @@ import "antd/dist/antd.css";
 ReactDom.render(
   <Provider store={store}>
     <App />
-  </Provider>, 
+  </Provider>,
   document.getElementById("app")
 );

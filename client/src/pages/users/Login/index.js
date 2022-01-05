@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { withRouter } from "react-router-dom";
 
 import Avatar from "@mui/material/Avatar";
@@ -13,6 +14,8 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Copyright from "@/components/Copyright";
@@ -20,9 +23,13 @@ import { useLoginMutation } from "../usersSlice";
 
 const theme = createTheme();
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const Login = (props) => {
   const [login] = useLoginMutation();
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -38,6 +45,7 @@ const Login = (props) => {
           props.history.push("/demands");
         });
     } catch (err) {
+      console.log(err);
     }
   };
 
@@ -57,11 +65,12 @@ const Login = (props) => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            登录
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
+              defaultValue="test"
               required
               fullWidth
               id="email"
@@ -72,6 +81,7 @@ const Login = (props) => {
             />
             <TextField
               margin="normal"
+              defaultValue="test"
               required
               fullWidth
               name="password"
@@ -90,17 +100,17 @@ const Login = (props) => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              登录
             </Button>
             <Grid container>
-              <Grid item xs>
+              {/* <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
+                  忘记密码？
                 </Link>
-              </Grid>
+              </Grid> */}
               <Grid item>
                 <Link href="/users/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"没有账号？立即注册"}
                 </Link>
               </Grid>
             </Grid>

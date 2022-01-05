@@ -1,7 +1,8 @@
 import React from "react";
 import { NavLink, withRouter } from "react-router-dom";
 
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
+import { LoginOutlined } from "@ant-design/icons";
 
 const Header = () => {
 
@@ -26,6 +27,11 @@ const Header = () => {
         <Menu.Item key="/sysconfigs">
           <NavLink to="/sysconfigs">
             全局配置
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key="/loginout">
+          <NavLink to="/users">
+            <Button danger type="text" icon={<LoginOutlined />} onClick={() => localStorage.clear()} />
           </NavLink>
         </Menu.Item>
       </Menu>

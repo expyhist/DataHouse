@@ -9,9 +9,9 @@ const FiltersOption = (props) => {
 
   const { url, form, filtersNum } = props;
 
-  const urlParamsJson = parseParamFromURL(url);
+  const params = parseParamFromURL(url);
   const regex = /appCode|pageNum|pageSize/;
-  const options = JSON.parse(JSON.stringify(urlParamsJson, (k, v) => { if (typeof k === "string" && regex.test(k)) { return undefined } return v }));
+  const options = JSON.parse(JSON.stringify(params, (k, v) => { if (typeof k === "string" && regex.test(k)) { return undefined } return v }));
 
   let content = []
 

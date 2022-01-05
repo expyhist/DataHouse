@@ -1,6 +1,7 @@
 import React from "react";
 
-import { Button, message } from "antd";
+import message from "antd/lib/message";
+import Button from "antd/lib/Button";
 
 import XLSX from "xlsx";
 

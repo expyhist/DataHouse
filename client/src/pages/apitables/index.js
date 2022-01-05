@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, useRouteMatch } from "react-router-dom";
+import { Switch, Route, useRouteMatch, Redirect } from "react-router-dom";
 
 import ConfigsList from "./Configs/ConfigsList";
 import SingleConfig from "./Configs/SingleConfig";
@@ -15,6 +15,7 @@ const ApiTablesPage = () => {
         <Route path={`${path}/configs/list`} children={<ConfigsList />} />
         <Route path={`${path}/configs/single/:id`} children={<SingleConfig />} />
         <Route path={`${path}/databoard/:id`} children={<ApiTable />} />
+        <Redirect to={`${path}/configs/list`} />
       </Switch>
     </div>
   );

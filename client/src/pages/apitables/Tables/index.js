@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { Table, Layout, Result } from "antd";
 
 import TableFilter from "./TableFilter";
+import { parseParamFromURL } from "@/utils/parseParamFromURL";
 import { useGetConfigQuery } from "../Configs/configsSlice";
 
 const ApiTable = (props) => {
@@ -27,18 +28,14 @@ const ApiTable = (props) => {
   } = useGetConfigQuery(id);
 
   let content;
-  let payload = {};
+  let payload;
 
   if (isLoading) {
     content = <Table dataSource={null} columns={null} loading={isLoading}/>
   } else if (isSuccess) {
     content = <Table dataSource={dataSource} columns={columns} rowKey={"uuid"} loading={!isSuccess}/>
-    const params = data.data.url.match(/(?<=\?)(.*)/g)[0];
-    const payloadTemplate = JSON.parse(`{"` + params.replaceAll(`=`, `":"`).replaceAll(`&`, `","`) + `"}`);
-    payload["id"] = id;
-    payload["pageSize"] = 10000;
-    payload["pageNum"] = 1;
-    payload["appCode"] = payloadTemplate.appCode;
+    const params = parseParamFromURL(data.data.url);
+    payload = {...{ id: id, pageSize: 10000, pageNum: 1, appCode: null }, ...{appCode: params.appCode}};
   } else if (isError) {
     content = <Result status="error" title="未能获得报表数据" extra={error.error}/>
   }
