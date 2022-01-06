@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-import { Layout, Menu } from "antd";
+import Layout from "antd/lib/layout"
+import Menu from "antd/lib/menu";
 import * as Icons from "@ant-design/icons";
 
 import { useGetMenusQuery } from "../utils/apisSlice";

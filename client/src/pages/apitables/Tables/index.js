@@ -2,7 +2,9 @@ import React from "react";
 import { withRouter } from "react-router";
 import { useSelector } from "react-redux";
 
-import { Table, Layout, Result } from "antd";
+import Table from "antd/lib/table";
+import Layout from "antd/lib/layout";
+import Result from "antd/lib/result";
 
 import TableFilter from "./TableFilter";
 import { parseParamFromURL } from "@/utils/parseParamFromURL";

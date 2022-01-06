@@ -1,6 +1,7 @@
 import React from "react"
 
-import { Form, Tag } from "antd";
+import Form from "antd/lib/form";
+import Tag from "antd/lib/tag";
 
 import SingleFiltersOption from "./SingleFiltersOption";
 import { parseParamFromURL } from "@/utils/parseParamFromURL";

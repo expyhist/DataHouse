@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-import { Form, Input, Button, message, Select } from "antd";
+import Form from "antd/lib/form";
+import Input from "antd/lib/input";
+import Button from "antd/lib/button";
+import message from "antd/lib/message";
+import Select from "antd/lib/select";
 
 import { defineConfig } from "@/../config/config";
 import { useAddNewMenuMutation, useGetMenusQuery } from "./sysConfigsSlice";

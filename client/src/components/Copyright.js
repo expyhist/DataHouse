@@ -1,7 +1,7 @@
 import React from "react";
 
-import Typography from "antd/lib/Typography";
-import Button from "antd/lib/Button";
+import Typography from "antd/lib/typography";
+import Button from "antd/lib/button";
   
 const Copyright = (props) => {
 

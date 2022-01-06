@@ -1,7 +1,14 @@
 import React from "react";
 import { NavLink, withRouter } from "react-router-dom";
 
-import { Layout, Table, Space, Tooltip, Popconfirm, Button, message, Result  } from "antd";
+import Layout from "antd/lib/layout";
+import Table from "antd/lib/table";
+import Space from "antd/lib/space";
+import Tooltip from "antd/lib/tooltip";
+import Popconfirm from "antd/lib/popconfirm";
+import message from "antd/lib/message";
+import Button from "antd/lib/button";
+import Result from "antd/lib/result";
 
 import { defineConfig } from "@/../config/config";
 import { useGetConfigsQuery, useDeleteConfigMutation } from "./configsSlice";

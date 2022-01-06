@@ -1,6 +1,8 @@
 import React from "react";
 
-import { Form, Modal, message } from "antd";
+import Form from "antd/lib/form"
+import Modal from "antd/lib/modal";
+import message from "antd/lib/message";
 
 const withModalForm = (WrappedComponent) => {
 

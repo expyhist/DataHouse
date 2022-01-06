@@ -1,7 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router";
 
-import { Card, Descriptions } from "antd";
+import Card from "antd/lib/card";
+import Descriptions from "antd/lib/descriptions";
 
 import UpdateFilterForm from "./UpdateFilterForm";
 import { useGetFilterQuery } from "./filtersSlice";

@@ -1,7 +1,10 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 
-import { Form, Input, Button, Space } from "antd";
+import Form from "antd/lib/form";
+import Input from "antd/lib/input";
+import Button from "antd/lib/button";
+import Space from "antd/lib/space";
 
 import { filtersNumAdded } from "./filtersSlice";
 import { defineConfig } from "@/../config/config.js";

@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 
-import { Layout, Table, Space, Tooltip, Popconfirm, Button, message, Result, Tree  } from "antd";
+import Layout from "antd/lib/layout";
+import Table from "antd/lib/table";
+import Space from "antd/lib/space";
+import Tooltip from "antd/lib/tooltip";
+import Popconfirm from "antd/lib/popconfirm";
+import Button from "antd/lib/button";
+import message from "antd/lib/message";
+import Result from "antd/lib/result";
+import Tree from "antd/lib/tree"
 
 import { useGetMenusQuery, useDeleteMenuMutation } from "./sysConfigsSlice";
 import AddMenuForm from "./AddMenuForm";

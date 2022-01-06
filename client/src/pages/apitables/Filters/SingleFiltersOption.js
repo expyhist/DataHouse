@@ -1,6 +1,8 @@
 import React from "react";
 
-import { Select, Form, Divider } from "antd";
+import Select from "antd/lib/select";
+import Form from "antd/lib/form";
+import Divider from "antd/lib/divider";
 
 import { defineConfig } from "@/../config/config";
 

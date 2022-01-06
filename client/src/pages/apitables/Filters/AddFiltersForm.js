@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Button, message } from "antd";
+import Button from "antd/lib/button";
+import message from "antd/lib/message";
 
 import FiltersNum from "./FiltersNum";
 import FiltersOption from "./FiltersOption";

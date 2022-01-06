@@ -2,7 +2,12 @@ import React from "react";
 import produce from "immer";
 import { useSelector, useDispatch } from "react-redux";
 
-import { message, DatePicker, Button, Form, Input } from "antd";
+import message from "antd/lib/message";
+import { DatePicker } from "antd";
+import Button from "antd/lib/button";
+import Form from "antd/lib/form";
+import Input from "antd/lib/input";
+
 import moment from "moment";
 
 import ExportTable from "@/components/ExportTable";

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
-import { Form, Input, Button, message } from "antd";
+import Form from "antd/lib/form";
+import Input from "antd/lib/input";
+import Button from "antd/lib/button";
+import message from "antd/lib/message";
 
 import { defineConfig } from "@/../config/config";
 import { useUpdateConfigMutation } from "./configsSlice";

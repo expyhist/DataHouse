@@ -1,7 +1,9 @@
 import React from "react";
 import { NavLink, withRouter } from "react-router-dom";
 
-import { Button, Layout, Menu } from "antd";
+import Layout from "antd/lib/layout"
+import Button from "antd/lib/button";
+import Menu from "antd/lib/menu";
 import { LoginOutlined } from "@ant-design/icons";
 
 const Header = () => {
