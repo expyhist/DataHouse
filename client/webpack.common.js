@@ -1,5 +1,7 @@
 const path = require('path');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -51,4 +53,13 @@ module.exports = {
       },
     ]
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./public/index.html",
+      favicon: "./public/favicon.ico"
+    }),
+    new WebpackManifestPlugin({
+      basePath: "./public/manifest.json"
+    })
+  ],
 }

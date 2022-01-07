@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 
-const createServer = require('../server');
-const dbConfig = require('../config/db-config');
-const randomMongoObjectId = require('../utils/randomMongoObjectId');
+const createServer = require('../src/server');
+const dbConfig = require('../src/config/db-config');
+const randomMongoObjectId = require('../src/utils/randomMongoObjectId');
 
 beforeEach((done) => {
   mongoose.connect(
