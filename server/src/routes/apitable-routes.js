@@ -7,16 +7,13 @@ const verifyHeaders = require('../utils/verifyHeaders');
 
 module.exports = (router) => {
   router
-    .use(
-      '/apitable',
-      verifyExistsByPayload(['url', 'title', 'author', 'applicant'], null),
-      verifyHeaders,
-    )
-    .post('/apitable', apiTableCtrl.createApiTable);
+    .route('/apitable')
+    .all(verifyExistsByPayload(['url', 'title', 'author', 'applicant'], null), verifyHeaders)
+    .post(apiTableCtrl.createApiTable);
 
   router
     .route('/apitable/:id')
-    .all(verifyExistsById(ApiTable))
+    .all(verifyExistsByPayload(['url', 'title', 'author', 'applicant'], null), verifyHeaders, verifyExistsById(ApiTable))
     .put(apiTableCtrl.updateApiTableById)
     .delete(apiTableCtrl.deleteApiTableById)
     .get(apiTableCtrl.getApiTableById);

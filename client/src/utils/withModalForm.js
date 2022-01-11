@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 
-import Form from "antd/lib/form"
-import Modal from "antd/lib/modal";
-import message from "antd/lib/message";
+import Form from 'antd/lib/form';
+import Modal from 'antd/lib/modal';
+import message from 'antd/lib/message';
 
 const withModalForm = (WrappedComponent) => {
-
-  const HOC = ({ ...props }) => {
-
-    const { visible, title, onCancel, onCreate, okText, ...other } = props;
+  function HOC({ ...props }) {
+    const {
+      visible, title, onCancel, onCreate, okText, ...other
+    } = props;
     const [form] = Form.useForm();
-    
+
     return (
       <Modal
         visible={visible}
@@ -22,11 +22,11 @@ const withModalForm = (WrappedComponent) => {
           () => {
             form
               .validateFields()
-              .then(values => { 
+              .then((values) => {
                 form.resetFields();
                 onCreate(values);
               })
-              .catch(err => message.error(err, 3));
+              .catch((err) => message.error(err, 3));
           }
         }
       >

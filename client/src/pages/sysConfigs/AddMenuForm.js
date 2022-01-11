@@ -1,37 +1,33 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import Form from "antd/lib/form";
-import Input from "antd/lib/input";
-import Button from "antd/lib/button";
-import message from "antd/lib/message";
-import Select from "antd/lib/select";
+import Form from 'antd/lib/form';
+import Input from 'antd/lib/input';
+import Button from 'antd/lib/button';
+import message from 'antd/lib/message';
+import Select from 'antd/lib/select';
 
-import { defineConfig } from "@/../config/config";
-import { useAddNewMenuMutation, useGetMenusQuery } from "./sysConfigsSlice";
-import withModalForm from "@/utils/withModalForm";
+import { defineConfig } from '@/../config/config';
+import { useAddNewMenuMutation, useGetMenusQuery } from './sysConfigsSlice';
+import withModalForm from '@/utils/withModalForm';
 
 const layout = {
   labelCol: {
     offset: 2,
-    span: 5
+    span: 5,
   },
   wrapperCol: {
-    span: 15
-  }
+    span: 15,
+  },
 };
 
-const MenuForm = (props) => {
-
+function MenuForm(props) {
   const { form } = props;
   const { Option } = Select;
-  const sysConfigsColumnsInfo = defineConfig.sysConfigsColumnsInfo;
+  const { sysConfigsColumnsInfo } = defineConfig;
 
   const {
     data,
-    isLoading,
     isSuccess,
-    isError,
-    error
   } = useGetMenusQuery();
 
   return (
@@ -43,28 +39,26 @@ const MenuForm = (props) => {
       {
         Object.entries(sysConfigsColumnsInfo.AddMenuFormColumns)
           .map(([key, value]) => {
-            const content = key === "parent" ? (
+            const content = key === 'parent' ? (
               <Select placeholder="Please select a value">
-              {
-                isSuccess 
-                && 
-                data.data.map(aData => (
+                {
+                isSuccess
+                && data.data.map((aData) => (
                   <Option value={aData.path} key={aData.path}>
                     {aData.path}
                   </Option>
-                  )
-                )
+                ))
               }
               </Select>
             ) : (<Input />);
-            
+
             return (
               <Form.Item
-                initialValue={""}
+                initialValue=""
                 key={key}
                 label={value}
                 name={key}
-                rules={[new RegExp("icon|parent").test(key) ? {} : {required: true, message: `请输入 ${value}!`}]}
+                rules={/icon|parentPath/.test(key) ? [] : [{ required: true, message: `请输入 ${value}!` }]}
               >
                 {content}
               </Form.Item>
@@ -72,13 +66,12 @@ const MenuForm = (props) => {
           })
       }
     </Form>
-  ); 
+  );
 }
 
 const MenuCreateForm = withModalForm(MenuForm);
 
-const AddMenuForm = () => {
-
+function AddMenuForm() {
   const [visible, setVisible] = useState(false);
   const [addNewMenu] = useAddNewMenuMutation();
 
@@ -88,12 +81,12 @@ const AddMenuForm = () => {
         .unwrap()
         .then(() => {
           setVisible(false);
-          message.success("菜单添加成功", 3);
+          message.success('菜单添加成功', 3);
         });
     } catch (err) {
-      message.error(`菜单添加失败，错误:${err.data.error}`, 3)
+      message.error(`菜单添加失败，错误:${err.data.error}`, 3);
     }
-  }
+  };
 
   return (
     <div>
@@ -112,11 +105,10 @@ const AddMenuForm = () => {
         onCancel={() => {
           setVisible(false);
         }}
-        okText={"Create"}
+        okText="Create"
       />
     </div>
   );
-
 }
 
 export default AddMenuForm;

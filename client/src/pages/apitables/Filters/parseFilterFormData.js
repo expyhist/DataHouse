@@ -1,32 +1,34 @@
+import produce from 'immer';
+import { defineConfig } from '@/../config/config';
 
-import produce from "immer";
-import { defineConfig } from "@/../config/config";
+const { filtersInfo } = defineConfig;
 
-const filtersInfo = defineConfig.filtersInfo;
-
-export const parseFilterFormData = (lastFiltersNum, idName, id, formData) => {
-  
-  const emptyPayload = produce(filtersInfo, draft => {
-    Object.keys(filtersInfo).map(key => {
-      draft[key] = [];
+export const parseFilterFormData = (lastFiltersNum, extraId, formData) => {
+  const emptyPayload = produce(filtersInfo, (draft) => {
+    const data = draft;
+    Object.keys(filtersInfo).forEach((key) => {
+      data[key] = [];
     });
+    return data;
   });
 
-  const payload = produce(emptyPayload, draft => {
-    draft[idName] = id;
+  const payload = produce(emptyPayload, (draft) => {
+    const data = { ...draft, ...extraId };
+
     Object.entries(lastFiltersNum).forEach(([key, value]) => {
-      let singlePayload = [];
-      for (let i=0; i<parseInt(value); i++) {
-        let singleFormData = {};
-        filtersInfo[key]["values"].forEach(filterValue => {
-          const unique = i + "-" + key + "-" + filterValue;
+      const singlePayload = [];
+      for (let i = 0; i < parseInt(value, 10); i += 1) {
+        const singleFormData = {};
+        filtersInfo[key].values.forEach((filterValue) => {
+          const unique = `${i}-${key}-${filterValue}`;
           singleFormData[filterValue] = formData[unique];
         });
         singlePayload.push(singleFormData);
       }
-      draft[key] = singlePayload;
+      data[key] = singlePayload;
     });
+    return data;
   });
 
   return payload;
-}
+};

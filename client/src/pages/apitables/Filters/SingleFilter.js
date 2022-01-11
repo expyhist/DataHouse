@@ -1,22 +1,18 @@
-import React from "react";
-import { withRouter } from "react-router";
+import React from 'react';
+import { withRouter } from 'react-router';
 
-import Card from "antd/lib/card";
-import Descriptions from "antd/lib/descriptions";
+import Card from 'antd/lib/card';
+import Descriptions from 'antd/lib/descriptions';
 
-import UpdateFilterForm from "./UpdateFilterForm";
-import { useGetFilterQuery } from "./filtersSlice";
+import UpdateFilterForm from './UpdateFilterForm';
+import { useGetFilterQuery } from './filtersSlice';
 
-const SingleFilter = (props) => {
-
+function SingleFilter(props) {
   const { id, url } = props;
 
-  const { 
+  const {
     data,
-    isLoading,
     isSuccess,
-    isError,
-    error
   } = useGetFilterQuery(id);
 
   const regex = /rangeDate|singleDate|text|enum/;
@@ -39,21 +35,21 @@ const SingleFilter = (props) => {
                   return (
                     <Descriptions.Item label={key} key={key}>
                       {
-                        value.map(data => {
-                          return Object.entries(data).map(([k, v]) => {
-                            if (k !== "_id") {
-                              return (
-                                <p key={k}>
-                                  {`${k}: ${v}`}
-                                </p>
-                              );
-                            }
-                          });
-                        })
+                        value.map((val) => Object.entries(val).map(([k, v]) => {
+                          if (k !== '_id') {
+                            return (
+                              <p key={k}>
+                                {`${k}: ${v}`}
+                              </p>
+                            );
+                          }
+                          return null;
+                        }))
                       }
                     </Descriptions.Item>
                   );
                 }
+                return null;
               })
             }
           </Descriptions>

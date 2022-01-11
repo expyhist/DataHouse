@@ -1,41 +1,39 @@
-import React from "react";
+import React from 'react';
 
-import Select from "antd/lib/select";
-import Form from "antd/lib/form";
-import Divider from "antd/lib/divider";
+import Select from 'antd/lib/select';
+import Form from 'antd/lib/form';
+import Divider from 'antd/lib/divider';
 
-import { defineConfig } from "@/../config/config";
+import { defineConfig } from '@/../config/config';
 
-const filtersInfo = defineConfig.filtersInfo;
+const { filtersInfo } = defineConfig;
 
-const SingleFiltersOption = (props) => {
-
+function SingleFiltersOption(props) {
   const { keyName, rank, options } = props;
   const { Option } = Select;
 
   return (
     <>
-      <Divider>{filtersInfo[keyName]["cn"]}</Divider>
+      <Divider>{filtersInfo[keyName].cn}</Divider>
       {
-        filtersInfo[keyName]["values"].map(filterValue => {
-          const unique = rank + "-" + keyName + "-" + filterValue;
-          const content = filterValue === "title" ? (<input />) : (
+        filtersInfo[keyName].values.map((filterValue) => {
+          const unique = `${rank}-${keyName}-${filterValue}`;
+          const content = filterValue === 'title' ? (<input />) : (
             <Select placeholder="Please select a value">
               {
                 Object
                   .keys(options)
-                  .map(option => (
-                        <Option value={option} key={unique + "-" + option}>
-                          {option}
-                        </Option>
-                        )
-                      )
+                  .map((option) => (
+                    <Option value={option} key={`${unique}-${option}`}>
+                      {option}
+                    </Option>
+                  ))
               }
             </Select>
           );
           return (
             <Form.Item
-              initialValue={""}
+              initialValue=""
               label={filterValue}
               name={unique}
               key={unique}

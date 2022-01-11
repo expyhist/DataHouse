@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon ./src/index.js",
+    "lint": "yarn run eslint .",
     "test": "jest ./tests/"
   },
   "dependencies": {

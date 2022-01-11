@@ -1,49 +1,47 @@
-import { apisSlice } from "@/utils/apisSlice";
-import { createSlice, nanoid } from "@reduxjs/toolkit";
-
+import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { apisSlice } from '@/utils/apisSlice';
 
 const tableContentSlice = createSlice({
-  name: "tableContent",
-  initialState: [{dataSource:null, columns:null}],
+  name: 'tableContent',
+  initialState: [{ dataSource: null, columns: null }],
   reducers: {
     tableContentAdded: {
       reducer(state, action) {
-        state.push(action.payload)
+        state.push(action.payload);
       },
       prepare(dataSource, columns) {
         return {
           payload: {
             id: nanoid(),
             dataSource,
-            columns
-          }
-        }
-      }
-    }
+            columns,
+          },
+        };
+      },
+    },
   },
 });
 
-export const { tableContentAdded } = tableContentSlice.actions
+export const { tableContentAdded } = tableContentSlice.actions;
 
 export default tableContentSlice.reducer;
 
 export const tablesSlice = apisSlice.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     getTableData: builder.mutation({
       query(data) {
-        const {id, ...body} = data;
+        const { id, ...body } = data;
         return {
           url: `/apitabledata/${id}`,
-          method: "POST",
-          body
-        }
+          method: 'POST',
+          body,
+        };
       },
-      providesTags: ["ApiTableData"]
-    })
-  })
+      providesTags: ['ApiTableData'],
+    }),
+  }),
 });
 
-
-export const { 
-  useGetTableDataMutation
+export const {
+  useGetTableDataMutation,
 } = tablesSlice;

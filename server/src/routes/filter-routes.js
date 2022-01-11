@@ -6,16 +6,13 @@ const verifyHeaders = require('../utils/verifyHeaders');
 
 module.exports = (router) => {
   router
-    .use(
-      '/filter',
-      verifyExistsByPayload(['apiTableId'], 'apiTableId'),
-      verifyHeaders,
-    )
-    .post('/filter', filterCtrl.createFilter);
+    .route('/filter')
+    .all(verifyExistsByPayload(['apiTableId'], 'apiTableId'), verifyHeaders)
+    .post(filterCtrl.createFilter);
 
   router
     .route('/filter/:id')
-    .all(verifyExistsById(Filter))
+    .all(verifyExistsByPayload(['rangeData', 'singleData', 'text', 'enum'], null), verifyHeaders, verifyExistsById(Filter))
     .put(filterCtrl.updateFilterById)
     .delete(filterCtrl.deleteFilterById)
     .get(filterCtrl.getFilterById);

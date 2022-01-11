@@ -1,48 +1,48 @@
-import { apisSlice } from "@/utils/apisSlice";
+import { apisSlice } from '@/utils/apisSlice';
 
 export const sysConfigsSlice = apisSlice.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     getMenu: builder.query({
       query: (id) => `/menu/${id}`,
-      providesTags: (result, error, arg) => [{ type: "Menu", _id: arg }]
+      providesTags: (result, error, arg) => [{ type: 'Menu', _id: arg }],
     }),
     addNewMenu: builder.mutation({
       query(initialMenu) {
         return {
-          url: "/menu",
-          method: "POST",
-          body: initialMenu
-        }
+          url: '/menu',
+          method: 'POST',
+          body: initialMenu,
+        };
       },
-      invalidatesTags: ["Menu", "Config"]
+      invalidatesTags: ['Menu', 'Config'],
     }),
     deleteMenu: builder.mutation({
       query(id) {
         return {
           url: `/menu/${id}`,
-          method: "DElETE"
-        }
+          method: 'DElETE',
+        };
       },
-      invalidatesTags: ["Menu"]
+      invalidatesTags: ['Menu'],
     }),
     updateMenu: builder.mutation({
       query(data) {
-        const {id, ...body} = data;
+        const { id, ...body } = data;
         return {
           url: `/menu/${id}`,
-          method: "PUT",
-          body
-        }
+          method: 'PUT',
+          body,
+        };
       },
-      invalidatesTags: (result, error, arg) => [{ type: "Menu", _id: arg.id }]
-    })
-  })
+      invalidatesTags: (result, error, arg) => [{ type: 'Menu', _id: arg.id }],
+    }),
+  }),
 });
 
-export const { 
+export const {
   useGetMenusQuery,
   useGetMenuQuery,
-  useAddNewMenuMutation, 
+  useAddNewMenuMutation,
   useDeleteMenuMutation,
-  useUpdateMenuMutation
+  useUpdateMenuMutation,
 } = sysConfigsSlice;

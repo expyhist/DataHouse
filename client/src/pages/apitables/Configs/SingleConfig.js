@@ -1,27 +1,23 @@
-import React from "react";
-import { withRouter } from "react-router";
+import React from 'react';
+import { withRouter } from 'react-router';
 
-import Card from "antd/lib/card";
-import Descriptions from "antd/lib/descriptions";
+import Card from 'antd/lib/card';
+import Descriptions from 'antd/lib/descriptions';
 
-import UpdateConfigForm from "./UpdateConfigForm";
-import { useGetConfigQuery } from "./configsSlice";
-import SingleFilter from "../Filters/SingleFilter";
+import UpdateConfigForm from './UpdateConfigForm';
+import { useGetConfigQuery } from './configsSlice';
+import SingleFilter from '../Filters/SingleFilter';
 
-const SingleConfig = (props) => {
-
+function SingleConfig(props) {
   const { match } = props;
-  const id = match.params.id;
+  const { id } = match.params;
 
-  const { 
+  const {
     data,
-    isLoading,
     isSuccess,
-    isError,
-    error
   } = useGetConfigQuery(id);
 
-  const singleConfig = isSuccess && JSON.parse(JSON.stringify(data.data, ["_id", "url", "author", "title", "applicant", "createdAt", "updatedAt"]));
+  const singleConfig = isSuccess && JSON.parse(JSON.stringify(data.data, ['_id', 'url', 'author', 'title', 'applicant', 'defaultParams', 'createdAt', 'updatedAt']));
 
   return (
     isSuccess && (
@@ -36,15 +32,13 @@ const SingleConfig = (props) => {
             extra={<UpdateConfigForm singleConfig={singleConfig} />}
           >
             {
-              Object.entries(singleConfig).map(([key, value]) => {
-                return (
-                  <Descriptions.Item label={key} key={key}>{value}</Descriptions.Item>
-                );
-              })
+              Object.entries(singleConfig).map(([key, value]) => (
+                <Descriptions.Item label={key} key={key}>{value}</Descriptions.Item>
+              ))
             }
           </Descriptions>
         </Card>
-        <SingleFilter id={data.data.connection.filters} url={singleConfig.url}/>
+        <SingleFilter id={data.data.connection.filters} url={singleConfig.url} />
       </>
     )
   );

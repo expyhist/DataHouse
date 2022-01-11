@@ -1,20 +1,19 @@
-import React from "react";
-import { NavLink, withRouter } from "react-router-dom";
+import React from 'react';
+import { NavLink, withRouter } from 'react-router-dom';
 
-import Layout from "antd/lib/layout"
-import Button from "antd/lib/button";
-import Menu from "antd/lib/menu";
-import { LoginOutlined } from "@ant-design/icons";
+import Layout from 'antd/lib/layout';
+import Button from 'antd/lib/button';
+import Menu from 'antd/lib/menu';
+import { LoginOutlined } from '@ant-design/icons';
 
-const Header = () => {
-
+function Headers() {
   const { Header } = Layout;
 
   return (
     <Header className="header">
-      <Menu 
-        theme="dark" 
-        mode="horizontal" 
+      <Menu
+        theme="dark"
+        mode="horizontal"
       >
         <Menu.Item key="/demands">
           <NavLink to="/demands">
@@ -41,4 +40,4 @@ const Header = () => {
   );
 }
 
-export default withRouter(Header);
+export default withRouter(Headers);

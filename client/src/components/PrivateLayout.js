@@ -1,27 +1,27 @@
-import React from "react";
-import { useRouteMatch } from "react-router-dom";
+import React from 'react';
+import { useRouteMatch } from 'react-router-dom';
 
-import Layout from "antd/lib/layout"
+import Layout from 'antd/lib/layout';
 
-import Header from "./Header";
-import SiderMenu from "./SiderMenu";
-import Copyright from "./Copyright";
+import Header from './Header';
+import SiderMenu from './SiderMenu';
+import Copyright from './Copyright';
 
-const PrivateLayout = (props) => {
-
+function PrivateLayout(props) {
+  const { children } = props;
   const { path } = useRouteMatch();
   const { Content } = Layout;
 
   return (
     <Layout>
       <Header />
-      <Layout style={{ minHeight: "90vh" }}>
+      <Layout style={{ minHeight: '90vh' }}>
         <SiderMenu singlePath={`${path}`} />
         <Content
           className="site-layout-background"
-          style={{padding: 24, margin: 0, minHeight: 280}}
+          style={{ padding: 24, margin: 0, minHeight: 280 }}
         >
-          {props.children}
+          {children}
           <Copyright />
         </Content>
       </Layout>

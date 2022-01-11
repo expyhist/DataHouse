@@ -1,31 +1,28 @@
-import React from "react";
+import React from 'react';
 
-import message from "antd/lib/message";
-import Button from "antd/lib/button";
+import message from 'antd/lib/message';
+import Button from 'antd/lib/button';
 
-import XLSX from "xlsx";
+import XLSX from 'xlsx';
 
-const ExportTable = (props) => {
-
+function ExportTable(props) {
   const { dataSource } = props;
-  
-  const exportExcel = async () => {
 
+  const exportExcel = () => {
     if (dataSource === null) {
-      return message.error("导出错误，无数据", 3);
+      message.error('导出错误，无数据', 3);
     }
 
     try {
-      const data = dataSource.map(dataSource => JSON.parse(JSON.stringify(dataSource, (k, v) => { if(k !== "uuid") return v; else return undefined })));
+      const data = dataSource.map((ele) => JSON.parse(JSON.stringify(ele, (k, v) => { if (k !== 'uuid') return v; return undefined; })));
       const ws = XLSX.utils.json_to_sheet(data);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Sheet");
-      XLSX.writeFile(wb, "result.xlsx");
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet');
+      XLSX.writeFile(wb, 'result.xlsx');
+    } catch (err) {
+      message.error(`查询失败，错误:${err.data.error}`, 3);
     }
-    catch (err) {
-      message.error(err.data.error, 3);
-    }
-  }
+  };
 
   return (
     <Button onClick={exportExcel}>导出</Button>

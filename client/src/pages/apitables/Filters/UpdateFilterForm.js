@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import Button from "antd/lib/button";
-import message from "antd/lib/message";
+import Button from 'antd/lib/button';
+import message from 'antd/lib/message';
 
-import FiltersNum from "./FiltersNum";
-import FiltersOption from "./FiltersOption";
-import { useUpdateFilterMutation } from "./filtersSlice";
-import { parseFilterFormData } from "./parseFilterFormData";
-import withModalForm from "@/utils/withModalForm";
+import FiltersNum from './FiltersNum';
+import FiltersOption from './FiltersOption';
+import { useUpdateFilterMutation } from './filtersSlice';
+import { parseFilterFormData } from './parseFilterFormData';
+import withModalForm from '@/utils/withModalForm';
 
-const FilterForm = (props) => {
-
-  const { form, url, initialValues, filtersNum } = props;
+function FilterForm(props) {
+  const {
+    form, url, initialValues, filtersNum,
+  } = props;
 
   return (
     <>
@@ -24,8 +25,7 @@ const FilterForm = (props) => {
 
 const FilterUpdateForm = withModalForm(FilterForm);
 
-const UpdateFilterForm = (props) => {
-  
+function UpdateFilterForm(props) {
   const { filterId, singleFilter, url } = props;
   const [visible, setVisible] = useState(false);
   const [updateFilter] = useUpdateFilterMutation();
@@ -37,26 +37,26 @@ const UpdateFilterForm = (props) => {
     if (regex.test(key)) {
       nowFiltersNum[key] = value.length;
     }
+    return null;
   });
 
-  const filtersNum = useSelector(state => state.filtersNum);
-  const lastFiltersNum = filtersNum[filtersNum.length-1];
+  const filtersNum = useSelector((state) => state.filtersNum);
+  const lastFiltersNum = filtersNum[filtersNum.length - 1];
 
   const onCreate = async (formData) => {
-    
-    const payload = parseFilterFormData(lastFiltersNum, "id", filterId, formData);
+    const payload = parseFilterFormData(lastFiltersNum, { id: filterId }, formData);
 
     try {
       await updateFilter(payload)
         .unwrap()
         .then(() => {
           setVisible(false);
-          message.success("筛选条件更新成功", 3);
+          message.success('筛选条件更新成功', 3);
         });
     } catch (err) {
-      message.error(`筛选条件更新失败，错误:${err.data.error}`, 3)
+      message.error(`筛选条件更新失败，错误:${err.data.error}`, 3);
     }
-  }
+  };
 
   return (
     <div>
@@ -67,20 +67,20 @@ const UpdateFilterForm = (props) => {
         }}
       >
         更新
-      </Button> 
-        <FilterUpdateForm
-          visible={visible}
-          title="更新API报表筛选条件"
-          onCreate={onCreate}
-          onCancel={() => {
-            setVisible(false);
-          }}
-          okText={"Update"}
-          data={singleFilter}
-          url={url}
-          initialValues={nowFiltersNum}
-          filtersNum={lastFiltersNum}
-        />
+      </Button>
+      <FilterUpdateForm
+        visible={visible}
+        title="更新API报表筛选条件"
+        onCreate={onCreate}
+        onCancel={() => {
+          setVisible(false);
+        }}
+        okText="Update"
+        data={singleFilter}
+        url={url}
+        initialValues={nowFiltersNum}
+        filtersNum={lastFiltersNum}
+      />
     </div>
   );
 }

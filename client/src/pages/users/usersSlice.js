@@ -1,53 +1,53 @@
-import { apisSlice } from "@/utils/apisSlice";
+import { apisSlice } from '@/utils/apisSlice';
 
 export const usersSlice = apisSlice.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     getUsers: builder.query({
-      query: () => "/users"
+      query: () => '/users',
     }),
     login: builder.mutation({
       query(userInfo) {
         return {
-          url: "/user/signin",
-          method: "POST",
-          body: userInfo
-        }
-      }
+          url: '/user/signin',
+          method: 'POST',
+          body: userInfo,
+        };
+      },
     }),
     register: builder.mutation({
       query(initialUser) {
         return {
-          url: "/user/signup",
-          method: "POST",
-          body: initialUser
-        }
-      }
+          url: '/user/signup',
+          method: 'POST',
+          body: initialUser,
+        };
+      },
     }),
     deleteUser: builder.mutation({
       query(id) {
         return {
           url: `/user/${id}`,
-          method: "DELETE"
-        }
-      }
+          method: 'DELETE',
+        };
+      },
     }),
     updateUser: builder.mutation({
       query(data) {
-        const {_id, ...body} = data;
+        const { _id, ...body } = data;
         return {
           url: `/user/${_id}`,
-          method: "PUT",
-          body
-        }
-      }
-    })
-  })
+          method: 'PUT',
+          body,
+        };
+      },
+    }),
+  }),
 });
 
-export const { 
+export const {
   useGetUsersQuery,
   useLoginMutation,
-  useRegisterMutation, 
+  useRegisterMutation,
   useDeleteUserMutation,
-  useUpdateUserMutation
+  useUpdateUserMutation,
 } = usersSlice;

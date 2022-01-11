@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import Form from "antd/lib/form";
-import Input from "antd/lib/input";
-import message from "antd/lib/message";
-import Button from "antd/lib/button";
+import Form from 'antd/lib/form';
+import Input from 'antd/lib/input';
+import message from 'antd/lib/message';
+import Button from 'antd/lib/button';
 
-import { defineConfig } from "@/../config/config";
-import { useAddNewConfigMutation } from "./configsSlice";
-import { useAddNewMenuMutation } from "@/pages/sysConfigs/sysConfigsSlice";
-import withModalForm from "@/utils/withModalForm";
+import { defineConfig } from '@/../config/config';
+import { useAddNewConfigMutation } from './configsSlice';
+import { useAddNewMenuMutation } from '@/pages/sysConfigs/sysConfigsSlice';
+import withModalForm from '@/utils/withModalForm';
 
 const layout = {
   labelCol: {
     offset: 2,
-    span: 5
+    span: 5,
   },
   wrapperCol: {
-    span: 10
-  }
+    span: 10,
+  },
 };
 
-const ConfigForm = (props) => {
-
+function ConfigForm(props) {
   const { form } = props;
-  const apiTablesColumnsInfo = defineConfig.apiTablesColumnsInfo;
+  const { apiTablesColumnsInfo } = defineConfig;
 
   return (
     <Form
@@ -33,17 +32,24 @@ const ConfigForm = (props) => {
     >
       {
         Object.entries(apiTablesColumnsInfo.AddConfigFormColumns).map(([key, value]) => {
+          let rules;
+          switch (key) {
+            case 'url':
+              rules = [{ required: true, message: `请输入 ${value}!` }, { type: 'url', message: `请输入正确 ${value}!` }];
+              break;
+            case 'defaultParams':
+              rules = [];
+              break;
+            default:
+              rules = [{ required: true, message: `请输入 ${value}!` }];
+          }
           return (
             <Form.Item
-              initialValue={""}
+              initialValue=""
               key={key}
               label={value}
               name={key}
-              rules={
-                key === "url"
-                ? [{ required: true, message: `请输入 ${value}!` }, { type: "url", message: `请输入正确 ${value}!` }]
-                : [{ required: true, message: `请输入 ${value}!` }]
-              }
+              rules={rules}
             >
               <Input />
             </Form.Item>
@@ -51,53 +57,49 @@ const ConfigForm = (props) => {
         })
       }
     </Form>
-  ); 
+  );
 }
 
 const ConfigCreateForm = withModalForm(ConfigForm);
 
-const AddConfigForm = () => {
-
+function AddConfigForm() {
   const [visible, setVisible] = useState(false);
   const [newConfig, setNewConfig] = useState({});
   const [addNewConfig] = useAddNewConfigMutation();
   const [addNewMenu] = useAddNewMenuMutation();
 
   const onCreate = async (formData) => {
-    
     try {
       await addNewConfig(formData)
         .unwrap()
         .then((resp) => {
           setNewConfig(resp);
           setVisible(false);
-          message.success("配置添加成功", 3);
+          message.success('配置添加成功', 3);
         });
     } catch (err) {
-      message.error(`配置添加失败，错误:${err.data.error}`, 3)
+      message.error(`配置添加失败，错误:${err.data.error}`, 3);
     }
-  }
+  };
 
-  useEffect(
-    async () => {
-      if (Object.keys(newConfig).length !== 0) {
-        try {
-          await addNewMenu({
-            "apiTableId": newConfig.id,
-            "parentPath": "/tables/databoard/:id",
-            "path": `/tables/databoard/${newConfig.id}`,
-            "name": newConfig.title
-          })
+  useEffect(async () => {
+    if (Object.keys(newConfig).length !== 0) {
+      try {
+        await addNewMenu({
+          apiTableId: newConfig.id,
+          parentPath: '/tables/databoard/:id',
+          path: `/tables/databoard/${newConfig.id}`,
+          name: newConfig.title,
+        })
           .unwrap()
           .then(() => {
-            message.success("菜单添加成功", 3);
+            message.success('菜单添加成功', 3);
           });
-        } catch (error) {
-          message.error(`菜单添加失败，错误:${error.data.error}`, 3)
-        }
+      } catch (error) {
+        message.error(`菜单添加失败，错误:${error.data.error}`, 3);
       }
-    }, [newConfig]
-  );
+    }
+  }, [newConfig]);
 
   return (
     <div>
@@ -116,7 +118,7 @@ const AddConfigForm = () => {
         onCancel={() => {
           setVisible(false);
         }}
-        okText={"Create"}
+        okText="Create"
       />
     </div>
   );

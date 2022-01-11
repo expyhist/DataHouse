@@ -1,68 +1,69 @@
-import { apisSlice } from "@/utils/apisSlice";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import { apisSlice } from '@/utils/apisSlice';
 
-export const filtersNumSlice = createSlice({
-  name: "filtersNum",
-  initialState: [{rangeDate: 0, singleDate: 0, text: 0, enum: 0}],
+const filtersNumSlice = createSlice({
+  name: 'filtersNum',
+  initialState: [{
+    rangeDate: 0, singleDate: 0, text: 0, enum: 0,
+  }],
   reducers: {
     filtersNumAdded: {
       reducer(state, action) {
-        state.push(action.payload)
-      }
-    }
+        state.push(action.payload);
+      },
+    },
   },
 });
 
-export const { filtersNumAdded } = filtersNumSlice.actions
+export const { filtersNumAdded } = filtersNumSlice.actions;
 
 export default filtersNumSlice.reducer;
 
 export const filtersSlice = apisSlice.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     getFilters: builder.query({
-      query: () => "/filters",
-      providesTags: (result, error, arg) => 
-        result ? [...result.data.map(({ _id }) => ({ type: "Filter", _id})), "Filter"] : ["Filter"]
+      query: () => '/filters',
+      providesTags: (result) => (result ? [...result.data.map(({ _id }) => ({ type: 'Filter', _id })), 'Filter'] : ['Filter']),
     }),
     getFilter: builder.query({
       query: (id) => `/filter/${id}`,
-      providesTags: (result, error, arg) => [{ type: "Filter", _id: arg }]
+      providesTags: (result, error, arg) => [{ type: 'Filter', _id: arg }],
     }),
     addNewFilter: builder.mutation({
-      query: initialFilter => ({
-        url: "/filter",
-        method: "POST",
-        body: initialFilter
+      query: (initialFilter) => ({
+        url: '/filter',
+        method: 'POST',
+        body: initialFilter,
       }),
-      invalidatesTags: ["Config", "Filter"]
+      invalidatesTags: ['Config', 'Filter'],
     }),
     deleteFilter: builder.mutation({
       query(id) {
         return {
           url: `/filter/${id}`,
-          method: "DElETE"
-        }
+          method: 'DElETE',
+        };
       },
-      invalidatesTags: ["Filter"]
+      invalidatesTags: ['Filter'],
     }),
     updateFilter: builder.mutation({
       query(data) {
-        const {id, ...body} = data;
+        const { id, ...body } = data;
         return {
           url: `/filter/${id}`,
-          method: "PUT",
-          body
-        }
+          method: 'PUT',
+          body,
+        };
       },
-      invalidatesTags: (result, error, arg) => [{ type: "Filter", _id: arg.id }]
-    })
-  })
+      invalidatesTags: (result, error, arg) => [{ type: 'Filter', _id: arg.id }],
+    }),
+  }),
 });
 
-export const { 
+export const {
   useGetFiltersQuery,
   useGetFilterQuery,
-  useAddNewFilterMutation, 
+  useAddNewFilterMutation,
   useDeleteFilterMutation,
-  useUpdateFilterMutation
+  useUpdateFilterMutation,
 } = filtersSlice;

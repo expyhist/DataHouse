@@ -6,16 +6,13 @@ const verifyHeaders = require('../utils/verifyHeaders');
 
 module.exports = (router) => {
   router
-    .use(
-      '/menu',
-      verifyExistsByPayload(['path', 'name', 'parentPath'], null),
-      verifyHeaders,
-    )
-    .post('/menu', menuCtrl.createMenu);
+    .route('/menu')
+    .all(verifyExistsByPayload(['path', 'name', 'parentPath'], null), verifyHeaders)
+    .post(menuCtrl.createMenu);
 
   router
     .route('/menu/:id')
-    .all(verifyExistsById(Menu))
+    .all(verifyExistsByPayload(['path', 'name', 'parentPath'], null), verifyHeaders, verifyExistsById(Menu))
     .put(menuCtrl.updateMenuById)
     .delete(menuCtrl.deleteMenuById)
     .get(menuCtrl.getMenuById);

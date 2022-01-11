@@ -1,28 +1,27 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import Form from "antd/lib/form";
-import Input from "antd/lib/input";
-import Button from "antd/lib/button";
-import message from "antd/lib/message";
+import Form from 'antd/lib/form';
+import Input from 'antd/lib/input';
+import Button from 'antd/lib/button';
+import message from 'antd/lib/message';
 
-import { defineConfig } from "@/../config/config";
-import { useUpdateConfigMutation } from "./configsSlice";
-import withModalForm from "@/utils/withModalForm";
+import { defineConfig } from '@/../config/config';
+import { useUpdateConfigMutation } from './configsSlice';
+import withModalForm from '@/utils/withModalForm';
 
 const layout = {
   labelCol: {
     offset: 2,
-    span: 5
+    span: 5,
   },
   wrapperCol: {
-    span: 10
-  }
+    span: 10,
+  },
 };
 
-const ConfigForm = (props) => {
-
+function ConfigForm(props) {
   const { form, initialValues } = props;
-  const apiTablesColumnsInfo = defineConfig.apiTablesColumnsInfo;
+  const { apiTablesColumnsInfo } = defineConfig;
 
   return (
     <Form
@@ -33,30 +32,37 @@ const ConfigForm = (props) => {
     >
       {
         Object.entries(apiTablesColumnsInfo.UpdateConfigFormColumns).map(([key, value]) => {
+          let rules;
+          switch (key) {
+            case 'url':
+              rules = [{ required: true, message: `请输入 ${value}!` }, { type: 'url', message: `请输入正确 ${value}!` }];
+              break;
+            case 'defaultParams':
+              rules = [];
+              break;
+            default:
+              rules = [{ required: true, message: `请输入 ${value}!` }];
+          }
           return (
             <Form.Item
+              initialValue=""
               key={key}
               label={value}
               name={key}
-              rules={
-                key === "url"
-                ? [{ required: true, message: `请输入 ${value}!` }, { type: "url", message: `请输入正确 ${value}!` }]
-                : [{ required: true, message: `请输入 ${value}!` }]
-              }
+              rules={rules}
             >
-              { key === "_id" ? <Input disabled={true}/> : <Input /> }
+              <Input />
             </Form.Item>
           );
         })
       }
     </Form>
-  ); 
+  );
 }
 
 const ConfigUpdateForm = withModalForm(ConfigForm);
 
-const UpdateConfigForm = (props) => {
-
+function UpdateConfigForm(props) {
   const { singleConfig } = props;
   const [visible, setVisible] = useState(false);
   const [updateConfig] = useUpdateConfigMutation();
@@ -67,12 +73,12 @@ const UpdateConfigForm = (props) => {
         .unwrap()
         .then(() => {
           setVisible(false);
-          message.success("配置更新成功", 3);
+          message.success('配置更新成功', 3);
         });
     } catch (err) {
-      message.error(`配置更新失败，错误:${err.data.error}`, 3)
+      message.error(`配置更新失败，错误:${err.data.error}`, 3);
     }
-  }
+  };
 
   return (
     <div>
@@ -83,17 +89,17 @@ const UpdateConfigForm = (props) => {
         }}
       >
         更新
-      </Button> 
-        <ConfigUpdateForm
-          visible={visible}
-          title="更新API报表配置"
-          onCreate={onCreate}
-          onCancel={() => {
-            setVisible(false);
-          }}
-          okText={"Update"}
-          initialValues={singleConfig}
-        />
+      </Button>
+      <ConfigUpdateForm
+        visible={visible}
+        title="更新API报表配置"
+        onCreate={onCreate}
+        onCancel={() => {
+          setVisible(false);
+        }}
+        okText="Update"
+        initialValues={singleConfig}
+      />
     </div>
   );
 }

@@ -1,17 +1,16 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import Button from "antd/lib/button";
-import message from "antd/lib/message";
+import Button from 'antd/lib/button';
+import message from 'antd/lib/message';
 
-import FiltersNum from "./FiltersNum";
-import FiltersOption from "./FiltersOption";
-import { useAddNewFilterMutation } from "./filtersSlice";
-import { parseFilterFormData } from "./parseFilterFormData";
-import withModalForm from "@/utils/withModalForm";
+import FiltersNum from './FiltersNum';
+import FiltersOption from './FiltersOption';
+import { useAddNewFilterMutation } from './filtersSlice';
+import { parseFilterFormData } from './parseFilterFormData';
+import withModalForm from '@/utils/withModalForm';
 
-const FiltersForm = (props) => {
-
+function FiltersForm(props) {
   const { form, url, filtersNum } = props;
 
   return (
@@ -24,31 +23,29 @@ const FiltersForm = (props) => {
 
 const FiltersCreateForm = withModalForm(FiltersForm);
 
-const AddFiltersForm = (props) => {
-  
+function AddFiltersForm(props) {
   const { id, url } = props;
 
   const [visible, setVisible] = useState(false);
   const [addNewFilter] = useAddNewFilterMutation();
 
-  const filtersNum = useSelector(state => state.filtersNum);
-  const lastFiltersNum = filtersNum[filtersNum.length-1];
+  const filtersNum = useSelector((state) => state.filtersNum);
+  const lastFiltersNum = filtersNum[filtersNum.length - 1];
 
   const onCreate = async (formData) => {
-
-    const payload = parseFilterFormData(lastFiltersNum, "apiTableId", id, formData);
+    const payload = parseFilterFormData(lastFiltersNum, { apiTableId: id }, formData);
 
     try {
       await addNewFilter(payload)
         .unwrap()
         .then(() => {
           setVisible(false);
-          message.success("筛选条件添加成功", 3);
+          message.success('筛选条件添加成功', 3);
         });
     } catch (err) {
-      message.error(`筛选条件添加失败，错误:${err.data.error}`, 3)
+      message.error(`筛选条件添加失败，错误:${err.data.error}`, 3);
     }
-  }
+  };
 
   return (
     <div>
@@ -67,7 +64,7 @@ const AddFiltersForm = (props) => {
         onCancel={() => {
           setVisible(false);
         }}
-        okText={"Create"}
+        okText="Create"
         filtersNum={lastFiltersNum}
         url={url}
       />

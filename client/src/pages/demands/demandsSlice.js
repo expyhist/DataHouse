@@ -1,53 +1,52 @@
-import { apisSlice } from "@/utils/apisSlice";
+import { apisSlice } from '@/utils/apisSlice';
 
 export const demandsSlice = apisSlice.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     getDemands: builder.query({
-      query: () => "/demands",
-      providesTags: (result, error, arg) => 
-        result ? [...result.data.map(({ _id }) => ({ type: "Demand", _id})), "Demand"] : ["Demand"]
+      query: () => '/demands',
+      providesTags: (result) => (result ? [...result.data.map(({ _id }) => ({ type: 'Demand', _id })), 'Demand'] : ['Demand']),
     }),
     getDemand: builder.query({
       query: (id) => `/demand/${id}`,
-      providesTags: (result, error, arg) => [{ type: "Demand", _id: arg }]
+      providesTags: (result, error, arg) => [{ type: 'Demand', _id: arg }],
     }),
     addNewDemand: builder.mutation({
       query(initialDemand) {
         return {
-          url: "/demand",
-          method: "POST",
-          body: initialDemand
-        }
+          url: '/demand',
+          method: 'POST',
+          body: initialDemand,
+        };
       },
-      invalidatesTags: ["Demand"]
+      invalidatesTags: ['Demand'],
     }),
     deleteDemand: builder.mutation({
       query(id) {
         return {
           url: `/demand/${id}`,
-          method: "DElETE"
-        }
+          method: 'DElETE',
+        };
       },
-      invalidatesTags: ["Demand"]
+      invalidatesTags: ['Demand'],
     }),
     updateDemand: builder.mutation({
       query(data) {
-        const {id, ...body} = data;
+        const { id, ...body } = data;
         return {
           url: `/demand/${id}`,
-          method: "PUT",
-          body
-        }
+          method: 'PUT',
+          body,
+        };
       },
-      invalidatesTags: (result, error, arg) => [{ type: "Demand", _id: arg.id }]
-    })
-  })
+      invalidatesTags: (result, error, arg) => [{ type: 'Demand', _id: arg.id }],
+    }),
+  }),
 });
 
-export const { 
+export const {
   useGetDemandsQuery,
   useGetDemandQuery,
-  useAddNewDemandMutation, 
+  useAddNewDemandMutation,
   useDeleteDemandMutation,
-  useUpdateDemandMutation
+  useUpdateDemandMutation,
 } = demandsSlice;

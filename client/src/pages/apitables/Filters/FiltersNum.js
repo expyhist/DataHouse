@@ -1,27 +1,26 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
-import Form from "antd/lib/form";
-import Input from "antd/lib/input";
-import Button from "antd/lib/button";
-import Space from "antd/lib/space";
+import Form from 'antd/lib/form';
+import Input from 'antd/lib/input';
+import Button from 'antd/lib/button';
+import Space from 'antd/lib/space';
 
-import { filtersNumAdded } from "./filtersSlice";
-import { defineConfig } from "@/../config/config.js";
+import { filtersNumAdded } from './filtersSlice';
+import { defineConfig } from '@/../config/config';
 
-const filtersInfo = defineConfig.filtersInfo;
+const { filtersInfo } = defineConfig;
 
-const FiltersNum = (props) => {
-
+function FiltersNum(props) {
   const { initialValues } = props;
   const dispatch = useDispatch();
 
   const onFinish = (formData) => {
     dispatch(filtersNumAdded(formData));
-  }
+  };
 
   return (
-    <Form 
+    <Form
       name="filter-option-num"
       initialValues={initialValues}
       onFinish={onFinish}
@@ -30,22 +29,20 @@ const FiltersNum = (props) => {
         {
           Object
             .keys(filtersInfo)
-            .map(value => {
-              return (
-                <Form.Item
-                  key={value}
-                  label={value}
-                  name={value}
-                  rules={[
-                    { required: true },
-                    { type: "number", message: `请输入数字!`, transform: value => parseInt(value) }
-                  ]}
-                  normalize={value => parseInt(value)}
-                >
-                  <Input />
-                </Form.Item>
-              );
-            })
+            .map((value) => (
+              <Form.Item
+                key={value}
+                label={value}
+                name={value}
+                rules={[
+                  { required: true },
+                  { type: 'number', message: '请输入数字!', transform: (val) => parseInt(val, 10) },
+                ]}
+                normalize={(val) => parseInt(val, 10)}
+              >
+                <Input />
+              </Form.Item>
+            ))
         }
       </Space>
       <Form.Item>

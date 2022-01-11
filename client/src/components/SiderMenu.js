@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
-import Layout from "antd/lib/layout"
-import Menu from "antd/lib/menu";
-import * as Icons from "@ant-design/icons";
+import Layout from 'antd/lib/layout';
+import Menu from 'antd/lib/menu';
+import * as Icons from '@ant-design/icons';
 
-import { useGetMenusQuery } from "../utils/apisSlice";
+import { useGetMenusQuery } from '../utils/apisSlice';
 
 const RecursiveMenu = (menuDatas) => {
-
   const { SubMenu } = Menu;
 
-  return menuDatas.map(menuData => {
-    const MenuIcon = () => menuData.icon ? React.createElement(Icons[menuData?.icon]) : null;
+  return menuDatas.map((menuData) => {
+    function MenuIcon() {
+      return menuData.icon ? React.createElement(Icons[menuData?.icon]) : null;
+    }
     if (menuData.children.length === 0) {
       return (
         <Menu.Item key={menuData.path} icon={<MenuIcon />}>
@@ -28,40 +29,36 @@ const RecursiveMenu = (menuDatas) => {
       </SubMenu>
     );
   });
-}
+};
 
-const SiderMenu = (props) => {
-
+function SiderMenu(props) {
   const { singlePath } = props;
   const [collapsed, setCollapsed] = useState(true);
 
   const {
     data,
-    isLoading,
     isSuccess,
-    isError,
-    error
-  } = useGetMenusQuery("siderMenus");
+  } = useGetMenusQuery('siderMenus');
 
-  const singleMenuDatas = isSuccess && [data.data.find(menuData => menuData.path === singlePath)];
+  const singleMenuDatas = isSuccess && [data.data.find((menuData) => menuData.path === singlePath)];
 
   const { Sider } = Layout;
 
   return (
     <Sider
       collapsible
-      collapsed={collapsed} 
-      onCollapse={()=>setCollapsed(!collapsed)}
-      width={200} 
+      collapsed={collapsed}
+      onCollapse={() => setCollapsed(!collapsed)}
+      width={200}
       className="site-layout-background"
     >
       {
         isSuccess ? (
           <Menu
             mode="inline"
-            style={{ height: "100%", borderRight: 0 }}
+            style={{ height: '100%', borderRight: 0 }}
           >
-            {singleMenuDatas.map(singleMenuData => RecursiveMenu(singleMenuData.children))}
+            {singleMenuDatas.map((singleMenuData) => RecursiveMenu(singleMenuData.children))}
           </Menu>
         ) : null
       }
