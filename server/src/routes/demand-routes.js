@@ -7,12 +7,12 @@ const verifyHeaders = require('../utils/verifyHeaders');
 module.exports = (router) => {
   router
     .route('/demand')
-    .all(verifyExistsByPayload(['description', 'content', 'applicant', 'reviewStatus', 'status'], null), verifyHeaders)
+    .all(verifyHeaders, verifyExistsByPayload(['description', 'content', 'applicant', 'reviewStatus', 'status'], null))
     .post(demandCtrl.createDemand);
 
   router
     .route('/demand/:id')
-    .all(verifyExistsByPayload(['description', 'content', 'applicant', 'reviewStatus', 'status'], null), verifyHeaders, verifyExistsById(Demand))
+    .all(verifyHeaders, verifyExistsById(Demand), verifyExistsByPayload(['description', 'content', 'applicant', 'reviewStatus', 'status'], null))
     .put(demandCtrl.updateDemandById)
     .delete(demandCtrl.deleteDemandById)
     .get(demandCtrl.getDemandById);

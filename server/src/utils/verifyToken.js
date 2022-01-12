@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const config = require('../config/auth-config.js');
+const config = require('../config/auth-config');
 
 module.exports = (req, res, next) => {
   const token = req.headers['x-access-token'];
@@ -12,7 +12,6 @@ module.exports = (req, res, next) => {
     if (err) {
       return res.status(401).send({ message: 'Unauthorized!' });
     }
-    console.log(req.userId, decoded);
     req.userId = decoded.id;
     next();
   });

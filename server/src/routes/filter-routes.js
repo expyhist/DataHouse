@@ -7,12 +7,12 @@ const verifyHeaders = require('../utils/verifyHeaders');
 module.exports = (router) => {
   router
     .route('/filter')
-    .all(verifyExistsByPayload(['apiTableId'], 'apiTableId'), verifyHeaders)
+    .all(verifyHeaders, verifyExistsByPayload(['apiTableId'], 'apiTableId'))
     .post(filterCtrl.createFilter);
 
   router
     .route('/filter/:id')
-    .all(verifyExistsByPayload(['rangeData', 'singleData', 'text', 'enum'], null), verifyHeaders, verifyExistsById(Filter))
+    .all(verifyHeaders, verifyExistsById(Filter), verifyExistsByPayload(['rangeData', 'singleData', 'text', 'enum'], null))
     .put(filterCtrl.updateFilterById)
     .delete(filterCtrl.deleteFilterById)
     .get(filterCtrl.getFilterById);

@@ -5,7 +5,10 @@ const User = require('../models/user-model');
 
 const signup = async (req, res) => {
   try {
-    const resp = await User.create({ ...req.body, ...{password: bcrypt.hashSync(req.body.password, 8)} });
+    const resp = await User.create({
+      ...req.body,
+      ...{ password: bcrypt.hashSync(req.body.password, 8) },
+    });
     return res.status(201).json({
       success: true,
       id: resp._id,

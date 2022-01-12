@@ -38,6 +38,7 @@ function Login(props) {
         .then((resp) => {
           localStorage.setItem('email', resp.email);
           localStorage.setItem('token', resp.accessToken);
+          message.success('登录成功', 3);
           history.push('/demands');
         });
     } catch (err) {

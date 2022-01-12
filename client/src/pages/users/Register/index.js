@@ -32,7 +32,10 @@ function Register(props) {
         password: data.get('password'),
       })
         .unwrap()
-        .then(() => history.push('/login'));
+        .then(() => {
+          message.success('注册成功', 3);
+          history.push('/login')
+        });
     } catch (err) {
       message.error(`注册失败，错误:${err.data.error}`);
     }

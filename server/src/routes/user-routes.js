@@ -6,14 +6,18 @@ const verifyHeaders = require('../utils/verifyHeaders');
 
 module.exports = (router) => {
   router
-    .route('/user/sign(up|in)')
-    .all(verifyExistsByPayload(['email', 'password'], null), verifyHeaders)
-    .post(userCtrl.signup)
+    .route('/user/signup')
+    .all(verifyHeaders, verifyExistsByPayload(['email', 'password'], null, 2))
+    .post(userCtrl.signup);
+
+  router
+    .route('/user/signin')
+    .all(verifyHeaders, verifyExistsByPayload(['email', 'password'], null, 2))
     .post(userCtrl.signin);
 
   router
     .route('/user/:id')
-    .all(verifyExistsByPayload(['email', 'password'], null), verifyHeaders, verifyExistsById(User))
+    .all(verifyHeaders, verifyExistsById(User), verifyExistsByPayload(['email', 'password'], null, 2))
     .put(userCtrl.updateUserById)
     .delete(userCtrl.deleteUserById);
 
