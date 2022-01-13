@@ -90,6 +90,7 @@ function AddConfigForm() {
           parentPath: '/tables/databoard/:id',
           path: `/tables/databoard/${newConfig.id}`,
           name: newConfig.title,
+          icon: '',
         })
           .unwrap()
           .then(() => {

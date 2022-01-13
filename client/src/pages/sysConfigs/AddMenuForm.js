@@ -39,7 +39,7 @@ function MenuForm(props) {
       {
         Object.entries(sysConfigsColumnsInfo.AddMenuFormColumns)
           .map(([key, value]) => {
-            const content = key === 'parent' ? (
+            const content = key === 'parentPath' ? (
               <Select placeholder="Please select a value">
                 {
                 isSuccess

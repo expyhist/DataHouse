@@ -3,7 +3,13 @@ const common = require('./webpack.common');
 
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'source-map',
+  devtool: 'eval-cheap-module-source-map',
+  devServer: {
+    historyApiFallback: true,
+  },
+  cache: {
+    type: 'memory',
+  },
   output: {
     filename: '[name].bundle.js',
     chunkFilename: '[name].chunk.js',

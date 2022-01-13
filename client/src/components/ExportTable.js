@@ -3,8 +3,6 @@ import React from 'react';
 import message from 'antd/lib/message';
 import Button from 'antd/lib/button';
 
-import XLSX from 'xlsx';
-
 function ExportTable(props) {
   const { dataSource } = props;
 
@@ -15,10 +13,12 @@ function ExportTable(props) {
 
     try {
       const data = dataSource.map((ele) => JSON.parse(JSON.stringify(ele, (k, v) => { if (k !== 'uuid') return v; return undefined; })));
-      const ws = XLSX.utils.json_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet');
-      XLSX.writeFile(wb, 'result.xlsx');
+      import('xlsx').then((xlsx) => {
+        const ws = xlsx.utils.json_to_sheet(data);
+        const wb = xlsx.utils.book_new();
+        xlsx.utils.book_append_sheet(wb, ws, 'Sheet');
+        xlsx.writeFile(wb, 'result.xlsx');
+      });
     } catch (err) {
       message.error(`查询失败，错误:${err.data.error}`, 3);
     }

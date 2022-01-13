@@ -34,7 +34,7 @@ function Register(props) {
         .unwrap()
         .then(() => {
           message.success('注册成功', 3);
-          history.push('/login')
+          history.push('/login');
         });
     } catch (err) {
       message.error(`注册失败，错误:${err.data.error}`);

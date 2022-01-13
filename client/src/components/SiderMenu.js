@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter, useRouteMatch } from 'react-router-dom';
 
 import Layout from 'antd/lib/layout';
 import Menu from 'antd/lib/menu';
-import * as Icons from '@ant-design/icons';
+import {
+  SettingFilled, OrderedListOutlined, PieChartOutlined, BulbOutlined,
+} from '@ant-design/icons';
 
 import { useGetMenusQuery } from '../utils/apisSlice';
+
+const icons = {
+  SettingFilled,
+  OrderedListOutlined,
+  PieChartOutlined,
+  BulbOutlined,
+};
 
 const RecursiveMenu = (menuDatas) => {
   const { SubMenu } = Menu;
 
   return menuDatas.map((menuData) => {
     function MenuIcon() {
-      return menuData.icon ? React.createElement(Icons[menuData?.icon]) : null;
+      return menuData?.icon ? React.createElement(icons[menuData.icon]) : null;
     }
+
     if (menuData.children.length === 0) {
       return (
         <Menu.Item key={menuData.path} icon={<MenuIcon />}>
@@ -31,16 +41,17 @@ const RecursiveMenu = (menuDatas) => {
   });
 };
 
-function SiderMenu(props) {
-  const { singlePath } = props;
+function SiderMenu() {
   const [collapsed, setCollapsed] = useState(true);
+
+  const { path } = useRouteMatch();
 
   const {
     data,
     isSuccess,
   } = useGetMenusQuery('siderMenus');
 
-  const singleMenuDatas = isSuccess && [data.data.find((menuData) => menuData.path === singlePath)];
+  const singleMenuDatas = isSuccess && [data.data.find((menuData) => menuData.path === path)];
 
   const { Sider } = Layout;
 
@@ -56,7 +67,7 @@ function SiderMenu(props) {
         isSuccess ? (
           <Menu
             mode="inline"
-            style={{ height: '100%', borderRight: 0 }}
+            style={{ height: '115%', borderRight: 0 }}
           >
             {singleMenuDatas.map((singleMenuData) => RecursiveMenu(singleMenuData.children))}
           </Menu>
@@ -66,4 +77,4 @@ function SiderMenu(props) {
   );
 }
 
-export default SiderMenu;
+export default withRouter(SiderMenu);

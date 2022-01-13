@@ -23,13 +23,13 @@ export const defineConfig = {
   },
   apiTablesColumnsInfo: {
     ConfigsListColumns: {
-      url: 'url链接', title: '标题', author: '创建人', applicant: '申请人', defaultParams: '默认url参数', createdAt: '创建时间',
+      url: 'url链接', title: '标题', author: '创建人', applicant: '申请人', defaultParams: 'url参数的默认值', createdAt: '创建时间',
     },
     AddConfigFormColumns: {
-      url: 'url链接', title: '标题', author: '创建人', applicant: '申请人', defaultParams: '默认url参数'
+      url: 'url链接', title: '标题', author: '创建人', applicant: '申请人', defaultParams: 'url参数的默认值'
     },
     UpdateConfigFormColumns: {
-      _id: 'id', url: 'url链接', title: '标题', author: '创建人', applicant: '申请人', defaultParams: '默认url参数'
+      _id: 'id', url: 'url链接', title: '标题', author: '创建人', applicant: '申请人', defaultParams: 'url参数的默认值'
     },
   },
   demandsColumnsInfo: {

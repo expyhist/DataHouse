@@ -1,7 +1,7 @@
 const path = require('path');
-const { ESBuildMinifyPlugin } = require('esbuild-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const WebpackBar = require('webpackbar');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -9,24 +9,13 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
-    extensions: ['.ts', '.tsx', '.js', '.json', '.css'],
-  },
-  devServer: {
-    historyApiFallback: true,
-  },
-  optimization: {
-    minimize: false,
-    minimizer: [
-      new ESBuildMinifyPlugin({
-        target: 'es2015',
-        css: true,
-      }),
-    ],
+    extensions: ['.js', '.json'],
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: 'esbuild-loader',
@@ -58,8 +47,7 @@ module.exports = {
       template: './public/index.html',
       favicon: './public/favicon.ico',
     }),
-    new WebpackManifestPlugin({
-      basePath: './public/manifest.json',
-    }),
+    new WebpackBar(),
+    new MomentLocalesPlugin(),
   ],
 };
