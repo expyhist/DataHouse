@@ -20,38 +20,49 @@ const layout = {
   },
 };
 
-function ConfigForm(props) {
-  const { form } = props;
+function ConfigForm({ form }) {
   const { apiTablesColumnsInfo } = defineConfig;
 
   return (
     <Form
       {...layout}
       form={form}
-      name="config_create_form_in_modal"
+      name="create_config_form_in_modal"
+      initialValues={{
+        url: '',
+        title: '',
+        author: localStorage.getItem('email'),
+        applicant: localStorage.getItem('email'),
+        defaultParams: '',
+      }}
     >
       {
         Object.entries(apiTablesColumnsInfo.AddConfigFormColumns).map(([key, value]) => {
           let rules;
+          let disabled;
           switch (key) {
             case 'url':
-              rules = [{ required: true, message: `请输入 ${value}!` }, { type: 'url', message: `请输入正确 ${value}!` }];
+              rules = [{ required: true, message: `请输入${value}!` }, { type: 'url', message: `请输入正确 ${value}!` }];
               break;
             case 'defaultParams':
               rules = [];
               break;
+            case 'applicant':
+            case 'author':
+              disabled = true;
+              break;
             default:
-              rules = [{ required: true, message: `请输入 ${value}!` }];
+              rules = [{ required: true, message: `请输入${value}!` }];
+              disabled = false;
           }
           return (
             <Form.Item
-              initialValue=""
               key={key}
               label={value}
               name={key}
               rules={rules}
             >
-              <Input />
+              <Input disabled={disabled} />
             </Form.Item>
           );
         })
@@ -60,9 +71,9 @@ function ConfigForm(props) {
   );
 }
 
-const ConfigCreateForm = withModalForm(ConfigForm);
+const CreateConfigForm = withModalForm(ConfigForm);
 
-function AddConfigForm() {
+function AddConfigModal() {
   const [visible, setVisible] = useState(false);
   const [newConfig, setNewConfig] = useState({});
   const [addNewConfig] = useAddNewConfigMutation();
@@ -112,7 +123,7 @@ function AddConfigForm() {
       >
         新增
       </Button>
-      <ConfigCreateForm
+      <CreateConfigForm
         visible={visible}
         title="新增API报表"
         onCreate={onCreate}
@@ -125,4 +136,4 @@ function AddConfigForm() {
   );
 }
 
-export default AddConfigForm;
+export default AddConfigModal;

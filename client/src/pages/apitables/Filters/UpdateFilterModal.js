@@ -10,11 +10,9 @@ import { useUpdateFilterMutation } from './filtersSlice';
 import { parseFilterFormData } from './parseFilterFormData';
 import withModalForm from '@/utils/withModalForm';
 
-function FilterForm(props) {
-  const {
-    form, url, initialValues, filtersNum,
-  } = props;
-
+function FilterForm({
+  form, url, initialValues, filtersNum,
+}) {
   return (
     <>
       <FiltersNum initialValues={initialValues} />
@@ -23,10 +21,9 @@ function FilterForm(props) {
   );
 }
 
-const FilterUpdateForm = withModalForm(FilterForm);
+const UpdateFilterForm = withModalForm(FilterForm);
 
-function UpdateFilterForm(props) {
-  const { filterId, singleFilter, url } = props;
+function UpdateFilterModal({ filterId, singleFilter, url }) {
   const [visible, setVisible] = useState(false);
   const [updateFilter] = useUpdateFilterMutation();
 
@@ -68,7 +65,7 @@ function UpdateFilterForm(props) {
       >
         更新
       </Button>
-      <FilterUpdateForm
+      <UpdateFilterForm
         visible={visible}
         title="更新API报表筛选条件"
         onCreate={onCreate}
@@ -85,4 +82,4 @@ function UpdateFilterForm(props) {
   );
 }
 
-export default UpdateFilterForm;
+export default UpdateFilterModal;

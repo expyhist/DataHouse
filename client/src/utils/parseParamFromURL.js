@@ -1,7 +1,12 @@
 export const parseParamFromURL = (url) => {
+  const paramsObj = {};
+
+  if (!/\?/.test(url)) {
+    return paramsObj;
+  }
+
   const paramsStr = /.+\?(.+)$/.exec(url)[1]; // 将 ? 后⾯的字符串取出来
   const paramsArr = paramsStr.split('&'); // 将字符串以 & 分割后存到数组中
-  const paramsObj = {};
   // 将 params 存到对象中
   paramsArr.forEach((param) => {
     if (/=/.test(param)) {

@@ -15,9 +15,8 @@ import { parseFormData } from './parseFormData';
 import { useGetFilterQuery } from '../Filters/filtersSlice';
 import { useGetTableDataMutation, tableContentAdded } from './tablesSlice';
 
-function SingleTableFilter(props) {
+function SingleTableFilter({ filtersType, filtersOption }) {
   const { RangePicker } = DatePicker;
-  const { filtersType, filtersOption } = props;
 
   let content;
 
@@ -61,8 +60,7 @@ function SingleTableFilter(props) {
   );
 }
 
-function TableFilter(props) {
-  const { payload, filterId } = props;
+function TableFilter({ payload, filterId }) {
   const [getTableData] = useGetTableDataMutation();
   const tableContent = useSelector((state) => state.tableContent);
   const { dataSource } = tableContent[tableContent.length - 1];
@@ -83,17 +81,16 @@ function TableFilter(props) {
 
   const ManyTableFilter = () => {
     const manyTableFilterList = [];
-    if (isSuccess) {
-      Object.entries(filtersOption).forEach(([key, value]) => {
-        if (Array.isArray(value) && value.length !== 0) {
-          for (let i = 0; i < value.length; i += 1) {
-            manyTableFilterList.push(
-              <SingleTableFilter filtersType={key} filtersOption={value[i]} key={key + i} />,
-            );
-          }
+    Object.entries(filtersOption).map(([key, value]) => {
+      if (Array.isArray(value) && value.length !== 0) {
+        for (let i = 0; i < value.length; i += 1) {
+          manyTableFilterList.push(
+            <SingleTableFilter filtersType={key} filtersOption={value[i]} key={key + i} />,
+          );
         }
-      });
-    }
+      }
+      return null;
+    });
     return manyTableFilterList;
   };
 

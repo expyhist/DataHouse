@@ -19,7 +19,7 @@ import {
 
 import { defineConfig } from '@/../config/config';
 import { useGetDemandsQuery, useDeleteDemandMutation } from './demandsSlice';
-import AddDemandForm from './AddDemandForm';
+import AddDemandForm from './AddDemandModal';
 
 const statusTag = (status) => {
   if (status === 'finish') {

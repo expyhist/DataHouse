@@ -11,8 +11,7 @@ import { defineConfig } from '@/../config/config';
 
 const { filtersInfo } = defineConfig;
 
-function FiltersNum(props) {
-  const { initialValues } = props;
+function FiltersNum({ initialValues }) {
   const dispatch = useDispatch();
 
   const onFinish = (formData) => {

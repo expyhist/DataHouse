@@ -4,18 +4,23 @@ import { withRouter } from 'react-router';
 import Card from 'antd/lib/card';
 import Descriptions from 'antd/lib/descriptions';
 
-import UpdateConfigForm from './UpdateConfigForm';
+import UpdateConfigModal from './UpdateConfigModal';
 import { useGetConfigQuery } from './configsSlice';
 import SingleFilter from '../Filters/SingleFilter';
 
-function SingleConfig(props) {
-  const { match } = props;
+function SingleConfig({ match }) {
   const { id } = match.params;
 
   const {
     data,
+    isLoading,
     isSuccess,
+    isError,
   } = useGetConfigQuery(id);
+
+  if (isLoading || isError) {
+    return null;
+  }
 
   const singleConfig = isSuccess && JSON.parse(JSON.stringify(data.data, ['_id', 'url', 'author', 'title', 'applicant', 'defaultParams', 'createdAt', 'updatedAt']));
 
@@ -29,7 +34,7 @@ function SingleConfig(props) {
               marginBottom: 32,
             }}
             bordered
-            extra={<UpdateConfigForm singleConfig={singleConfig} />}
+            extra={<UpdateConfigModal singleConfig={singleConfig} />}
           >
             {
               Object.entries(singleConfig).map(([key, value]) => (

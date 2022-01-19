@@ -8,8 +8,7 @@ import { defineConfig } from '@/../config/config';
 
 const { filtersInfo } = defineConfig;
 
-function SingleFiltersOption(props) {
-  const { keyName, rank, options } = props;
+function SingleFiltersOption({ keyName, rank, options }) {
   const { Option } = Select;
 
   return (

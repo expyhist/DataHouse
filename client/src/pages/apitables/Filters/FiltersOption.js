@@ -6,9 +6,7 @@ import Tag from 'antd/lib/tag';
 import SingleFiltersOption from './SingleFiltersOption';
 import { parseParamFromURL } from '@/utils/parseParamFromURL';
 
-function FiltersOption(props) {
-  const { url, form, filtersNum } = props;
-
+function FiltersOption({ url, form, filtersNum }) {
   const params = parseParamFromURL(url);
   const regex = /appCode|pageNum|pageSize/;
   const options = JSON.parse(JSON.stringify(params, (k, v) => { if (typeof k === 'string' && regex.test(k)) { return undefined; } return v; }));

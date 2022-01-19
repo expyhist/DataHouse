@@ -21,10 +21,12 @@ module.exports = {
   ],
   rules: {
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'import/prefer-default-export': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
-    'react/no-unstable-nested-components': 'off' | 'warn' | 'error',
+    'react/no-unstable-nested-components': 'off' || 'warn' || 'error',
     'react/prop-types': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'no-underscore-dangle': 'off',
   },
   settings: {
     'import/resolver': {

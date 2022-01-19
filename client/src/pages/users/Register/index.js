@@ -19,8 +19,7 @@ import { useRegisterMutation } from '../usersSlice';
 
 const theme = createTheme();
 
-function Register(props) {
-  const { history } = props;
+function Register({ history }) {
   const [register] = useRegisterMutation();
 
   const handleSubmit = async (event) => {

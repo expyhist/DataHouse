@@ -1,12 +1,15 @@
 const Menu = require('../models/menu-model');
 const ApiTable = require('../models/apitable-model');
+const { initalMenus } = require('../config/db-config');
 
 const createMenu = async (req, res) => {
   try {
     const resp = await Menu.create(req.body);
-    const apiTableData = await ApiTable.findById(req.body.apiTableId);
-    await apiTableData.connection.set('menus', resp._id);
-    await apiTableData.save();
+    if (req.body.apiTableId) {
+      const apiTableData = await ApiTable.findById(req.body.apiTableId);
+      apiTableData.connection.set('menus', resp._id);
+      apiTableData.save();
+    }
     return res.status(201).json({
       success: true,
       id: resp._id,
@@ -71,6 +74,13 @@ const getAllMenus = async (req, res) => {
   try {
     const resp = await Menu.find({}).lean();
 
+    if (req.params.type === 'normal') {
+      return res.status(200).json({
+        success: true,
+        data: resp,
+      });
+    }
+
     if (req.params.type === 'menusTree') {
       const listToTree = (items, key = '', link = 'parentPath') => items
         .filter((item) => item[link] === key)
@@ -100,6 +110,21 @@ const getAllMenus = async (req, res) => {
 
     return res.status(200).json({
       success: true,
+      data: [],
+    });
+  } catch (error) {
+    return res.status(404).json({
+      success: false,
+      error: error.toString(),
+    });
+  }
+};
+
+const setInitalMenus = async (req, res) => {
+  try {
+    const resp = await Menu.insertMany(initalMenus);
+    return res.status(200).json({
+      success: true,
       data: resp,
     });
   } catch (error) {
@@ -116,4 +141,5 @@ module.exports = {
   deleteMenuById,
   getMenuById,
   getAllMenus,
+  setInitalMenus,
 };

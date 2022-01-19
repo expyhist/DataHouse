@@ -19,15 +19,14 @@ const layout = {
   },
 };
 
-function DemandForm(props) {
-  const { form } = props;
+function DemandForm({ form }) {
   const { demandsColumnsInfo } = defineConfig;
 
   return (
     <Form
       {...layout}
       form={form}
-      name="demand_create_form_in_modal"
+      name="create_demand_form_in_modal"
     >
       {
         Object.entries(demandsColumnsInfo.AddDemandFormColumns)
@@ -37,7 +36,7 @@ function DemandForm(props) {
               key={key}
               label={value}
               name={key}
-              rules={[{ required: true, message: `请输入 ${value}!` }]}
+              rules={[{ required: true, message: `请输入${value}!` }]}
             >
               <Input />
             </Form.Item>
@@ -47,9 +46,9 @@ function DemandForm(props) {
   );
 }
 
-const DemandCreateForm = withModalForm(DemandForm);
+const CreateDemandForm = withModalForm(DemandForm);
 
-function AddDemandForm() {
+function AddDemandModal() {
   const [visible, setVisible] = useState(false);
   const [addNewDeamnd] = useAddNewDemandMutation();
 
@@ -79,7 +78,7 @@ function AddDemandForm() {
       >
         新增
       </Button>
-      <DemandCreateForm
+      <CreateDemandForm
         visible={visible}
         title="新增需求"
         onCreate={onCreate}
@@ -92,4 +91,4 @@ function AddDemandForm() {
   );
 }
 
-export default AddDemandForm;
+export default AddDemandModal;

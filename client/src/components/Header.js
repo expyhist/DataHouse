@@ -6,8 +6,28 @@ import Button from 'antd/lib/button';
 import Menu from 'antd/lib/menu';
 import { LoginOutlined } from '@ant-design/icons';
 
+import Access from '@/utils/Access';
+import { useAccess } from '@/utils/useAccess';
+import { useGetMenusQuery } from '@/utils/apisSlice';
+import { defineConfig } from '@/../config/config';
+
 function Headers() {
   const { Header } = Layout;
+  const { sortList } = defineConfig;
+
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetMenusQuery('normal');
+
+  if (isLoading || isError) {
+    return null;
+  }
+
+  const pages = isSuccess && data.data.filter((item) => item.parentPath === '');
+  const access = useAccess();
 
   return (
     <Header className="header">
@@ -15,21 +35,22 @@ function Headers() {
         theme="dark"
         mode="horizontal"
       >
-        <Menu.Item key="/demands">
-          <NavLink to="/demands">
-            需求系统
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item key="/tables">
-          <NavLink to="/tables">
-            报表系统
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item key="/sysconfigs">
-          <NavLink to="/sysconfigs">
-            全局配置
-          </NavLink>
-        </Menu.Item>
+        {
+          isSuccess && pages
+            .sort((a, b) => sortList[a.path] - sortList[b.path])
+            .map((page) => {
+              const { path, name } = page;
+              return (
+                <Menu.Item key={path}>
+                  <Access key={path} accessible={access[path]}>
+                    <NavLink to={path}>
+                      {name}
+                    </NavLink>
+                  </Access>
+                </Menu.Item>
+              );
+            })
+        }
         <Menu.Item key="/loginout">
           <NavLink to="/users">
             <Button danger type="text" icon={<LoginOutlined />} onClick={() => localStorage.clear()} />

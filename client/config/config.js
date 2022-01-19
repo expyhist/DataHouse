@@ -39,8 +39,27 @@ export const defineConfig = {
     AddDemandFormColumns: { description: '需求详情', content: '需求字段', applicant: '申请人' },
   },
   sysConfigsColumnsInfo: {
+    MenusListColumns: {
+      path: '菜单路径', name: '菜单名称', icon: '图标', parentPath: '上级菜单路径', auth: '权限列表', createdAt: '创建时间',
+    },
     AddMenuFormColumns: {
       path: '菜单路径', name: '菜单名称', icon: '图标', parentPath: '上级菜单路径',
     },
+    UpdateMenuFormColumns: {
+      _id: 'id', path: '菜单路径', name: '菜单名称', icon: '图标', parentPath: '上级菜单路径', auth: '权限列表',
+    },
   },
+  userColumnsInfo: {
+    UsersListColumns: {
+      email: '邮件', password: '密码', roles: '权限'
+    },
+    UpdateUserFormColumns: {
+      _id: 'id', email: '邮件', password: '密码', roles: '权限'
+    },
+  },
+  sortList: {
+    "/demands": 1,
+    "/tables": 2,
+    "/sysconfigs": 3
+  }
 };

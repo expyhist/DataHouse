@@ -72,18 +72,12 @@ const signin = async (req, res) => {
 
     const token = jwt.sign({ id: resp.id }, config.secret, { expiresIn: 5000 });
 
-    const authorities = [];
-
-    for (let i = 0; i < resp.roles.length; i += 1) {
-      authorities.push(`ROLE_${resp.roles[i].name.toUpperCase()}`);
-    }
-
     return res.status(200).json({
       success: true,
       id: resp._id,
       email: resp.email,
-      roles: authorities,
-      accessToken: token,
+      roles: resp.roles,
+      token,
     });
   } catch (error) {
     return res.status(404).json({

@@ -6,7 +6,7 @@ import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 
 import { defineConfig } from '@/../config/config';
-import { useUpdateConfigMutation } from './configsSlice';
+import { useUpdateMenuMutation } from './sysConfigsSlice';
 import withModalForm from '@/utils/withModalForm';
 
 const layout = {
@@ -19,39 +19,52 @@ const layout = {
   },
 };
 
-function ConfigForm(props) {
-  const { form, initialValues } = props;
-  const { apiTablesColumnsInfo } = defineConfig;
+function MenuForm({ form, initialValues }) {
+  const { sysConfigsColumnsInfo } = defineConfig;
 
   return (
     <Form
       {...layout}
       form={form}
-      name="config_update_form_in_modal"
+      name="update_menu_form_in_modal"
       initialValues={initialValues}
     >
       {
-        Object.entries(apiTablesColumnsInfo.UpdateConfigFormColumns).map(([key, value]) => {
+        Object.entries(sysConfigsColumnsInfo.UpdateMenuFormColumns).map(([key, value]) => {
           let rules;
+          let disabled;
           switch (key) {
-            case 'url':
-              rules = [{ required: true, message: `请输入 ${value}!` }, { type: 'url', message: `请输入正确 ${value}!` }];
+            case 'path':
+              rules = [
+                { required: true, message: `请输入${value}!` },
+                {
+                  validator: async (_, path) => {
+                    if (!/^(\/\w+)+/.test(path)) {
+                      return Promise.reject(new Error('输入正确的路径格式。如，/a，/a/b'));
+                    }
+                    return null;
+                  },
+                },
+              ];
               break;
-            case 'defaultParams':
-              rules = [];
+            case 'name':
+              rules = [{ required: true, message: `请输入${value}!` }];
+              break;
+            case '_id':
+              disabled = true;
               break;
             default:
-              rules = [{ required: true, message: `请输入 ${value}!` }];
+              rules = [];
+              disabled = false;
           }
           return (
             <Form.Item
-              initialValue=""
               key={key}
               label={value}
               name={key}
               rules={rules}
             >
-              <Input />
+              <Input disabled={disabled} />
             </Form.Item>
           );
         })
@@ -60,16 +73,15 @@ function ConfigForm(props) {
   );
 }
 
-const ConfigUpdateForm = withModalForm(ConfigForm);
+const UpdateMenuForm = withModalForm(MenuForm);
 
-function UpdateConfigForm(props) {
-  const { singleConfig } = props;
+function UpdateMenuModal({ initialValues }) {
   const [visible, setVisible] = useState(false);
-  const [updateConfig] = useUpdateConfigMutation();
+  const [updateMenu] = useUpdateMenuMutation();
 
   const onCreate = async (formData) => {
     try {
-      await updateConfig(formData)
+      await updateMenu(formData)
         .unwrap()
         .then(() => {
           setVisible(false);
@@ -83,25 +95,25 @@ function UpdateConfigForm(props) {
   return (
     <div>
       <Button
-        type="primary"
+        type="link"
         onClick={() => {
           setVisible(true);
         }}
       >
         更新
       </Button>
-      <ConfigUpdateForm
+      <UpdateMenuForm
         visible={visible}
-        title="更新API报表配置"
+        title="更新菜单"
         onCreate={onCreate}
         onCancel={() => {
           setVisible(false);
         }}
         okText="Update"
-        initialValues={singleConfig}
+        initialValues={initialValues}
       />
     </div>
   );
 }
 
-export default UpdateConfigForm;
+export default UpdateMenuModal;

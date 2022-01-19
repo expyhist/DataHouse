@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { withRouter } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
@@ -22,8 +21,7 @@ import { useLoginMutation } from '../usersSlice';
 
 const theme = createTheme();
 
-function Login(props) {
-  const { history } = props;
+function Login({ history }) {
   const [login] = useLoginMutation();
 
   const handleSubmit = async (event) => {
@@ -37,7 +35,8 @@ function Login(props) {
         .unwrap()
         .then((resp) => {
           localStorage.setItem('email', resp.email);
-          localStorage.setItem('token', resp.accessToken);
+          localStorage.setItem('token', resp.token);
+          localStorage.setItem('roles', resp.roles);
           message.success('登录成功', 3);
           history.push('/demands');
         });
@@ -67,7 +66,7 @@ function Login(props) {
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
-              defaultValue="test"
+              defaultValue="yanghua"
               required
               fullWidth
               id="email"
@@ -78,7 +77,7 @@ function Login(props) {
             />
             <TextField
               margin="normal"
-              defaultValue="test"
+              defaultValue="yanghua.datahouse"
               required
               fullWidth
               name="password"

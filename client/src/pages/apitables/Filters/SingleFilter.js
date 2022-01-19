@@ -1,36 +1,39 @@
 import React from 'react';
-import { withRouter } from 'react-router';
 
 import Card from 'antd/lib/card';
 import Descriptions from 'antd/lib/descriptions';
 
-import UpdateFilterForm from './UpdateFilterForm';
+import UpdateFilterModal from './UpdateFilterModal';
 import { useGetFilterQuery } from './filtersSlice';
 
-function SingleFilter(props) {
-  const { id, url } = props;
-
+function SingleFilter({ id, url }) {
   const {
     data,
+    isLoading,
     isSuccess,
+    isError,
   } = useGetFilterQuery(id);
+
+  if (isLoading || isError) {
+    return null;
+  }
 
   const regex = /rangeDate|singleDate|text|enum/;
 
   return (
     <Card bordered={false}>
       {
-        isSuccess && data.data !== null && (
+        isSuccess && (
           <Descriptions
             title="筛选条件详情"
             style={{
               marginBottom: 32,
             }}
             bordered
-            extra={<UpdateFilterForm filterId={id} singleFilter={data.data} url={url} />}
+            extra={<UpdateFilterModal filterId={id} singleFilter={data?.data} url={url} />}
           >
             {
-              Object.entries(data.data).map(([key, value]) => {
+              Object.entries(data?.data).map(([key, value]) => {
                 if (regex.test(key)) {
                   return (
                     <Descriptions.Item label={key} key={key}>
@@ -59,4 +62,4 @@ function SingleFilter(props) {
   );
 }
 
-export default withRouter(SingleFilter);
+export default SingleFilter;

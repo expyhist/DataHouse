@@ -6,8 +6,7 @@ import {
 import Login from './Login';
 import Register from './Register';
 
-function UserPage(props) {
-  const { location } = props;
+function UserPage({ location }) {
   const { path } = useRouteMatch();
 
   return (

@@ -5,10 +5,9 @@ import Modal from 'antd/lib/modal';
 import message from 'antd/lib/message';
 
 const withModalForm = (WrappedComponent) => {
-  function HOC({ ...props }) {
-    const {
-      visible, title, onCancel, onCreate, okText, ...other
-    } = props;
+  function HOC({
+    visible, title, onCancel, onCreate, okText, ...other
+  }) {
     const [form] = Form.useForm();
 
     return (

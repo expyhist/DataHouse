@@ -3,9 +3,7 @@ import React from 'react';
 import message from 'antd/lib/message';
 import Button from 'antd/lib/button';
 
-function ExportTable(props) {
-  const { dataSource } = props;
-
+function ExportTable({ dataSource }) {
   const exportExcel = () => {
     if (dataSource === null) {
       message.error('导出错误，无数据', 3);

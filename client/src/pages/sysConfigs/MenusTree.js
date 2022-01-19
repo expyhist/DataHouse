@@ -6,7 +6,6 @@ import Result from 'antd/lib/result';
 import Tree from 'antd/lib/tree';
 
 import { useGetMenusQuery } from './sysConfigsSlice';
-import AddMenuForm from './AddMenuForm';
 
 function MenusTree() {
   const [autoExpandParent, setAutoExpandParent] = useState(true);
@@ -58,7 +57,6 @@ function MenusTree() {
       >
         <div>
           <Space direction="vertical">
-            {isSuccess && <AddMenuForm />}
             {content}
           </Space>
         </div>

@@ -10,21 +10,22 @@ import message from 'antd/lib/message';
 import Button from 'antd/lib/button';
 import Result from 'antd/lib/result';
 
+import AddConfigModal from './AddConfigModal';
+import AddFiltersModal from '../Filters/AddFiltersModal';
+import Access from '@/utils/Access';
+import { useAccess } from '@/utils/useAccess';
 import { defineConfig } from '@/../config/config';
 import { useGetConfigsQuery, useDeleteConfigMutation } from './configsSlice';
 import { useDeleteFilterMutation } from '../Filters/filtersSlice';
 import { useDeleteMenuMutation } from '@/pages/sysConfigs/sysConfigsSlice';
-import AddConfigForm from './AddConfigForm';
-import AddFiltersForm from '../Filters/AddFiltersForm';
 
-function ConfigsTable(props) {
-  const { dataSource, loading } = props;
-
+function ConfigsTable({ dataSource, loading }) {
   if (loading === true) return (<Table columns={null} dataSource={null} loading={loading} />);
 
   const [deleteConfig] = useDeleteConfigMutation();
   const [deleteFilter] = useDeleteFilterMutation();
   const [deleteMenu] = useDeleteMenuMutation();
+  const access = useAccess();
   const { apiTablesColumnsInfo } = defineConfig;
 
   const columns = Object.entries(apiTablesColumnsInfo.ConfigsListColumns)
@@ -49,37 +50,45 @@ function ConfigsTable(props) {
     key: 'action',
     render: (text, record) => (
       <Space direction="vertical">
-        <AddFiltersForm id={record._id} url={record.url} />
+
+        <AddFiltersModal id={record._id} url={record.url} />
+
+        {/* <Access accessible={access.getConfig}> */}
         <Button type="link">
           <NavLink to={`/tables/configs/single/${record._id}`}>
             详情
           </NavLink>
         </Button>
+        {/* </Access> */}
+
+        {/* <Access accessible={access.deleteConfig}> */}
         <Popconfirm
           title="Sure to delete?"
           onConfirm={
-              async () => {
-                try {
-                  await deleteConfig(record._id);
-                  message.success('配置删除成功', 3);
-                  if (record?.connection?.filters) {
-                    await deleteFilter(record.connection.filters);
-                    message.success('筛选条件删除成功', 3);
+                async () => {
+                  try {
+                    await deleteConfig(record._id);
+                    message.success('配置删除成功', 3);
+                    if (record?.connection?.filters) {
+                      await deleteFilter(record.connection.filters);
+                      message.success('筛选条件删除成功', 3);
+                    }
+                    if (record?.connection?.menus) {
+                      await deleteMenu(record?.connection?.menus);
+                      message.success('菜单删除成功', 3);
+                    }
+                  } catch (err) {
+                    message.error(`配置删除失败，错误:${err.data.error}`, 3);
                   }
-                  if (record?.connection?.menus) {
-                    await deleteMenu(record?.connection?.menus);
-                    message.success('菜单删除成功', 3);
-                  }
-                } catch (err) {
-                  message.error(`配置删除失败，错误:${err.data.error}`, 3);
                 }
               }
-            }
           okText="Yes"
           cancelText="No"
         >
           <Button type="link">删除</Button>
         </Popconfirm>
+        {/* </Access> */}
+
       </Space>
     ),
   });
@@ -103,7 +112,7 @@ function ConfigsList() {
     isError,
     error,
   } = useGetConfigsQuery();
-
+  const access = useAccess();
   const { Content } = Layout;
 
   let content;
@@ -127,8 +136,19 @@ function ConfigsList() {
         }}
       >
         <Space direction="vertical">
-          {isSuccess && <AddConfigForm />}
+          {
+            isSuccess && (
+            // <Access accessible={access.addNewConfig}>
+            <AddConfigModal />
+            // </Access>
+            )
+          }
+          {/* <Access
+            accessible={access.getConfigs}
+            fallback={<Result status="error" title="无权限获得配置中心数据" />}
+          > */}
           {content}
+          {/* </Access> */}
         </Space>
       </Content>
     </Layout>

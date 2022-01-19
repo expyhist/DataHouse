@@ -6,8 +6,7 @@ import Header from './Header';
 import SiderMenu from './SiderMenu';
 import Copyright from './Copyright';
 
-function PrivateLayout(props) {
-  const { children } = props;
+function PrivateLayout({ children }) {
   const { Content, Footer } = Layout;
 
   return (

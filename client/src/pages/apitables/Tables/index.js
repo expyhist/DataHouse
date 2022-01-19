@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter, useRouteMatch } from 'react-router';
 import { useSelector } from 'react-redux';
 
 import Table from 'antd/lib/table';
@@ -10,9 +10,9 @@ import TableFilter from './TableFilter';
 import { parseParamFromURL } from '@/utils/parseParamFromURL';
 import { useGetConfigQuery } from '../Configs/configsSlice';
 
-function ApiTable(props) {
-  const { match } = props;
-  const { id } = match.params;
+function ApiTable() {
+  const { params } = useRouteMatch();
+  const { id } = params;
 
   const tableContent = useSelector((state) => state.tableContent);
   const { dataSource } = tableContent[tableContent.length - 1];
@@ -35,8 +35,8 @@ function ApiTable(props) {
     content = <Table dataSource={null} columns={null} loading={isLoading} />;
   } else if (isSuccess) {
     content = <Table dataSource={dataSource} columns={columns} rowKey="uuid" loading={!isSuccess} />;
-    const params = parseParamFromURL(data.data.url);
-    payload = { ...params, ...data.data.defaultParams, id };
+    const urlParams = parseParamFromURL(data.data.url);
+    payload = { ...urlParams, ...data.data.defaultParams, id };
   } else if (isError) {
     content = <Result status="error" title="未能获得报表数据" extra={error.error} />;
   }

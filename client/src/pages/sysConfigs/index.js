@@ -3,7 +3,8 @@ import {
   Switch, Route, useRouteMatch, Redirect,
 } from 'react-router-dom';
 
-import MenusTree from './MenusTree';
+import MenusList from './MenusList';
+import UsersList from '../users/UsersList';
 
 function SysConfigsPage() {
   const { path } = useRouteMatch();
@@ -11,8 +12,9 @@ function SysConfigsPage() {
   return (
     <div>
       <Switch>
-        <Route path={`${path}/menustree`} component={() => <MenusTree />} />
-        <Redirect to={`${path}/menustree`} />
+        <Route path={`${path}/menuslist`} component={() => <MenusList />} />
+        <Route path={`${path}/userslist`} component={() => <UsersList />} />
+        <Redirect to={`${path}/menuslist`} />
       </Switch>
     </div>
   );

@@ -10,9 +10,7 @@ import { useAddNewFilterMutation } from './filtersSlice';
 import { parseFilterFormData } from './parseFilterFormData';
 import withModalForm from '@/utils/withModalForm';
 
-function FiltersForm(props) {
-  const { form, url, filtersNum } = props;
-
+function FiltersForm({ form, url, filtersNum }) {
   return (
     <>
       <FiltersNum initialValues={filtersNum} />
@@ -21,11 +19,9 @@ function FiltersForm(props) {
   );
 }
 
-const FiltersCreateForm = withModalForm(FiltersForm);
+const CreateFiltersForm = withModalForm(FiltersForm);
 
-function AddFiltersForm(props) {
-  const { id, url } = props;
-
+function AddFiltersModal({ id, url }) {
   const [visible, setVisible] = useState(false);
   const [addNewFilter] = useAddNewFilterMutation();
 
@@ -57,7 +53,7 @@ function AddFiltersForm(props) {
       >
         新增筛选条件
       </Button>
-      <FiltersCreateForm
+      <CreateFiltersForm
         visible={visible}
         title="新增筛选条件"
         onCreate={onCreate}
@@ -72,4 +68,4 @@ function AddFiltersForm(props) {
   );
 }
 
-export default AddFiltersForm;
+export default AddFiltersModal;
