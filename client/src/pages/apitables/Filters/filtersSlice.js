@@ -21,10 +21,6 @@ export default filtersNumSlice.reducer;
 
 export const filtersSlice = apisSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getFilters: builder.query({
-      query: () => '/filters',
-      providesTags: (result) => (result ? [...result.data.map(({ _id }) => ({ type: 'Filter', _id })), 'Filter'] : ['Filter']),
-    }),
     getFilter: builder.query({
       query: (id) => `/filter/${id}`,
       providesTags: (result, error, arg) => [{ type: 'Filter', _id: arg }],
@@ -35,7 +31,7 @@ export const filtersSlice = apisSlice.injectEndpoints({
         method: 'POST',
         body: initialFilter,
       }),
-      invalidatesTags: ['Config', 'Filter'],
+      invalidatesTags: [{ type: 'Filter', operation: 'Add' }],
     }),
     deleteFilter: builder.mutation({
       query(id) {
@@ -48,20 +44,19 @@ export const filtersSlice = apisSlice.injectEndpoints({
     }),
     updateFilter: builder.mutation({
       query(data) {
-        const { id, ...body } = data;
+        const { filterId, ...body } = data;
         return {
-          url: `/filter/${id}`,
+          url: `/filter/${filterId}`,
           method: 'PUT',
           body,
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'Filter', _id: arg.id }],
+      invalidatesTags: (result, error, arg) => [{ type: 'Filter', _id: arg.filterId }, 'Menus'],
     }),
   }),
 });
 
 export const {
-  useGetFiltersQuery,
   useGetFilterQuery,
   useAddNewFilterMutation,
   useDeleteFilterMutation,

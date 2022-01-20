@@ -4,7 +4,7 @@ import Typography from 'antd/lib/typography';
 
 function Copyright() {
   return (
-    <Typography style={{ textAlign: 'center' }}>
+    <Typography>
       {'Copyright © '}
       <a type="link" href="https://expyhist.github.io/" target="_blank" rel="noreferrer">
         yanghua博客

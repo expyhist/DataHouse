@@ -70,7 +70,7 @@ const signin = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: resp.id }, config.secret, { expiresIn: 5000 });
+    const token = jwt.sign({ id: resp.id }, config.secret, { expiresIn: '1day' });
 
     return res.status(200).json({
       success: true,

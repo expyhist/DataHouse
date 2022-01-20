@@ -41,12 +41,16 @@ module.exports = {
         ],
       },
       {
-        test: /\.s[ac]ss$/i,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader',
-        ],
+        test: /\.(png|svg|gif|jpe?g)$/,
+        type: 'asset',
+        generator: {
+          filename: 'img/[name].[hash:4][ext]',
+        },
+        parser: {
+          dataUrlCondition: {
+            maxSize: 30 * 1024,
+          },
+        },
       },
     ],
   },

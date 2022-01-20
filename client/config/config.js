@@ -34,9 +34,9 @@ export const defineConfig = {
   },
   demandsColumnsInfo: {
     DemandsListColumns: {
-      description: '需求详情', content: '需求字段', applicant: '申请人', status: '需求状态', createdAt: '创建时间',
+      description: '需求详情', content: '需求字段', author: '创建人', applicant: '申请人', status: '需求状态', createdAt: '创建时间',
     },
-    AddDemandFormColumns: { description: '需求详情', content: '需求字段', applicant: '申请人' },
+    AddDemandFormColumns: { description: '需求详情', content: '需求字段', author: '创建人',applicant: '申请人' },
   },
   sysConfigsColumnsInfo: {
     MenusListColumns: {

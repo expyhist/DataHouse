@@ -1,7 +1,6 @@
 import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
 import Menu from 'antd/lib/menu';
 import { LoginOutlined } from '@ant-design/icons';
@@ -11,8 +10,7 @@ import { useAccess } from '@/utils/useAccess';
 import { useGetMenusQuery } from '@/utils/apisSlice';
 import { defineConfig } from '@/../config/config';
 
-function Headers() {
-  const { Header } = Layout;
+function HeaderMenu() {
   const { sortList } = defineConfig;
 
   const {
@@ -30,12 +28,11 @@ function Headers() {
   const access = useAccess();
 
   return (
-    <Header className="header">
-      <Menu
-        theme="dark"
-        mode="horizontal"
-      >
-        {
+    <Menu
+      theme="dark"
+      mode="horizontal"
+    >
+      {
           isSuccess && pages
             .sort((a, b) => sortList[a.path] - sortList[b.path])
             .map((page) => {
@@ -51,14 +48,13 @@ function Headers() {
               );
             })
         }
-        <Menu.Item key="/loginout">
-          <NavLink to="/users">
-            <Button danger type="text" icon={<LoginOutlined />} onClick={() => localStorage.clear()} />
-          </NavLink>
-        </Menu.Item>
-      </Menu>
-    </Header>
+      <Menu.Item key="/loginout">
+        <NavLink to="/users">
+          <Button danger type="text" icon={<LoginOutlined />} onClick={() => localStorage.clear()} />
+        </NavLink>
+      </Menu.Item>
+    </Menu>
   );
 }
 
-export default withRouter(Headers);
+export default HeaderMenu;

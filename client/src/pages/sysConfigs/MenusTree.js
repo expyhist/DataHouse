@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import Layout from 'antd/lib/layout';
-import Space from 'antd/lib/space';
 import Result from 'antd/lib/result';
 import Tree from 'antd/lib/tree';
 
@@ -17,8 +15,6 @@ function MenusTree() {
     isError,
     error,
   } = useGetMenusQuery('menusTree');
-
-  const { Content } = Layout;
 
   const onExpand = () => {
     setAutoExpandParent(false);
@@ -41,28 +37,13 @@ function MenusTree() {
         treeData={data.data}
       />
     );
-  } else if (isError) {
+  } else if (isError && error.data.message !== 'Unauthorized') {
     content = <Result status="error" title="未能获得菜单树数据" extra={error.error} />;
+  } else {
+    content = <Result status="error" title="无权获得菜单树表数据" />;
   }
 
-  return (
-    <Layout style={{ padding: '0 24px 24px' }}>
-      <Content
-        className="site-layout-background"
-        style={{
-          padding: 24,
-          margin: 0,
-          minHeight: 280,
-        }}
-      >
-        <div>
-          <Space direction="vertical">
-            {content}
-          </Space>
-        </div>
-      </Content>
-    </Layout>
-  );
+  return content;
 }
 
 export default MenusTree;

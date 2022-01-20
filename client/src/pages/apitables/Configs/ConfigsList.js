@@ -1,7 +1,6 @@
 import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-import Layout from 'antd/lib/layout';
 import Table from 'antd/lib/table';
 import Space from 'antd/lib/space';
 import Tooltip from 'antd/lib/tooltip';
@@ -12,7 +11,6 @@ import Result from 'antd/lib/result';
 
 import AddConfigModal from './AddConfigModal';
 import AddFiltersModal from '../Filters/AddFiltersModal';
-import Access from '@/utils/Access';
 import { useAccess } from '@/utils/useAccess';
 import { defineConfig } from '@/../config/config';
 import { useGetConfigsQuery, useDeleteConfigMutation } from './configsSlice';
@@ -112,8 +110,8 @@ function ConfigsList() {
     isError,
     error,
   } = useGetConfigsQuery();
+
   const access = useAccess();
-  const { Content } = Layout;
 
   let content;
 
@@ -121,38 +119,29 @@ function ConfigsList() {
     content = <ConfigsTable dataSource={null} loading={isLoading} />;
   } else if (isSuccess) {
     content = <ConfigsTable dataSource={data.data} loading={!isSuccess} />;
-  } else if (isError) {
-    content = <Result status="error" title="未能获得配置中心数据" extra={error.error} />;
+  } else if (isError && error.data.message !== 'Unauthorized') {
+    content = <Result status="error" title="未能获得配置中心数据" />;
+  } else {
+    content = <Result status="error" title="无权获得配置中心数据" />;
   }
 
   return (
-    <Layout style={{ padding: '0 24px 24px' }}>
-      <Content
-        className="site-layout-background"
-        style={{
-          padding: 24,
-          margin: 0,
-          minHeight: 280,
-        }}
-      >
-        <Space direction="vertical">
-          {
-            isSuccess && (
-            // <Access accessible={access.addNewConfig}>
-            <AddConfigModal />
-            // </Access>
-            )
-          }
-          {/* <Access
-            accessible={access.getConfigs}
-            fallback={<Result status="error" title="无权限获得配置中心数据" />}
-          > */}
-          {content}
-          {/* </Access> */}
-        </Space>
-      </Content>
-    </Layout>
+    <>
+      {
+        isSuccess && (
+        // <Access accessible={access.addNewConfig}>
+        <AddConfigModal />
+        // </Access>
+        )
+      }
+      {/* <Access
+        accessible={access.getConfigs}
+        fallback={<Result status="error" title="无权限获得配置中心数据" />}
+      > */}
+      {content}
+      {/* </Access> */}
+    </>
   );
 }
 
-export default withRouter(ConfigsList);
+export default ConfigsList;

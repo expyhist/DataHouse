@@ -41,7 +41,7 @@ function UpdateFilterModal({ filterId, singleFilter, url }) {
   const lastFiltersNum = filtersNum[filtersNum.length - 1];
 
   const onCreate = async (formData) => {
-    const payload = parseFilterFormData(lastFiltersNum, { id: filterId }, formData);
+    const payload = parseFilterFormData(lastFiltersNum, { filterId }, formData);
 
     try {
       await updateFilter(payload)

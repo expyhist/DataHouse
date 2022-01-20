@@ -2,26 +2,37 @@ import React from 'react';
 
 import Layout from 'antd/lib/layout';
 
-import Header from './Header';
+import HeaderMenu from './HeaderMenu';
 import SiderMenu from './SiderMenu';
 import Copyright from './Copyright';
 
 function PrivateLayout({ children }) {
-  const { Content, Footer } = Layout;
+  const { Header, Content, Footer } = Layout;
 
   return (
-    <Layout>
-      <Header />
-      <Layout style={{ minHeight: '85vh' }}>
-        <SiderMenu />
-        <Content
-          className="site-layout-background"
-          style={{ padding: 24, margin: 0, minHeight: 280 }}
+    <Layout style={{ height: '100vh' }}>
+      <Header>
+        <HeaderMenu />
+      </Header>
+      <Layout>
+        <SiderMenu style={{ background: 'white' }} />
+        <Layout
+          style={{
+            overflow: 'auto',
+            minHeight: '80vh',
+          }}
         >
-          {children}
-        </Content>
+          <Content style={{ padding: 24, margin: 0 }}>
+            {children}
+          </Content>
+        </Layout>
       </Layout>
-      <Footer>
+      <Footer
+        style={{
+          height: '48px',
+          textAlign: 'center',
+        }}
+      >
         <Copyright />
       </Footer>
     </Layout>

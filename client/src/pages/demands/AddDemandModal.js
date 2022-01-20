@@ -27,18 +27,23 @@ function DemandForm({ form }) {
       {...layout}
       form={form}
       name="create_demand_form_in_modal"
+      initialValues={{
+        description: '',
+        content: '',
+        author: localStorage.getItem('email'),
+        applicant: localStorage.getItem('email'),
+      }}
     >
       {
         Object.entries(demandsColumnsInfo.AddDemandFormColumns)
           .map(([key, value]) => (
             <Form.Item
-              initialValue=""
               key={key}
               label={value}
               name={key}
               rules={[{ required: true, message: `请输入${value}!` }]}
             >
-              <Input />
+              <Input disabled={!!/author|applicant/.test(key)} />
             </Form.Item>
           ))
       }

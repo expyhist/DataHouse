@@ -14,7 +14,7 @@ export const sysConfigsSlice = apisSlice.injectEndpoints({
           body: initialMenu,
         };
       },
-      invalidatesTags: ['Menu', 'Config'],
+      invalidatesTags: [{ type: 'Menu', operation: 'Add' }],
     }),
     deleteMenu: builder.mutation({
       query(id) {
@@ -27,14 +27,14 @@ export const sysConfigsSlice = apisSlice.injectEndpoints({
     }),
     updateMenu: builder.mutation({
       query(data) {
-        const { id, ...body } = data;
+        const { _id, ...body } = data;
         return {
-          url: `/menu/${id}`,
+          url: `/menu/${_id}`,
           method: 'PUT',
           body,
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'Menu', _id: arg.id }],
+      invalidatesTags: (result, error, arg) => [{ type: 'Menu', _id: arg._id }],
     }),
   }),
 });

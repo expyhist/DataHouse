@@ -1,7 +1,6 @@
 import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-import Layout from 'antd/lib/layout';
 import Table from 'antd/lib/table';
 import Space from 'antd/lib/space';
 import Tooltip from 'antd/lib/tooltip';
@@ -105,15 +104,13 @@ function DemandsTable({ dataSource, loading }) {
   });
 
   return (
-    <div>
-      <Table
-        className="table-demands-demandslist"
-        columns={columns}
-        dataSource={dataSource}
-        loading={loading}
-        rowKey="_id"
-      />
-    </div>
+    <Table
+      className="table-demands-demandslist"
+      columns={columns}
+      dataSource={dataSource}
+      loading={loading}
+      rowKey="_id"
+    />
   );
 }
 
@@ -126,37 +123,24 @@ function DemandsList() {
     error,
   } = useGetDemandsQuery();
 
-  const { Content } = Layout;
-
   let content;
 
   if (isLoading) {
     content = <DemandsTable dataSource={null} loading={isLoading} />;
   } else if (isSuccess) {
     content = <DemandsTable dataSource={data.data} loading={!isSuccess} />;
-  } else if (isError) {
-    content = <Result status="error" title="未能获得需求列表数据" extra={error.error} />;
+  } else if (isError && error.data.message !== 'Unauthorized') {
+    content = <Result status="error" title="未能获得需求列表数据" />;
+  } else {
+    content = <Result status="error" title="无权获得需求列表数据" />;
   }
 
   return (
-    <Layout style={{ padding: '0 24px 24px' }}>
-      <Content
-        className="site-layout-background"
-        style={{
-          padding: 24,
-          margin: 0,
-          minHeight: 280,
-        }}
-      >
-        <div>
-          <Space direction="vertical">
-            {isSuccess && <AddDemandForm />}
-            {content}
-          </Space>
-        </div>
-      </Content>
-    </Layout>
+    <>
+      {isSuccess && <AddDemandForm />}
+      {content}
+    </>
   );
 }
 
-export default withRouter(DemandsList);
+export default DemandsList;

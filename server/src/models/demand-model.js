@@ -6,6 +6,7 @@ const Demand = new mongoose.Schema(
     description: { type: String, unique: true, require: true },
     content: { type: String, unique: true, require: true },
     applicant: { type: String, require: true },
+    author: { type: String, require: true },
     sql: { type: String },
     status: { type: String, require: true },
     reviewStatus: { type: String, require: true },

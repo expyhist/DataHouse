@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -19,8 +19,9 @@ import { useRegisterMutation } from '../usersSlice';
 
 const theme = createTheme();
 
-function Register({ history }) {
+function Register() {
   const [register] = useRegisterMutation();
+  const history = useHistory();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -105,4 +106,4 @@ function Register({ history }) {
   );
 }
 
-export default withRouter(Register);
+export default Register;

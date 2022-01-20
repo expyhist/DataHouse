@@ -4,7 +4,9 @@ export const configsSlice = apisSlice.injectEndpoints({
   endpoints: (builder) => ({
     getConfigs: builder.query({
       query: () => '/apitables',
-      providesTags: (result) => (result ? [...result.data.map(({ _id }) => ({ type: 'Config', _id })), 'Config'] : ['Config']),
+      providesTags: (result) => (result?.data.length === 0
+        ? [...result.data.map(({ _id }) => ({ type: 'Config', _id })), ...[{ type: 'Config', operation: 'Add' }]]
+        : ['Config']),
     }),
     getConfig: builder.query({
       query: (id) => `/apitable/${id}`,
@@ -18,7 +20,7 @@ export const configsSlice = apisSlice.injectEndpoints({
           body: initialConfig,
         };
       },
-      invalidatesTags: ['Config'],
+      invalidatesTags: [{ type: 'Config', operation: 'Add' }],
     }),
     deleteConfig: builder.mutation({
       query(id) {
@@ -27,7 +29,7 @@ export const configsSlice = apisSlice.injectEndpoints({
           method: 'DElETE',
         };
       },
-      invalidatesTags: ['Config', 'Menu'],
+      invalidatesTags: ['Config'],
     }),
     updateConfig: builder.mutation({
       query(data) {
@@ -38,7 +40,7 @@ export const configsSlice = apisSlice.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'Config', _id: arg.id }, 'Menu'],
+      invalidatesTags: (result, error, arg) => [{ type: 'Config', _id: arg._id }, 'Menu'],
     }),
   }),
 });

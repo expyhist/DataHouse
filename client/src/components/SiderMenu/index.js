@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter, useRouteMatch } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 
 import Layout from 'antd/lib/layout';
 import Menu from 'antd/lib/menu';
@@ -7,7 +7,7 @@ import Menu from 'antd/lib/menu';
 import { recursiveMenu } from './recursiveMenu';
 import { useGetMenusQuery } from '@/utils/apisSlice';
 
-function SiderMenu() {
+function SiderMenu({ style }) {
   const [collapsed, setCollapsed] = useState(true);
   const { path } = useRouteMatch();
 
@@ -31,14 +31,13 @@ function SiderMenu() {
       collapsible
       collapsed={collapsed}
       onCollapse={() => setCollapsed(!collapsed)}
-      width={200}
-      className="site-layout-background"
+      style={style}
     >
       {
         isSuccess ? (
           <Menu
             mode="inline"
-            style={{ height: '115%', borderRight: 0 }}
+            style={{ borderRight: 0 }}
           >
             {
               singleMenuDatas.map((singleMenuData) => recursiveMenu(singleMenuData.children))
@@ -50,4 +49,4 @@ function SiderMenu() {
   );
 }
 
-export default withRouter(SiderMenu);
+export default SiderMenu;

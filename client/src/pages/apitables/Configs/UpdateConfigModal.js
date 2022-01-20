@@ -41,6 +41,7 @@ function ConfigForm({ form, initialValues }) {
               rules = [];
               break;
             case '_id':
+            case 'applicant':
             case 'author':
               disabled = true;
               break;

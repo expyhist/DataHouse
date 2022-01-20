@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { useParams } from 'react-router';
 
 import Card from 'antd/lib/card';
 import Descriptions from 'antd/lib/descriptions';
@@ -8,8 +8,8 @@ import UpdateConfigModal from './UpdateConfigModal';
 import { useGetConfigQuery } from './configsSlice';
 import SingleFilter from '../Filters/SingleFilter';
 
-function SingleConfig({ match }) {
-  const { id } = match.params;
+function SingleConfig() {
+  const { id } = useParams();
 
   const {
     data,
@@ -49,4 +49,4 @@ function SingleConfig({ match }) {
   );
 }
 
-export default withRouter(SingleConfig);
+export default SingleConfig;

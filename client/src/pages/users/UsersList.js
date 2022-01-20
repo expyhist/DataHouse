@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Layout from 'antd/lib/layout';
 import Table from 'antd/lib/table';
 import Space from 'antd/lib/space';
 import Tooltip from 'antd/lib/tooltip';
@@ -64,15 +63,13 @@ function UsersTable({ dataSource, loading }) {
   });
 
   return (
-    <div>
-      <Table
-        className="table-users-roleslist"
-        columns={columns}
-        dataSource={dataSource}
-        loading={loading}
-        rowKey="_id"
-      />
-    </div>
+    <Table
+      className="table-users-roleslist"
+      columns={columns}
+      dataSource={dataSource}
+      loading={loading}
+      rowKey="_id"
+    />
   );
 }
 
@@ -85,36 +82,19 @@ function UsersList() {
     error,
   } = useGetUsersQuery();
 
-  const { Content } = Layout;
-
   let content;
 
   if (isLoading) {
     content = <UsersTable dataSource={null} loading={isLoading} />;
   } else if (isSuccess) {
     content = <UsersTable dataSource={data.data} loading={!isSuccess} />;
-  } else if (isError) {
+  } else if (isError && error.data.message !== 'Unauthorized') {
     content = <Result status="error" title="未能获得用户列表数据" extra={error.error} />;
+  } else {
+    content = <Result status="error" title="无权获得用户列表数据" />;
   }
 
-  return (
-    <Layout style={{ padding: '0 24px 24px' }}>
-      <Content
-        className="site-layout-background"
-        style={{
-          padding: 24,
-          margin: 0,
-          minHeight: 280,
-        }}
-      >
-        <div>
-          <Space direction="vertical">
-            {content}
-          </Space>
-        </div>
-      </Content>
-    </Layout>
-  );
+  return content;
 }
 
 export default UsersList;
