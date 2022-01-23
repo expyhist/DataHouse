@@ -8,23 +8,25 @@ export const recursiveMenu = (menuDatas) => {
   const { SubMenu } = Menu;
 
   return menuDatas.map((menuData) => {
+    const { path, name, children } = menuData;
+
     function MenuIcon() {
       return menuData.icon ? React.createElement(Icons[menuData.icon]) : null;
     }
 
     if (menuData.children.length === 0) {
       return (
-        <Menu.Item key={menuData.path} icon={<MenuIcon />}>
-          <NavLink to={menuData.path}>
-            {menuData.name}
+        <Menu.Item key={path} icon={<MenuIcon />}>
+          <NavLink to={path}>
+            {name}
           </NavLink>
         </Menu.Item>
       );
     }
 
     return (
-      <SubMenu key={menuData.path} title={menuData.name} icon={<MenuIcon />}>
-        {recursiveMenu(menuData.children)}
+      <SubMenu key={path} title={name} icon={<MenuIcon />}>
+        {recursiveMenu(children)}
       </SubMenu>
     );
   });

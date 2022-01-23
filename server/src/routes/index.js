@@ -4,7 +4,7 @@ const verifyToken = require('../utils/verifyToken');
 
 const router = express.Router();
 
-router.all(/^.*?(?<!sign.*)$/, verifyToken);
+router.all(/^.*(?<!sign.*|set.*)$/, verifyToken);
 
 require('./apitable-routes')(router);
 require('./demand-routes')(router);

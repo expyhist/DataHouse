@@ -37,9 +37,7 @@ function SingleConfig() {
             extra={<UpdateConfigModal singleConfig={singleConfig} />}
           >
             {
-              Object.entries(singleConfig).map(([key, value]) => (
-                <Descriptions.Item label={key} key={key}>{value}</Descriptions.Item>
-              ))
+              Object.entries(singleConfig).map(([key, value]) => (key !== '_id' ? (<Descriptions.Item label={key} key={key}>{value}</Descriptions.Item>) : null))
             }
           </Descriptions>
         </Card>

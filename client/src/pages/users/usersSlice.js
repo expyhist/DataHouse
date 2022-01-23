@@ -4,6 +4,9 @@ export const usersSlice = apisSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => '/users',
+      providesTags: (result) => (result?.data.lenght === 0
+        ? [...result.data.map(({ _id }) => ({ type: 'User', _id }))]
+        : ['User']),
     }),
     login: builder.mutation({
       query(userInfo) {
@@ -30,6 +33,7 @@ export const usersSlice = apisSlice.injectEndpoints({
           method: 'DELETE',
         };
       },
+      invalidatesTags: ['User'],
     }),
     updateUser: builder.mutation({
       query(data) {
@@ -38,6 +42,19 @@ export const usersSlice = apisSlice.injectEndpoints({
           url: `/user/${_id}`,
           method: 'PUT',
           body,
+        };
+      },
+      invalidatesTags: (result, error, arg) => [{ type: 'User', _id: arg._id }],
+    }),
+    getRoles: builder.query({
+      query: () => '/roles',
+    }),
+    getRoleByName: builder.mutation({
+      query(data) {
+        return {
+          url: '/rolesbyname',
+          method: 'POST',
+          body: data,
         };
       },
     }),
@@ -50,4 +67,6 @@ export const {
   useRegisterMutation,
   useDeleteUserMutation,
   useUpdateUserMutation,
+  useGetRolesQuery,
+  useGetRoleByNameMutation,
 } = usersSlice;

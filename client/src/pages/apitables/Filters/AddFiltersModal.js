@@ -44,7 +44,7 @@ function AddFiltersModal({ id, url }) {
   };
 
   return (
-    <div>
+    <>
       <Button
         type="link"
         onClick={() => {
@@ -64,7 +64,7 @@ function AddFiltersModal({ id, url }) {
         filtersNum={lastFiltersNum}
         url={url}
       />
-    </div>
+    </>
   );
 }
 

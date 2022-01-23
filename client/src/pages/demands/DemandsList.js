@@ -20,26 +20,26 @@ import { defineConfig } from '@/../config/config';
 import { useGetDemandsQuery, useDeleteDemandMutation } from './demandsSlice';
 import AddDemandForm from './AddDemandModal';
 
-const statusTag = (status) => {
-  if (status === 'finish') {
+const statusTag = (content) => {
+  if (content === 'finish') {
     return (
       <Tag icon={<CheckCircleOutlined />} color="success">
         finish
       </Tag>
     );
-  } if (status === 'processing') {
+  } if (content === 'processing') {
     return (
       <Tag icon={<SyncOutlined spin />} color="processing">
         processing
       </Tag>
     );
-  } if (status === 'waiting') {
+  } if (content === 'waiting') {
     return (
       <Tag icon={<ClockCircleOutlined />} color="default">
         waiting
       </Tag>
     );
-  } if (status === 'stop') {
+  } if (content === 'stop') {
     return (
       <Tag icon={<MinusCircleOutlined />} color="default">
         stop
@@ -47,8 +47,8 @@ const statusTag = (status) => {
     );
   }
   return (
-    <Tooltip placement="topLeft" title={status}>
-      {status}
+    <Tooltip placement="topLeft" title={content}>
+      {content}
     </Tooltip>
   );
 };

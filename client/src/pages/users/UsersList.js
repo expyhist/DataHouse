@@ -7,10 +7,22 @@ import Popconfirm from 'antd/lib/popconfirm';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import Result from 'antd/lib/result';
+import Tag from 'antd/lib/tag';
 
 import UpdateUserModal from './UpdateUserModal';
 import { defineConfig } from '@/../config/config';
 import { useGetUsersQuery, useDeleteUserMutation } from './usersSlice';
+
+const rolesNameTag = (content) => {
+  if (Array.isArray(content)) {
+    return content.map((item) => <Tag color="blue" key={item}>{item}</Tag>);
+  }
+  return (
+    <Tooltip placement="topLeft" title={content}>
+      {content}
+    </Tooltip>
+  );
+};
 
 function UsersTable({ dataSource, loading }) {
   if (loading === true) return <Table columns={null} dataSource={null} loading={loading} />;
@@ -26,11 +38,7 @@ function UsersTable({ dataSource, loading }) {
       ellipsis: {
         showTitle: false,
       },
-      render: (content) => (
-        <Tooltip placement="topLeft" title={content}>
-          {content}
-        </Tooltip>
-      ),
+      render: (content) => rolesNameTag(content),
       sorter: (a, b) => a[key].localeCompare(b[key]),
       sortDirections: ['descend', 'ascend'],
     }));
@@ -89,7 +97,7 @@ function UsersList() {
   } else if (isSuccess) {
     content = <UsersTable dataSource={data.data} loading={!isSuccess} />;
   } else if (isError && error.data.message !== 'Unauthorized') {
-    content = <Result status="error" title="未能获得用户列表数据" extra={error.error} />;
+    content = <Result status="error" title="未能获得用户列表数据" />;
   } else {
     content = <Result status="error" title="无权获得用户列表数据" />;
   }

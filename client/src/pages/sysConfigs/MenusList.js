@@ -90,7 +90,7 @@ function MenusList() {
   } else if (isSuccess) {
     content = <MenusTable dataSource={data.data} loading={!isSuccess} />;
   } else if (isError && error.data.message !== 'Unauthorized') {
-    content = <Result status="error" title="未能获得菜单列表数据" extra={error.error} />;
+    content = <Result status="error" title="未能获得菜单列表数据" />;
   } else {
     content = <Result status="error" title="无权获得菜单列表数据" />;
   }

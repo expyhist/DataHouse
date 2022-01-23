@@ -4,9 +4,10 @@ import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
+import Select from 'antd/lib/select';
 
 import { defineConfig } from '@/../config/config';
-import { useUpdateUserMutation } from './usersSlice';
+import { useUpdateUserMutation, useGetRolesQuery } from './usersSlice';
 import withModalForm from '@/utils/withModalForm';
 
 const layout = {
@@ -20,27 +21,60 @@ const layout = {
 };
 
 function UserForm({ form, initialValues }) {
+  const { Option } = Select;
   const { userColumnsInfo } = defineConfig;
+
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetRolesQuery();
+
+  if (isLoading || isError) {
+    return null;
+  }
+
+  const options = isSuccess && data.data;
 
   return (
     <Form
       {...layout}
       form={form}
-      name="update_menu_form_in_modal"
+      name="update_user_form_in_modal"
       initialValues={initialValues}
     >
       {
-        Object.entries(userColumnsInfo.UpdateUserFormColumns).map(([key, value]) => {
+        isSuccess
+        && Object.entries(userColumnsInfo.UpdateUserFormColumns).map(([key, value]) => {
           let rules;
-          let disabled;
+          let content;
           switch (key) {
             case '_id':
             case 'password':
-              disabled = true;
+              content = <Input disabled />;
+              break;
+            case 'rolesName':
+              content = (
+                <Select
+                  mode="multiple"
+                  allowClear
+                  placeholder="Please select a value"
+                >
+                  {
+                  options
+                    .map((option) => (
+                      <Option value={option.name} key={option.name}>
+                        {option.name}
+                      </Option>
+                    ))
+                }
+                </Select>
+              );
               break;
             default:
               rules = [];
-              disabled = false;
+              content = <Input />;
           }
           return (
             <Form.Item
@@ -49,7 +83,7 @@ function UserForm({ form, initialValues }) {
               name={key}
               rules={rules}
             >
-              <Input disabled={disabled} />
+              {content}
             </Form.Item>
           );
         })
@@ -66,7 +100,7 @@ function UpdateUserModal({ initialValues }) {
 
   const onCreate = async (formData) => {
     try {
-      await updateUser({ ...formData, ...{ roles: [formData.roles] } })
+      await updateUser(formData)
         .unwrap()
         .then(() => {
           setVisible(false);

@@ -18,4 +18,6 @@ module.exports = (router) => {
     .get(roleCtrl.getRoleById);
 
   router.get('/roles', roleCtrl.getAllRoles);
+  router.post('/rolesbyname', roleCtrl.getRoleByName);
+  router.get('/setinitalroles', roleCtrl.setInitalRoles);
 };

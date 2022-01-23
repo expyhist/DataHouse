@@ -5,7 +5,7 @@ export const demandsSlice = apisSlice.injectEndpoints({
     getDemands: builder.query({
       query: () => '/demands',
       providesTags: (result) => (result?.data.lenght === 0
-        ? [...result.data.map(({ _id }) => ({ type: 'Demand', _id }))]
+        ? [...result.data.map(({ _id }) => ({ type: 'Demand', _id })), ...[{ type: 'Demand', operation: 'Add' }]]
         : ['Demand']),
     }),
     getDemand: builder.query({
@@ -20,7 +20,7 @@ export const demandsSlice = apisSlice.injectEndpoints({
           body: initialDemand,
         };
       },
-      invalidatesTags: ['Demand'],
+      invalidatesTags: [{ type: 'Demand', operation: 'Add' }],
     }),
     deleteDemand: builder.mutation({
       query(id) {
@@ -29,7 +29,7 @@ export const demandsSlice = apisSlice.injectEndpoints({
           method: 'DElETE',
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'Demand', _id: arg._id }],
+      invalidatesTags: ['Demand'],
     }),
     updateDemand: builder.mutation({
       query(data) {

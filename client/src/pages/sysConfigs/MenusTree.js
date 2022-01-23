@@ -38,7 +38,7 @@ function MenusTree() {
       />
     );
   } else if (isError && error.data.message !== 'Unauthorized') {
-    content = <Result status="error" title="未能获得菜单树数据" extra={error.error} />;
+    content = <Result status="error" title="未能获得菜单树数据" />;
   } else {
     content = <Result status="error" title="无权获得菜单树表数据" />;
   }

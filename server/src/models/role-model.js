@@ -5,7 +5,7 @@ const Role = new mongoose.Schema(
   {
     name: { type: String, require: true, unique: true },
     auth: [
-      { type: String },
+      { type: Map, of: Array },
     ],
   },
   {

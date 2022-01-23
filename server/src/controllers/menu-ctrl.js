@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Menu = require('../models/menu-model');
 const ApiTable = require('../models/apitable-model');
 const { initalMenus } = require('../config/db-config');
@@ -97,17 +98,6 @@ const getAllMenus = async (req, res) => {
       });
     }
 
-    if (req.params.type === 'siderMenus') {
-      const listToTree = (items, path = '', link = 'parentPath') => items
-        .filter((item) => item[link] === path)
-        .map((item) => ({ ...item, children: listToTree(items, item.path) }));
-
-      return res.status(200).json({
-        success: true,
-        data: listToTree(resp),
-      });
-    }
-
     return res.status(200).json({
       success: true,
       data: [],
@@ -120,7 +110,28 @@ const getAllMenus = async (req, res) => {
   }
 };
 
+const getMenusByAccess = async (req, res) => {
+  try {
+    const resp = await Menu.find({ path: { $in: req.body.path } }).lean();
+
+    const listToTree = (items, path = '', link = 'parentPath') => items
+      .filter((item) => item[link] === path)
+      .map((item) => ({ ...item, children: listToTree(items, item.path) }));
+
+    return res.status(200).json({
+      success: true,
+      data: listToTree(resp),
+    });
+  } catch (error) {
+    return res.status(404).json({
+      success: false,
+      error: error.toString(),
+    });
+  }
+};
+
 const setInitalMenus = async (req, res) => {
+  mongoose.connection.db.dropCollection('menus');
   try {
     const resp = await Menu.insertMany(initalMenus);
     return res.status(200).json({
@@ -141,5 +152,6 @@ module.exports = {
   deleteMenuById,
   getMenuById,
   getAllMenus,
+  getMenusByAccess,
   setInitalMenus,
 };

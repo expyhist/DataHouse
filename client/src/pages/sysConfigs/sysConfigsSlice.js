@@ -23,7 +23,7 @@ export const sysConfigsSlice = apisSlice.injectEndpoints({
           method: 'DElETE',
         };
       },
-      invalidatesTags: ['Menu'],
+      invalidatesTags: (result, error, arg) => [{ type: 'Menu', _id: arg._id }],
     }),
     updateMenu: builder.mutation({
       query(data) {

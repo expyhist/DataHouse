@@ -114,7 +114,7 @@ function AddConfigModal() {
   }, [newConfig]);
 
   return (
-    <div>
+    <>
       <Button
         type="primary"
         onClick={() => {
@@ -132,7 +132,7 @@ function AddConfigModal() {
         }}
         okText="Create"
       />
-    </div>
+    </>
   );
 }
 

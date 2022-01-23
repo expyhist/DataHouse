@@ -40,7 +40,7 @@ export const filtersSlice = apisSlice.injectEndpoints({
           method: 'DElETE',
         };
       },
-      invalidatesTags: ['Filter'],
+      invalidatesTags: (result, error, arg) => [{ type: 'Filter', _id: arg }],
     }),
     updateFilter: builder.mutation({
       query(data) {

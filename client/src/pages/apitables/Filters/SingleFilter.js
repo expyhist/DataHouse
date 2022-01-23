@@ -18,6 +18,7 @@ function SingleFilter({ id, url }) {
     return null;
   }
 
+  // 不要使用Json.parse or Json.stringify, 会清空value
   const regex = /rangeDate|singleDate|text|enum/;
 
   return (
@@ -30,7 +31,7 @@ function SingleFilter({ id, url }) {
               marginBottom: 32,
             }}
             bordered
-            extra={<UpdateFilterModal filterId={id} singleFilter={data?.data} url={url} />}
+            extra={<UpdateFilterModal filterId={id} singleFilter={data.data} url={url} />}
           >
             {
               Object.entries(data?.data).map(([key, value]) => {
@@ -51,6 +52,8 @@ function SingleFilter({ id, url }) {
                       }
                     </Descriptions.Item>
                   );
+                } if (/.*At$/.test(key)) {
+                  return (<Descriptions.Item label={key} key={key}>{value}</Descriptions.Item>);
                 }
                 return null;
               })

@@ -51,10 +51,10 @@ export const defineConfig = {
   },
   userColumnsInfo: {
     UsersListColumns: {
-      email: '邮件', password: '密码', roles: '权限'
+      email: '邮件', password: '密码', rolesName: '角色'
     },
     UpdateUserFormColumns: {
-      _id: 'id', email: '邮件', password: '密码', roles: '权限'
+      _id: 'id', email: '邮件', password: '密码', rolesName: '角色'
     },
   },
   sortList: {

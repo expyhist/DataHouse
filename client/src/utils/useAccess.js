@@ -1,22 +1,40 @@
-import { apisSlice } from './apisSlice';
+import React from 'react';
+import axios from 'axios';
 
-export const useAccess = () => {
-  const endPoints = Object.keys(apisSlice.endpoints);
-  const roles = localStorage.getItem('roles')?.split(',');
-  const result = {};
-  const accessRoles = {};
+export const AccessContext = React.createContext('');
 
-  roles?.forEach((role) => {
-    accessRoles[role] = true;
-  });
-
-  endPoints?.forEach((endPoint) => {
-    result[endPoint] = accessRoles[endPoint];
-  });
-
-  ['/demands', '/tables', '/sysconfigs'].forEach((page) => {
-    result[page] = true;
-  });
-
-  return result;
+export const useAccess = async () => {
+  const access = {};
+  const rolesName = localStorage.getItem('rolesName')?.split(',');
+  const token = localStorage.getItem('token');
+  if (token && rolesName) {
+    const resp = await axios({
+      method: 'post',
+      url: 'http://localhost:3000/api/rolesbyname',
+      data: {
+        name: rolesName,
+      },
+      headers: {
+        'x-access-token': token,
+      },
+    });
+    const auths = resp.data.data.map((item) => item.auth);
+    auths.forEach((auth) => {
+      if (auth.length !== 0) {
+        auth.forEach((item) => {
+          if (item instanceof Object) {
+            Object.entries(item).forEach(([key, value]) => {
+              access[key] = true;
+              if (value.length !== 0) {
+                value.forEach((val) => {
+                  access[val] = true;
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+  return access;
 };

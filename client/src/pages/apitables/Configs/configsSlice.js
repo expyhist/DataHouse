@@ -5,12 +5,15 @@ export const configsSlice = apisSlice.injectEndpoints({
     getConfigs: builder.query({
       query: () => '/apitables',
       providesTags: (result) => (result?.data.length === 0
-        ? [...result.data.map(({ _id }) => ({ type: 'Config', _id })), ...[{ type: 'Config', operation: 'Add' }]]
+        ? [
+          ...result.data.map(({ _id }) => ({ type: 'Config', _id })),
+          ...[{ type: 'Menu', operation: 'Add' }],
+        ]
         : ['Config']),
     }),
     getConfig: builder.query({
       query: (id) => `/apitable/${id}`,
-      providesTags: (result, error, arg) => [{ type: 'Config', _id: arg }],
+      providesTags: (result, error, arg) => [{ type: 'Config', _id: arg }, { type: 'Filter', operation: 'Add' }],
     }),
     addNewConfig: builder.mutation({
       query(initialConfig) {
@@ -20,7 +23,7 @@ export const configsSlice = apisSlice.injectEndpoints({
           body: initialConfig,
         };
       },
-      invalidatesTags: [{ type: 'Config', operation: 'Add' }],
+      invalidatesTags: [],
     }),
     deleteConfig: builder.mutation({
       query(id) {
@@ -29,7 +32,7 @@ export const configsSlice = apisSlice.injectEndpoints({
           method: 'DElETE',
         };
       },
-      invalidatesTags: ['Config'],
+      invalidatesTags: (result, error, arg) => [{ type: 'Config', _id: arg }],
     }),
     updateConfig: builder.mutation({
       query(data) {

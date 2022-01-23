@@ -5,6 +5,7 @@ import {
 
 import Login from './Login';
 import Register from './Register';
+import UsersLayout from './UsersLayout';
 
 function UserPage({ location }) {
   const { path } = useRouteMatch();
@@ -16,8 +17,8 @@ function UserPage({ location }) {
           ? <Redirect to={{ pathname: '/demands/list', state: { from: location } }} />
           : (
             <Switch>
-              <Route path={`${path}/login`} component={() => <Login />} />
-              <Route path={`${path}/register`} component={() => <Register />} />
+              <Route path={`${path}/login`} component={() => <UsersLayout><Login /></UsersLayout>} />
+              <Route path={`${path}/register`} component={() => <UsersLayout><Register /></UsersLayout>} />
               <Redirect to={`${path}/login`} />
             </Switch>
           )

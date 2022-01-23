@@ -11,6 +11,11 @@ const User = new mongoose.Schema(
         ref: 'Role',
       },
     ],
+    rolesName: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     timestamps: true,

@@ -15,24 +15,14 @@ function PrivateLayout({ children }) {
         <HeaderMenu />
       </Header>
       <Layout>
-        <SiderMenu style={{ background: 'white' }} />
-        <Layout
-          style={{
-            overflow: 'auto',
-            minHeight: '80vh',
-          }}
-        >
+        <SiderMenu />
+        <Layout style={{ overflow: 'auto', minHeight: '80vh' }}>
           <Content style={{ padding: 24, margin: 0 }}>
             {children}
           </Content>
         </Layout>
       </Layout>
-      <Footer
-        style={{
-          height: '48px',
-          textAlign: 'center',
-        }}
-      >
+      <Footer style={{ padding: 13 }}>
         <Copyright />
       </Footer>
     </Layout>
