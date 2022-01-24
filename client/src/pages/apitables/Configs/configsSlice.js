@@ -16,11 +16,11 @@ export const configsSlice = apisSlice.injectEndpoints({
       providesTags: (result, error, arg) => [{ type: 'Config', _id: arg }, { type: 'Filter', operation: 'Add' }],
     }),
     addNewConfig: builder.mutation({
-      query(initialConfig) {
+      query(data) {
         return {
           url: '/apitable',
           method: 'POST',
-          body: initialConfig,
+          body: data,
         };
       },
       invalidatesTags: [],

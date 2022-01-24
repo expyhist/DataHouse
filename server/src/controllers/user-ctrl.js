@@ -1,8 +1,9 @@
+const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const config = require('../config/auth-config');
 const User = require('../models/user-model');
-const Role = require('../models/role-model');
+const { initalUsers } = require('../config/db-config');
 
 const signup = async (req, res) => {
   try {
@@ -59,14 +60,7 @@ const signin = async (req, res) => {
 
 const updateUserById = async (req, res) => {
   try {
-    let payload = req.body;
-    if (req.body.rolesName.length !== 0) {
-      const roleResp = await Role.find({ name: { $in: req.body.rolesName } });
-      const roleIds = roleResp.map((item) => item._id);
-      payload = { ...payload, ...{ roles: roleIds, rolesName: req.body.rolesName } };
-    }
-
-    const resp = await User.findByIdAndUpdate(req.params.id, payload);
+    const resp = await User.findByIdAndUpdate(req.params.id, req.body);
     return res.status(201).json({
       success: true,
       id: resp._id,
@@ -111,10 +105,27 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const setInitalUsers = async (req, res) => {
+  mongoose.connection.db.dropCollection('users');
+  try {
+    const resp = await User.insertMany(initalUsers);
+    return res.status(200).json({
+      success: true,
+      data: resp,
+    });
+  } catch (error) {
+    return res.status(404).json({
+      success: false,
+      error: error.toString(),
+    });
+  }
+};
+
 module.exports = {
   signup,
   signin,
   updateUserById,
   deleteUserById,
   getAllUsers,
+  setInitalUsers,
 };

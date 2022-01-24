@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
 import Layout from 'antd/lib/layout';
@@ -6,25 +6,23 @@ import Menu from 'antd/lib/menu';
 
 import { recursiveMenu } from './recursiveMenu';
 import { useGetMenusByAccessMutation } from '@/utils/apisSlice';
-import { AccessContext } from '@/utils/useAccess';
+import { useAccess } from '@/utils/useAccess';
 
 function SiderMenu() {
   const [singleMenuData, setSingleMenuData] = useState(null);
   const [collapsed, setCollapsed] = useState(true);
   const [getMenusByAccess] = useGetMenusByAccessMutation();
-  const access = useContext(AccessContext);
   const { path } = useRouteMatch();
-
-  const accessPath = Object.keys(access);
+  const access = useAccess();
 
   useEffect(() => {
     const getSiderMenu = async () => {
-      const resp = await getMenusByAccess({ path: accessPath });
+      const resp = await getMenusByAccess({ path: Object.keys(access) });
       const menuData = resp.data.data.filter((item) => item.path === path);
       setSingleMenuData(menuData);
     };
     getSiderMenu();
-  }, []);
+  }, [access]);
 
   const { Sider } = Layout;
 

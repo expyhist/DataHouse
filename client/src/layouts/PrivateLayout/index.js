@@ -4,7 +4,7 @@ import Layout from 'antd/lib/layout';
 
 import HeaderMenu from './HeaderMenu';
 import SiderMenu from './SiderMenu';
-import Copyright from './Copyright';
+import Copyright from '../Copyright';
 
 function PrivateLayout({ children }) {
   const { Header, Content, Footer } = Layout;

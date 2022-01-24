@@ -5,12 +5,6 @@ const User = new mongoose.Schema(
   {
     email: { type: String, require: true, unique: true },
     password: { type: String, require: true },
-    roles: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Role',
-      },
-    ],
     rolesName: [
       {
         type: String,

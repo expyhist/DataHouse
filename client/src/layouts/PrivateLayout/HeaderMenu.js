@@ -1,18 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Button from 'antd/lib/button';
 import Menu from 'antd/lib/menu';
 import { LoginOutlined } from '@ant-design/icons';
 
-import Access from '@/utils/Access';
-import { AccessContext } from '@/utils/useAccess';
+import { useAccess } from '@/utils/useAccess';
 import { useGetMenusQuery } from '@/utils/apisSlice';
 import { defineConfig } from '@/../config/config';
 
 function HeaderMenu() {
   const { sortList } = defineConfig;
-  const access = useContext(AccessContext);
+  const access = useAccess();
 
   const {
     data,
@@ -25,7 +24,10 @@ function HeaderMenu() {
     return null;
   }
 
-  const pages = isSuccess && data.data.filter((item) => item.parentPath === '');
+  const pages = isSuccess && data.data.filter((item) => {
+    const accessList = Object.keys(access);
+    return item.parentPath === '' && accessList.includes(item.path);
+  });
 
   return (
     <Menu
@@ -39,11 +41,9 @@ function HeaderMenu() {
             const { path, name } = page;
             return (
               <Menu.Item key={path}>
-                <Access key={path} accessible={access[path]}>
-                  <NavLink to={path}>
-                    {name}
-                  </NavLink>
-                </Access>
+                <NavLink to={path}>
+                  {name}
+                </NavLink>
               </Menu.Item>
             );
           })

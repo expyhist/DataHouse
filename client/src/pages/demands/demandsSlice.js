@@ -13,11 +13,11 @@ export const demandsSlice = apisSlice.injectEndpoints({
       providesTags: (result, error, arg) => [{ type: 'Demand', _id: arg }],
     }),
     addNewDemand: builder.mutation({
-      query(initialDemand) {
+      query(data) {
         return {
           url: '/demand',
           method: 'POST',
-          body: initialDemand,
+          body: data,
         };
       },
       invalidatesTags: [{ type: 'Demand', operation: 'Add' }],

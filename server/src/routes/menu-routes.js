@@ -18,8 +18,6 @@ module.exports = (router) => {
     .get(menuCtrl.getMenuById);
 
   router.get('/menus/:type', menuCtrl.getAllMenus);
-
   router.post('/menus/siderMenusByAccess', menuCtrl.getMenusByAccess);
-
   router.get('/setinitalmenus', menuCtrl.setInitalMenus);
 };

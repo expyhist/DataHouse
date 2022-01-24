@@ -33,10 +33,20 @@ export const apisSlice = createApi({
         };
       },
     }),
+    getRolesByName: builder.mutation({
+      query(data) {
+        return {
+          url: '/rolesbyname',
+          method: 'POST',
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
 export const {
   useGetMenusQuery,
   useGetMenusByAccessMutation,
+  useGetRolesByNameMutation,
 } = apisSlice;

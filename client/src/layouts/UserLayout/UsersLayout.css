@@ -44,6 +44,16 @@
   font-size: 33px;
 }
 
+.login-desc {
+  display: flex;
+  margin-top: 12px;
+  margin-bottom: 40px;
+  color: rgba(0,0,0,.45);
+  font-size: 14px;
+  text-align: center;
+  flex-direction:column ;
+}
+
 .login-desc > .login-desc-link {
   flex: auto;
 }

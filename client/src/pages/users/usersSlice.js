@@ -18,11 +18,11 @@ export const usersSlice = apisSlice.injectEndpoints({
       },
     }),
     register: builder.mutation({
-      query(initialUser) {
+      query(data) {
         return {
           url: '/user/signup',
           method: 'POST',
-          body: initialUser,
+          body: data,
         };
       },
     }),
@@ -46,18 +46,6 @@ export const usersSlice = apisSlice.injectEndpoints({
       },
       invalidatesTags: (result, error, arg) => [{ type: 'User', _id: arg._id }],
     }),
-    getRoles: builder.query({
-      query: () => '/roles',
-    }),
-    getRoleByName: builder.mutation({
-      query(data) {
-        return {
-          url: '/rolesbyname',
-          method: 'POST',
-          body: data,
-        };
-      },
-    }),
   }),
 });
 
@@ -67,6 +55,4 @@ export const {
   useRegisterMutation,
   useDeleteUserMutation,
   useUpdateUserMutation,
-  useGetRolesQuery,
-  useGetRoleByNameMutation,
 } = usersSlice;

@@ -48,6 +48,15 @@ export const defineConfig = {
     UpdateMenuFormColumns: {
       _id: 'id', path: '菜单路径', name: '菜单名称', icon: '图标', parentPath: '上级菜单路径', auth: '权限列表',
     },
+    RolesListColumns: {
+      name: '角色', authTree: '权限列表', createdAt: '创建时间',
+    },
+    AddRoleFormColumns: {
+      name: '角色', auth: '权限列表',
+    },
+    UpdateRoleFormColumns: {
+      _id: 'id', name: '角色', auth: '权限列表',
+    },
   },
   userColumnsInfo: {
     UsersListColumns: {

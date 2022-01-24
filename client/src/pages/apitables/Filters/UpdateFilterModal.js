@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 
 import FiltersNum from './FiltersNum';
@@ -44,41 +43,32 @@ function UpdateFilterModal({ filterId, singleFilter, url }) {
     const payload = parseFilterFormData(lastFiltersNum, { filterId }, formData);
 
     try {
-      await updateFilter(payload)
-        .unwrap()
-        .then(() => {
-          setVisible(false);
-          message.success('筛选条件更新成功', 3);
-        });
+      await updateFilter(payload).unwrap();
+      setVisible(false);
+      message.success('筛选条件更新成功', 3);
     } catch (err) {
       message.error(`筛选条件更新失败，错误:${err.data.error}`, 3);
     }
   };
 
   return (
-    <div>
-      <Button
-        type="primary"
-        onClick={() => {
-          setVisible(true);
-        }}
-      >
-        更新
-      </Button>
-      <UpdateFilterForm
-        visible={visible}
-        title="更新API报表筛选条件"
-        onCreate={onCreate}
-        onCancel={() => {
-          setVisible(false);
-        }}
-        okText="Update"
-        data={singleFilter}
-        url={url}
-        initialValues={nowFiltersNum}
-        filtersNum={lastFiltersNum}
-      />
-    </div>
+    <UpdateFilterForm
+      buttonTitle="更新"
+      onClick={() => {
+        setVisible(true);
+      }}
+      visible={visible}
+      title="更新API报表筛选条件"
+      onCreate={onCreate}
+      onCancel={() => {
+        setVisible(false);
+      }}
+      okText="Update"
+      data={singleFilter}
+      url={url}
+      initialValues={nowFiltersNum}
+      filtersNum={lastFiltersNum}
+    />
   );
 }
 

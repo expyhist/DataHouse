@@ -7,6 +7,11 @@ const Role = new mongoose.Schema(
     auth: [
       { type: Map, of: Array },
     ],
+    originalAuth: [{
+      title: { type: String },
+      key: { type: String },
+      children: { type: Array },
+    }],
   },
   {
     timestamps: true,

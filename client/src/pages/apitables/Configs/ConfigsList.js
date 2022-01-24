@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Table from 'antd/lib/table';
@@ -9,7 +9,7 @@ import message from 'antd/lib/message';
 import Button from 'antd/lib/button';
 import Result from 'antd/lib/result';
 
-import { AccessContext } from '@/utils/useAccess';
+import { useAccess } from '@/utils/useAccess';
 import Access from '@/utils/Access';
 import AddConfigModal from './AddConfigModal';
 import AddFiltersModal from '../Filters/AddFiltersModal';
@@ -112,7 +112,7 @@ function ConfigsList() {
     error,
   } = useGetConfigsQuery();
 
-  const access = useContext(AccessContext);
+  const access = useAccess();
   let content;
 
   if (isLoading) {

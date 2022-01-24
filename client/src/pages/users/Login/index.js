@@ -24,19 +24,15 @@ function Login() {
     }
 
     try {
-      await login({
+      const resp = await login({
         email: formData.email,
         password: formData.password,
-      })
-        .unwrap()
-        .then((resp) => {
-          localStorage.setItem('email', resp.email);
-          localStorage.setItem('token', resp.token);
-          localStorage.setItem('roles', resp.roles);
-          localStorage.setItem('rolesName', resp.rolesName);
-          message.success('登录成功', 3);
-          history.push('/demands');
-        });
+      }).unwrap();
+      localStorage.setItem('email', resp.email);
+      localStorage.setItem('token', resp.token);
+      localStorage.setItem('rolesName', resp.rolesName);
+      message.success('登录成功', 3);
+      history.push('/demands');
     } catch (err) {
       message.error(`登录失败，错误:${err.data.message}`, 3);
     }

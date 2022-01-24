@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import Button from 'antd/lib/button';
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import message from 'antd/lib/message';
@@ -8,47 +7,42 @@ import message from 'antd/lib/message';
 import { defineConfig } from '@/../config/config';
 import { useAddNewDemandMutation } from './demandsSlice';
 import withModalForm from '@/utils/withModalForm';
-
-const layout = {
-  labelCol: {
-    offset: 2,
-    span: 5,
-  },
-  wrapperCol: {
-    span: 15,
-  },
-};
+import FormInModal from '@/utils/FormInModal';
 
 function DemandForm({ form }) {
   const { demandsColumnsInfo } = defineConfig;
 
-  return (
-    <Form
-      {...layout}
-      form={form}
-      name="create_demand_form_in_modal"
-      initialValues={{
-        description: '',
-        content: '',
-        author: localStorage.getItem('email'),
-        applicant: localStorage.getItem('email'),
-      }}
-    >
-      {
-        Object.entries(demandsColumnsInfo.AddDemandFormColumns)
-          .map(([key, value]) => (
-            <Form.Item
-              key={key}
-              label={value}
-              name={key}
-              rules={[{ required: true, message: `请输入${value}!` }]}
-            >
-              <Input disabled={!!/author|applicant/.test(key)} />
-            </Form.Item>
-          ))
-      }
-    </Form>
-  );
+  const name = 'create_demand_form_in_modal';
+  const initialValues = {
+    description: '',
+    content: '',
+    author: localStorage.getItem('email'),
+    applicant: localStorage.getItem('email'),
+  };
+  const entriesData = demandsColumnsInfo.AddDemandFormColumns;
+  const mapFn = ([key, value]) => {
+    const rules = [{ required: true, message: `请输入${value}!` }];
+    let disabled = false;
+    switch (key) {
+      case 'author':
+      case 'applicant':
+        disabled = true;
+        break;
+      default:
+    }
+    return (
+      <Form.Item
+        key={key}
+        label={value}
+        name={key}
+        rules={rules}
+      >
+        <Input disabled={disabled} />
+      </Form.Item>
+    );
+  };
+
+  return FormInModal(form, name, initialValues, entriesData, mapFn);
 }
 
 const CreateDemandForm = withModalForm(DemandForm);
@@ -58,41 +52,39 @@ function AddDemandModal() {
   const [addNewDeamnd] = useAddNewDemandMutation();
 
   const onCreate = async (formData) => {
-    const { description, content, applicant } = formData;
+    const {
+      description, content, author, applicant,
+    } = formData;
     try {
       await addNewDeamnd({
-        description, content, applicant, status: 'waiting', reviewStatus: 'stop',
-      })
-        .unwrap()
-        .then(() => {
-          setVisible(false);
-          message.success('需求添加成功', 3);
-        });
+        description,
+        content,
+        author,
+        applicant,
+        status: 'waiting',
+        reviewStatus: 'stop',
+      }).unwrap();
+      setVisible(false);
+      message.success('需求添加成功', 3);
     } catch (err) {
       message.error(`需求添加失败，错误:${err.data.error}`, 3);
     }
   };
 
   return (
-    <div>
-      <Button
-        type="primary"
-        onClick={() => {
-          setVisible(true);
-        }}
-      >
-        新增
-      </Button>
-      <CreateDemandForm
-        visible={visible}
-        title="新增需求"
-        onCreate={onCreate}
-        onCancel={() => {
-          setVisible(false);
-        }}
-        okText="Create"
-      />
-    </div>
+    <CreateDemandForm
+      buttonTitle="新增"
+      onClick={() => {
+        setVisible(true);
+      }}
+      visible={visible}
+      title="新增需求"
+      onCreate={onCreate}
+      onCancel={() => {
+        setVisible(false);
+      }}
+      okText="Create"
+    />
   );
 }
 

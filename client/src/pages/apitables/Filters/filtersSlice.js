@@ -26,10 +26,10 @@ export const filtersSlice = apisSlice.injectEndpoints({
       providesTags: (result, error, arg) => [{ type: 'Filter', _id: arg }],
     }),
     addNewFilter: builder.mutation({
-      query: (initialFilter) => ({
+      query: (data) => ({
         url: '/filter',
         method: 'POST',
-        body: initialFilter,
+        body: data,
       }),
       invalidatesTags: [{ type: 'Filter', operation: 'Add' }],
     }),

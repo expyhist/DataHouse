@@ -10,19 +10,19 @@ module.exports = {
     useFindAndModify: false,
   },
   initalMenus: [{
-    auth: ['/demands'],
+    auth: [],
     parentPath: '',
     path: '/demands',
     name: '需求系统',
     icon: '',
   }, {
-    auth: ['/tables'],
+    auth: [],
     parentPath: '',
     path: '/tables',
     name: '报表系统',
     icon: '',
   }, {
-    auth: ['sysconfigs'],
+    auth: [],
     parentPath: '',
     path: '/sysconfigs',
     name: '全局配置',
@@ -76,13 +76,22 @@ module.exports = {
     name: '用户列表',
     icon: 'UserOutlined',
   }, {
-    auth: [
-      'GetTableData',
-      'ExportTableData',
-    ],
+    auth: [],
     parentPath: '/tables',
     path: '/tables/databoard/:id',
     name: '仪表盘',
     icon: 'PieChartOutlined',
+  }, {
+    auth: [
+      'GetRoles',
+      'GetRole',
+      'AddNewRole',
+      'DeleteRole',
+      'UpdateRole',
+    ],
+    parentPath: '/sysconfigs',
+    path: '/sysconfigs/roleslist',
+    name: '角色列表',
+    icon: 'GroupOutlined',
   }],
 };

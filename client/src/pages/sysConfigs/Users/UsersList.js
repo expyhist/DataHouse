@@ -11,7 +11,7 @@ import Tag from 'antd/lib/tag';
 
 import UpdateUserModal from './UpdateUserModal';
 import { defineConfig } from '@/../config/config';
-import { useGetUsersQuery, useDeleteUserMutation } from './usersSlice';
+import { useGetUsersQuery, useDeleteUserMutation } from '@/pages/users/usersSlice';
 
 const rolesNameTag = (content) => {
   if (Array.isArray(content)) {

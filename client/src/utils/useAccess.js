@@ -1,40 +1,41 @@
-import React from 'react';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-export const AccessContext = React.createContext('');
+import { useGetRolesByNameMutation } from './apisSlice';
 
-export const useAccess = async () => {
-  const access = {};
-  const rolesName = localStorage.getItem('rolesName')?.split(',');
+export const useAccess = () => {
+  const [access, setAccess] = useState({});
+  const [getRolesByName] = useGetRolesByNameMutation();
   const token = localStorage.getItem('token');
-  if (token && rolesName) {
-    const resp = await axios({
-      method: 'post',
-      url: 'http://localhost:3000/api/rolesbyname',
-      data: {
-        name: rolesName,
-      },
-      headers: {
-        'x-access-token': token,
-      },
+  const rolesName = localStorage.getItem('rolesName')?.split(',');
+
+  const psuhObjToArray = (obj, arr) => {
+    Object.entries(obj).forEach(([key, value]) => {
+      if (Array.isArray(key)) {
+        arr.push(...key);
+      } else arr.push(key);
+      if (Array.isArray(value)) {
+        arr.push(...value);
+      } else arr.push(value);
     });
-    const auths = resp.data.data.map((item) => item.auth);
-    auths.forEach((auth) => {
-      if (auth.length !== 0) {
-        auth.forEach((item) => {
-          if (item instanceof Object) {
-            Object.entries(item).forEach(([key, value]) => {
-              access[key] = true;
-              if (value.length !== 0) {
-                value.forEach((val) => {
-                  access[val] = true;
-                });
-              }
-            });
-          }
-        });
+    return arr;
+  };
+
+  useEffect(() => {
+    const getRoles = async () => {
+      const result = {};
+      if (token && rolesName) {
+        const resp = await getRolesByName({ name: rolesName });
+        const auths = resp.data.data.map((item) => item.auth);
+        const authsArray = auths.reduce((acc, cur) => {
+          const arr = [];
+          cur.forEach((item) => psuhObjToArray(item, arr));
+          return acc.concat(arr);
+        }, []);
+        authsArray.forEach((item) => result[item] = true);
       }
-    });
-  }
+      return result;
+    };
+    getRoles().then((result) => setAccess(result));
+  }, []);
   return access;
 };

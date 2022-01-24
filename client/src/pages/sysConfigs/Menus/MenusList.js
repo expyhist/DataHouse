@@ -11,7 +11,8 @@ import Result from 'antd/lib/result';
 import AddMenuModal from './AddMenuModal';
 import UpdateMenuModal from './UpdateMenuModal';
 import { defineConfig } from '@/../config/config';
-import { useGetMenusQuery, useDeleteMenuMutation } from './sysConfigsSlice';
+import { useDeleteMenuMutation } from '../sysConfigsSlice';
+import { useGetMenusQuery } from '@/utils/apisSlice';
 
 function MenusTable({ dataSource, loading }) {
   if (loading === true) return <Table columns={null} dataSource={null} loading={loading} />;

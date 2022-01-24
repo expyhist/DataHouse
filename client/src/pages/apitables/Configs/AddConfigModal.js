@@ -3,72 +3,54 @@ import React, { useState, useEffect } from 'react';
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import message from 'antd/lib/message';
-import Button from 'antd/lib/button';
 
 import { defineConfig } from '@/../config/config';
 import { useAddNewConfigMutation } from './configsSlice';
 import { useAddNewMenuMutation } from '@/pages/sysConfigs/sysConfigsSlice';
 import withModalForm from '@/utils/withModalForm';
-
-const layout = {
-  labelCol: {
-    offset: 2,
-    span: 5,
-  },
-  wrapperCol: {
-    span: 10,
-  },
-};
+import FormInModal from '@/utils/FormInModal';
 
 function ConfigForm({ form }) {
   const { apiTablesColumnsInfo } = defineConfig;
 
-  return (
-    <Form
-      {...layout}
-      form={form}
-      name="create_config_form_in_modal"
-      initialValues={{
-        url: '',
-        title: '',
-        author: localStorage.getItem('email'),
-        applicant: localStorage.getItem('email'),
-        defaultParams: '',
-      }}
-    >
-      {
-        Object.entries(apiTablesColumnsInfo.AddConfigFormColumns).map(([key, value]) => {
-          let rules;
-          let disabled;
-          switch (key) {
-            case 'url':
-              rules = [{ required: true, message: `请输入${value}!` }, { type: 'url', message: `请输入正确 ${value}!` }];
-              break;
-            case 'defaultParams':
-              rules = [];
-              break;
-            case 'applicant':
-            case 'author':
-              disabled = true;
-              break;
-            default:
-              rules = [{ required: true, message: `请输入${value}!` }];
-              disabled = false;
-          }
-          return (
-            <Form.Item
-              key={key}
-              label={value}
-              name={key}
-              rules={rules}
-            >
-              <Input disabled={disabled} />
-            </Form.Item>
-          );
-        })
-      }
-    </Form>
-  );
+  const name = 'create_config_form_in_modal';
+  const initialValues = {
+    url: '',
+    title: '',
+    author: localStorage.getItem('email'),
+    applicant: localStorage.getItem('email'),
+    defaultParams: '',
+  };
+  const entriesData = apiTablesColumnsInfo.AddConfigFormColumns;
+  const mapFn = ([key, value]) => {
+    let rules = [{ required: true, message: `请输入${value}!` }];
+    let disabled = false;
+    switch (key) {
+      case 'url':
+        rules = [{ required: true, message: `请输入${value}!` }, { type: 'url', message: `请输入正确 ${value}!` }];
+        break;
+      case 'defaultParams':
+        rules = [];
+        break;
+      case 'applicant':
+      case 'author':
+        disabled = true;
+        break;
+      default:
+    }
+    return (
+      <Form.Item
+        key={key}
+        label={value}
+        name={key}
+        rules={rules}
+      >
+        <Input disabled={disabled} />
+      </Form.Item>
+    );
+  };
+
+  return FormInModal(form, name, initialValues, entriesData, mapFn);
 }
 
 const CreateConfigForm = withModalForm(ConfigForm);
@@ -81,13 +63,10 @@ function AddConfigModal() {
 
   const onCreate = async (formData) => {
     try {
-      await addNewConfig(formData)
-        .unwrap()
-        .then((resp) => {
-          setNewConfig(resp);
-          setVisible(false);
-          message.success('配置添加成功', 3);
-        });
+      const resp = await addNewConfig(formData).unwrap();
+      setNewConfig(resp);
+      setVisible(false);
+      message.success('配置添加成功', 3);
     } catch (err) {
       message.error(`配置添加失败，错误:${err.data.error}`, 3);
     }
@@ -102,11 +81,9 @@ function AddConfigModal() {
           path: `/tables/databoard/${newConfig.id}`,
           name: newConfig.title,
           icon: '',
-        })
-          .unwrap()
-          .then(() => {
-            message.success('菜单添加成功', 3);
-          });
+        }).unwrap();
+        message.success('菜单添加成功', 3);
+        // await
       } catch (error) {
         message.error(`菜单添加失败，错误:${error.data.error}`, 3);
       }
@@ -114,25 +91,19 @@ function AddConfigModal() {
   }, [newConfig]);
 
   return (
-    <>
-      <Button
-        type="primary"
-        onClick={() => {
-          setVisible(true);
-        }}
-      >
-        新增
-      </Button>
-      <CreateConfigForm
-        visible={visible}
-        title="新增API报表"
-        onCreate={onCreate}
-        onCancel={() => {
-          setVisible(false);
-        }}
-        okText="Create"
-      />
-    </>
+    <CreateConfigForm
+      buttonTitle="新增"
+      onClick={() => {
+        setVisible(true);
+      }}
+      visible={visible}
+      title="新增API报表"
+      onCreate={onCreate}
+      onCancel={() => {
+        setVisible(false);
+      }}
+      okText="Create"
+    />
   );
 }
 

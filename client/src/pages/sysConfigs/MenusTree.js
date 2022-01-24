@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Result from 'antd/lib/result';
 import Tree from 'antd/lib/tree';
 
-import { useGetMenusQuery } from './sysConfigsSlice';
+import { useGetMenusQuery } from '@/utils/apisSlice';
 
 function MenusTree() {
   const [autoExpandParent, setAutoExpandParent] = useState(true);

@@ -19,11 +19,9 @@ function Register() {
         email: formData.email,
         password: formData.password,
       })
-        .unwrap()
-        .then(() => {
-          message.success('注册成功', 3);
-          history.push('/login');
-        });
+        .unwrap();
+      message.success('注册成功', 3);
+      history.push('/login');
     } catch (err) {
       message.error(`注册失败，错误:${err.data.error}`);
     }

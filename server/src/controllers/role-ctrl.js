@@ -125,10 +125,18 @@ const setInitalRoles = async (req, res) => {
       guestAuth.push(emptyMap.set(key, value));
     });
 
+    const getSomeKeyFromNestObj = (nestObj) => nestObj.map((item) => (({ name, path, auth }) => {
+      const title = name;
+      const key = path;
+      const children = auth;
+      return { title, key, children };
+    })(item));
+
     const resp = await Role.insertMany([
-      { name: 'admin', auth: adminAuth },
-      { name: 'guest', auth: guestAuth },
+      { name: 'admin', auth: adminAuth, originalAuth: getSomeKeyFromNestObj(menuDataForAdmin) },
+      { name: 'guest', auth: guestAuth, originalAuth: getSomeKeyFromNestObj(menuDataForGuest) },
     ]);
+
     return res.status(200).json({
       success: true,
       data: resp,
