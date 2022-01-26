@@ -36,7 +36,7 @@ module.exports = {
       'UpdateMenu',
     ],
     parentPath: '/sysconfigs',
-    path: '/sysconfigs/menuslist',
+    path: '/sysconfigs/menus/list',
     name: '菜单列表',
     icon: 'OrderedListOutlined',
   }, {
@@ -72,7 +72,7 @@ module.exports = {
       'UpdateUser',
     ],
     parentPath: '/sysconfigs',
-    path: '/sysconfigs/userslist',
+    path: '/sysconfigs/users/list',
     name: '用户列表',
     icon: 'UserOutlined',
   }, {
@@ -90,7 +90,7 @@ module.exports = {
       'UpdateRole',
     ],
     parentPath: '/sysconfigs',
-    path: '/sysconfigs/roleslist',
+    path: '/sysconfigs/roles/list',
     name: '角色列表',
     icon: 'GroupOutlined',
   }],

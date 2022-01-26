@@ -20,8 +20,9 @@ function MenusTree() {
     setAutoExpandParent(false);
   };
 
-  // const onCheck = (checkedKeysValue) => {
-  // };
+  const onCheck = () => {
+    // console.log(props);
+  };
 
   let content;
 
@@ -33,7 +34,7 @@ function MenusTree() {
         checkable
         onExpand={onExpand}
         autoExpandParent={autoExpandParent}
-        // onCheck={onCheck}
+        onCheck={onCheck}
         treeData={data.data}
       />
     );

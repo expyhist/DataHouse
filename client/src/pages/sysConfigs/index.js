@@ -13,10 +13,10 @@ function SysConfigsPage() {
   return (
     <div>
       <Switch>
-        <Route path={`${path}/menuslist`} component={() => <MenusList />} />
-        <Route path={`${path}/userslist`} component={() => <UsersList />} />
-        <Route path={`${path}/roleslist`} component={() => <RolesList />} />
-        <Redirect to={`${path}/menuslist`} />
+        <Route path={`${path}/menus/list`} component={() => <MenusList />} />
+        <Route path={`${path}/users/list`} component={() => <UsersList />} />
+        <Route path={`${path}/roles/list`} component={() => <RolesList />} />
+        <Redirect to={`${path}/menus/list`} />
       </Switch>
     </div>
   );

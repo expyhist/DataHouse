@@ -18,6 +18,7 @@ module.exports = (router) => {
   router
     .route('/user/:id')
     .all(verifyHeaders, verifyExistsById(User), verifyExistsByPayload(['email', 'password'], null, 2))
+    .get(userCtrl.getUserById)
     .put(userCtrl.updateUserById)
     .delete(userCtrl.deleteUserById);
 

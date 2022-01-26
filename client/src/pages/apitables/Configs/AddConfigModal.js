@@ -50,7 +50,7 @@ function ConfigForm({ form }) {
     );
   };
 
-  return FormInModal(form, name, initialValues, entriesData, mapFn);
+  return FormInModal(form, name, entriesData, mapFn, initialValues);
 }
 
 const CreateConfigForm = withModalForm(ConfigForm);
@@ -81,6 +81,7 @@ function AddConfigModal() {
           path: `/tables/databoard/${newConfig.id}`,
           name: newConfig.title,
           icon: '',
+          auth: ['ExportTable', 'GetTableData'],
         }).unwrap();
         message.success('菜单添加成功', 3);
         // await

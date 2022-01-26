@@ -8,6 +8,10 @@ export const usersSlice = apisSlice.injectEndpoints({
         ? [...result.data.map(({ _id }) => ({ type: 'User', _id }))]
         : ['User']),
     }),
+    getUser: builder.query({
+      query: (id) => `/user/${id}`,
+      providesTags: (result, error, arg) => [{ type: 'User', _id: arg }],
+    }),
     login: builder.mutation({
       query(userInfo) {
         return {
@@ -51,6 +55,7 @@ export const usersSlice = apisSlice.injectEndpoints({
 
 export const {
   useGetUsersQuery,
+  useGetUserQuery,
   useLoginMutation,
   useRegisterMutation,
   useDeleteUserMutation,

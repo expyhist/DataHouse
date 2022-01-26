@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('../models/user-model');
 const Role = require('../models/role-model');
 const Menu = require('../models/menu-model');
 
@@ -82,7 +83,8 @@ const getAllRoles = async (req, res) => {
 
 const getRoleByName = async (req, res) => {
   try {
-    const resp = await Role.find({ name: { $in: req.body.name } });
+    const userInfo = await User.findById(req.userId);
+    const resp = await Role.find({ name: { $in: userInfo.rolesName } });
     return res.status(200).json({
       success: true,
       data: resp,
@@ -95,46 +97,43 @@ const getRoleByName = async (req, res) => {
   }
 };
 
+const setDataForRole = (menuData, auths, filterFn) => {
+  const filteredMenuData = filterFn ? menuData.filter(filterFn) : menuData;
+  filteredMenuData.forEach((item) => {
+    const emptyMap = new Map();
+    const key = item.path;
+    const value = item.auth;
+    auths.push(emptyMap.set(key, value));
+  });
+
+  return filteredMenuData;
+};
+
+const getSomeKeyFromNestObj = (nestObj) => nestObj.map((item) => (({ name, path, auth }) => {
+  const title = name;
+  const key = path;
+  const children = auth;
+  return { title, key, children };
+})(item));
+
 const setInitalRoles = async (req, res) => {
   mongoose.connection.db.dropCollection('roles');
+
   try {
     const menuData = await Menu.find({});
-    const parentPaths = menuData.map((item) => item.parentPath);
-    const menuDataForAdmin = menuData.filter((item) => {
-      const { path, auth } = item;
-      return [...new Set(parentPaths)].includes(path) || auth.length !== 0;
-    });
-    const menuDataForGuest = menuData.filter((item) => {
-      const { path, parentPath } = item;
-      return !/sysconfig/.test(path) && !/sysconfig/.test(parentPath);
-    });
-
     const adminAuth = [];
-    menuDataForAdmin.forEach((item) => {
-      const emptyMap = new Map();
-      const key = item.path;
-      const value = item.auth;
-      adminAuth.push(emptyMap.set(key, value));
-    });
-
     const guestAuth = [];
-    menuDataForGuest.forEach((item) => {
-      const emptyMap = new Map();
-      const key = item.path;
-      const value = item.auth;
-      guestAuth.push(emptyMap.set(key, value));
-    });
 
-    const getSomeKeyFromNestObj = (nestObj) => nestObj.map((item) => (({ name, path, auth }) => {
-      const title = name;
-      const key = path;
-      const children = auth;
-      return { title, key, children };
-    })(item));
+    const menuDataForAdmin = setDataForRole(menuData, adminAuth);
+    const filterFnForGuest = (item) => {
+      const { path, parentPath } = item;
+      return !/sysconfig|\/tables\/configs\/list/.test(path) && !/sysconfig/.test(parentPath);
+    };
+    const menuDataForGuest = setDataForRole(menuData, guestAuth, filterFnForGuest);
 
     const resp = await Role.insertMany([
-      { name: 'admin', auth: adminAuth, originalAuth: getSomeKeyFromNestObj(menuDataForAdmin) },
-      { name: 'guest', auth: guestAuth, originalAuth: getSomeKeyFromNestObj(menuDataForGuest) },
+      { name: 'admin', originalAuth: getSomeKeyFromNestObj(menuDataForAdmin), auth: adminAuth },
+      { name: 'guest', originalAuth: getSomeKeyFromNestObj(menuDataForGuest), auth: guestAuth },
     ]);
 
     return res.status(200).json({

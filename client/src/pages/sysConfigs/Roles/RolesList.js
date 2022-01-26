@@ -7,9 +7,8 @@ import Popconfirm from 'antd/lib/popconfirm';
 import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import Result from 'antd/lib/result';
-import Tree from 'antd/lib/tree';
 
-// import AddRoleModal from './AddRoleModal';
+import AddRoleModal from './AddRoleModal';
 // import UpdateRoleModal from './UpdateRoleModal';
 import { defineConfig } from '@/../config/config';
 import { useGetRolesQuery, useDeleteRoleMutation } from '../sysConfigsSlice';
@@ -28,18 +27,11 @@ function RolesTable({ dataSource, loading }) {
       ellipsis: {
         showTitle: false,
       },
-      render: (content) => (key === 'auth'
-        ? (
-          <Tree
-            checkable
-            treeData={value}
-          />
-        )
-        : (
-          <Tooltip placement="topLeft" title={content}>
-            {content}
-          </Tooltip>
-        )),
+      render: (content) => (
+        <Tooltip placement="topLeft" title={content}>
+          {content}
+        </Tooltip>
+      ),
       sorter: (a, b) => (key !== 'auth' ? a[key].localeCompare(b[key]) : null),
       sortDirections: ['descend', 'ascend'],
     }));
@@ -89,7 +81,7 @@ function RolesList() {
     isSuccess,
     isError,
     error,
-  } = useGetRolesQuery('normal');
+  } = useGetRolesQuery();
 
   let content;
 
@@ -105,7 +97,7 @@ function RolesList() {
 
   return (
     <>
-      {/* {isSuccess && <AddRoleModal />} */}
+      {isSuccess && <AddRoleModal />}
       {content}
     </>
   );

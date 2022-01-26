@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Table from 'antd/lib/table';
@@ -16,6 +16,8 @@ import {
   MinusCircleOutlined,
 } from '@ant-design/icons';
 
+import Access from '@/utils/Access';
+import { AccessContext } from '@/utils/AccessContext';
 import { defineConfig } from '@/../config/config';
 import { useGetDemandsQuery, useDeleteDemandMutation } from './demandsSlice';
 import AddDemandForm from './AddDemandModal';
@@ -53,7 +55,7 @@ const statusTag = (content) => {
   );
 };
 
-function DemandsTable({ dataSource, loading }) {
+function DemandsTable({ dataSource, loading, access }) {
   if (loading === true) return <Table columns={null} dataSource={null} loading={loading} />;
 
   const [deleteDemand] = useDeleteDemandMutation();
@@ -77,28 +79,35 @@ function DemandsTable({ dataSource, loading }) {
     key: 'action',
     render: (text, record) => (
       <Space direction="vertical">
-        <Button type="link">
-          <NavLink to={`/demand/single/${record._id}`}>
-            详情
-          </NavLink>
-        </Button>
-        <Popconfirm
-          title="Sure to delete?"
-          onConfirm={
-              async () => {
-                try {
-                  await deleteDemand(record._id);
-                  message.success('需求删除成功', 3);
-                } catch (err) {
-                  message.error(`需求删除失败，错误:${err.data.error}`, 3);
+
+        <Access accessible={access.GetDeamnd}>
+          <Button type="link">
+            <NavLink to={`/demand/single/${record._id}`}>
+              详情
+            </NavLink>
+          </Button>
+        </Access>
+
+        <Access accessible={access.DeleteDemand}>
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={
+                async () => {
+                  try {
+                    await deleteDemand(record._id);
+                    message.success('需求删除成功', 3);
+                  } catch (err) {
+                    message.error(`需求删除失败，错误:${err.data.error}`, 3);
+                  }
                 }
               }
-            }
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button type="link">删除</Button>
-        </Popconfirm>
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="link">删除</Button>
+          </Popconfirm>
+        </Access>
+
       </Space>
     ),
   });
@@ -123,12 +132,13 @@ function DemandsList() {
     error,
   } = useGetDemandsQuery();
 
+  const access = useContext(AccessContext);
   let content;
 
   if (isLoading) {
-    content = <DemandsTable dataSource={null} loading={isLoading} />;
+    content = <DemandsTable dataSource={null} loading={isLoading} access={access} />;
   } else if (isSuccess) {
-    content = <DemandsTable dataSource={data.data} loading={!isSuccess} />;
+    content = <DemandsTable dataSource={data.data} loading={!isSuccess} access={access} />;
   } else if (isError && error.data.message !== 'Unauthorized') {
     content = <Result status="error" title="未能获得需求列表数据" />;
   } else {
@@ -137,8 +147,19 @@ function DemandsList() {
 
   return (
     <>
-      {isSuccess && <AddDemandForm />}
-      {content}
+      {
+        isSuccess && (
+          <Access accessible={access.AddNewDemand}>
+            <AddDemandForm />
+          </Access>
+        )
+      }
+      <Access
+        accessible={access.GetDemands}
+        fallback={<Result status="error" title="无权限获得配置中心数据，请向管理员申请" />}
+      >
+        {content}
+      </Access>
     </>
   );
 }

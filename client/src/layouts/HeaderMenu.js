@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Button from 'antd/lib/button';
 import Menu from 'antd/lib/menu';
 import { LoginOutlined } from '@ant-design/icons';
 
-import { useAccess } from '@/utils/useAccess';
+import { AccessContext } from '@/utils/AccessContext';
 import { useGetMenusQuery } from '@/utils/apisSlice';
 import { defineConfig } from '@/../config/config';
 
 function HeaderMenu() {
   const { sortList } = defineConfig;
-  const access = useAccess();
+  const access = useContext(AccessContext);
 
   const {
     data,

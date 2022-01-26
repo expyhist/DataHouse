@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import produce from 'immer';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -11,6 +11,8 @@ import Input from 'antd/lib/input';
 import moment from 'moment';
 
 import ExportTable from '@/components/ExportTable';
+import Access from '@/utils/Access';
+import { AccessContext } from '@/utils/AccessContext';
 import { parseFormData } from './parseFormData';
 import { useGetFilterQuery } from '../Filters/filtersSlice';
 import { useGetTableDataMutation, tableContentAdded } from './tablesSlice';
@@ -61,6 +63,7 @@ function SingleTableFilter({ filtersType, filtersOption }) {
 }
 
 function TableFilter({ payload, filterId }) {
+  const access = useContext(AccessContext);
   const [getTableData] = useGetTableDataMutation();
   const tableContent = useSelector((state) => state.tableContent);
   const { dataSource } = tableContent[tableContent.length - 1];
@@ -146,12 +149,16 @@ function TableFilter({ payload, filterId }) {
     >
       <ManyTableFilter />
       <Form.Item>
-        <Button type="primary" htmlType="submit">
-          查询
-        </Button>
+        <Access accessible={access.GetTableData}>
+          <Button type="primary" htmlType="submit">
+            查询
+          </Button>
+        </Access>
       </Form.Item>
       <Form.Item>
-        <ExportTable dataSource={dataSource} />
+        <Access accessible={access.GetTableData}>
+          <ExportTable dataSource={dataSource} />
+        </Access>
       </Form.Item>
     </Form>
   );

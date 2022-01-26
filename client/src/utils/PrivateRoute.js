@@ -9,7 +9,7 @@ function PrivateRoute({ component: Component, ...rest }) {
   if (token) {
     const jwtTokenDecoded = jwtDecode(token);
     if (jwtTokenDecoded.exp * 1000 < Date.now()) {
-      localStorage.removeItem('token');
+      localStorage.clear();
     }
   }
 

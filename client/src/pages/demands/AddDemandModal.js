@@ -16,7 +16,6 @@ function DemandForm({ form }) {
   const initialValues = {
     description: '',
     content: '',
-    author: localStorage.getItem('email'),
     applicant: localStorage.getItem('email'),
   };
   const entriesData = demandsColumnsInfo.AddDemandFormColumns;
@@ -24,7 +23,6 @@ function DemandForm({ form }) {
     const rules = [{ required: true, message: `请输入${value}!` }];
     let disabled = false;
     switch (key) {
-      case 'author':
       case 'applicant':
         disabled = true;
         break;
@@ -42,7 +40,7 @@ function DemandForm({ form }) {
     );
   };
 
-  return FormInModal(form, name, initialValues, entriesData, mapFn);
+  return FormInModal(form, name, entriesData, mapFn, initialValues);
 }
 
 const CreateDemandForm = withModalForm(DemandForm);

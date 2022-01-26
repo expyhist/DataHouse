@@ -87,8 +87,16 @@ const getAllMenus = async (req, res) => {
         .filter((item) => item[link] === key)
         .map((item) => ({ ...item, children: listToTree(items, item.key) }));
 
-      const menuData = resp.map((data) => {
-        const { path: key, name: title, parentPath } = { ...data };
+      const auths = [];
+      resp
+        .filter((item) => Array.isArray(item.auth) && item.auth.length > 0)
+        .forEach((item) => {
+          const { auth, path } = item;
+          return auth.forEach((ele) => auths.push({ path: ele, name: ele, parentPath: path }));
+        });
+
+      const menuData = [...resp, ...auths].map((item) => {
+        const { path: key, name: title, parentPath } = { ...item };
         return { key, title, parentPath };
       });
 

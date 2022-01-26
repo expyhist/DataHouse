@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Table from 'antd/lib/table';
@@ -9,10 +9,10 @@ import message from 'antd/lib/message';
 import Button from 'antd/lib/button';
 import Result from 'antd/lib/result';
 
-import { useAccess } from '@/utils/useAccess';
-import Access from '@/utils/Access';
 import AddConfigModal from './AddConfigModal';
 import AddFiltersModal from '../Filters/AddFiltersModal';
+import Access from '@/utils/Access';
+import { AccessContext } from '@/utils/AccessContext';
 import { defineConfig } from '@/../config/config';
 import { useGetConfigsQuery, useDeleteConfigMutation } from './configsSlice';
 import { useDeleteFilterMutation } from '../Filters/filtersSlice';
@@ -88,6 +88,7 @@ function ConfigsTable({ dataSource, loading, access }) {
             <Button type="link">删除</Button>
           </Popconfirm>
         </Access>
+
       </Space>
     ),
   });
@@ -112,7 +113,7 @@ function ConfigsList() {
     error,
   } = useGetConfigsQuery();
 
-  const access = useAccess();
+  const access = useContext(AccessContext);
   let content;
 
   if (isLoading) {
@@ -129,14 +130,14 @@ function ConfigsList() {
     <>
       {
         isSuccess && (
-        <Access accessible={access.AddNewConfig}>
-          <AddConfigModal />
-        </Access>
+          <Access accessible={access.AddNewConfig}>
+            <AddConfigModal />
+          </Access>
         )
       }
       <Access
         accessible={access.GetConfigs}
-        fallback={<Result status="error" title="无权限获得配置中心数据" />}
+        fallback={<Result status="error" title="无权限获得配置中心数据，请向管理员申请" />}
       >
         {content}
       </Access>

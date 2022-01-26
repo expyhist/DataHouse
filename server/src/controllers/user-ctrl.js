@@ -105,6 +105,21 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const resp = await User.findById(req.params.id);
+    return res.status(200).json({
+      success: true,
+      data: resp,
+    });
+  } catch (error) {
+    return res.status(404).json({
+      success: false,
+      error: error.toString(),
+    });
+  }
+};
+
 const setInitalUsers = async (req, res) => {
   mongoose.connection.db.dropCollection('users');
   try {
@@ -126,6 +141,7 @@ module.exports = {
   signin,
   updateUserById,
   deleteUserById,
+  getUserById,
   getAllUsers,
   setInitalUsers,
 };

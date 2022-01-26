@@ -34,9 +34,9 @@ export const defineConfig = {
   },
   demandsColumnsInfo: {
     DemandsListColumns: {
-      description: '需求详情', content: '需求字段', author: '创建人', applicant: '申请人', status: '需求状态', createdAt: '创建时间',
+      description: '需求详情', content: '需求字段', applicant: '申请人', status: '需求状态', createdAt: '创建时间',
     },
-    AddDemandFormColumns: { description: '需求详情', content: '需求字段', author: '创建人',applicant: '申请人' },
+    AddDemandFormColumns: { description: '需求详情', content: '需求字段', applicant: '申请人' },
   },
   sysConfigsColumnsInfo: {
     MenusListColumns: {
@@ -49,7 +49,7 @@ export const defineConfig = {
       _id: 'id', path: '菜单路径', name: '菜单名称', icon: '图标', parentPath: '上级菜单路径', auth: '权限列表',
     },
     RolesListColumns: {
-      name: '角色', authTree: '权限列表', createdAt: '创建时间',
+      name: '角色', createdAt: '创建时间',
     },
     AddRoleFormColumns: {
       name: '角色', auth: '权限列表',

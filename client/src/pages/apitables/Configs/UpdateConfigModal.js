@@ -43,7 +43,7 @@ function ConfigForm({ form, initialValues }) {
     );
   };
 
-  return FormInModal(form, name, initialValues, entriesData, mapFn);
+  return FormInModal(form, name, entriesData, mapFn, initialValues);
 }
 
 const UpdateConfigForm = withModalForm(ConfigForm);
