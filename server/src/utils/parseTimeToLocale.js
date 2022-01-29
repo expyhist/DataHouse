@@ -1,10 +1,23 @@
-// const { format, parseISO } = require('date-fns');
+const { format } = require('date-fns');
 
-// function parseTimeToLocale(isoTime) {
-//   return format(parseISO(isoTime), 'yyyy-mm-dd HH:MM:SS');
-// }
+const parseTimeForColumns = (data, columns) => {
+  const localeData = {};
+  columns.forEach((column) => {
+    if (data[column]) {
+      localeData[column] = format(data[column], 'yyyy-MM-dd HH:mm:ss');
+    }
+  });
+  return { ...data, ...localeData };
+};
 
-// module.exports = (fn) => (req, res) => {
-//   const result = fn(req, res);
-//   console.log(req);
-// };
+module.exports = (data, columns) => {
+  if (!Array.isArray(columns)) {
+    throw new Error('columns is not a list');
+  }
+
+  if (!Array.isArray(data)) {
+    return parseTimeForColumns(data, columns);
+  }
+
+  return data.map((item) => parseTimeForColumns(item, columns));
+};

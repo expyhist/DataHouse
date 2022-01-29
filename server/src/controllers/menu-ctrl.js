@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Menu = require('../models/menu-model');
 const ApiTable = require('../models/apitable-model');
 const { initalMenus } = require('../config/db-config');
+const parseTimeToLocale = require('../utils/parseTimeToLocale');
 
 const createMenu = async (req, res) => {
   try {
@@ -58,10 +59,10 @@ const deleteMenuById = async (req, res) => {
 
 const getMenuById = async (req, res) => {
   try {
-    const resp = await Menu.findById(req.params.id);
+    const resp = await Menu.findById(req.params.id).lean();
     return res.status(200).json({
       success: true,
-      data: resp,
+      data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
     });
   } catch (error) {
     return res.status(404).json({
@@ -78,7 +79,7 @@ const getAllMenus = async (req, res) => {
     if (req.params.type === 'normal') {
       return res.status(200).json({
         success: true,
-        data: resp,
+        data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
       });
     }
 

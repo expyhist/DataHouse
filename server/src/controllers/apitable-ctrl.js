@@ -1,5 +1,6 @@
 const ApiTable = require('../models/apitable-model');
 const Menu = require('../models/menu-model');
+const parseTimeToLocale = require('../utils/parseTimeToLocale');
 
 const createApiTable = async (req, res) => {
   const body = { ...req.body, ...{ connection: new Map() } };
@@ -57,10 +58,10 @@ const deleteApiTableById = async (req, res) => {
 
 const getApiTableById = async (req, res) => {
   try {
-    const resp = await ApiTable.findById(req.params.id);
+    const resp = await ApiTable.findById(req.params.id).lean();
     return res.status(200).json({
       success: true,
-      data: resp,
+      data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
     });
   } catch (error) {
     return res.status(404).json({
@@ -72,10 +73,10 @@ const getApiTableById = async (req, res) => {
 
 const getAllApiTables = async (req, res) => {
   try {
-    const resp = await ApiTable.find({});
+    const resp = await ApiTable.find({}).lean();
     return res.status(200).json({
       success: true,
-      data: resp,
+      data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
     });
   } catch (error) {
     return res.status(404).json({

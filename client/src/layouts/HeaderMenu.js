@@ -49,7 +49,7 @@ function HeaderMenu() {
           })
       }
       <Menu.Item key="/loginout">
-        <NavLink to="/users">
+        <NavLink to="/users/login">
           <Button danger type="text" icon={<LoginOutlined />} onClick={() => localStorage.clear()} />
         </NavLink>
       </Menu.Item>

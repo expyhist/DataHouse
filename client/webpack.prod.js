@@ -28,7 +28,7 @@ module.exports = merge(common, {
   },
   externals: {
     config: JSON.stringify({
-      baseUrl: '/api',
+      rejectRegister: true,
     }),
   },
   plugins: [

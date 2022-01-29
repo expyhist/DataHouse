@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const User = require('../models/user-model');
 const Role = require('../models/role-model');
 const Menu = require('../models/menu-model');
+const parseTimeToLocale = require('../utils/parseTimeToLocale');
 
 const createRole = async (req, res) => {
   try {
@@ -53,10 +54,10 @@ const deleteRoleById = async (req, res) => {
 
 const getRoleById = async (req, res) => {
   try {
-    const resp = await Role.findById(req.params.id);
+    const resp = await Role.findById(req.params.id).lean();
     return res.status(200).json({
       success: true,
-      data: resp,
+      data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
     });
   } catch (error) {
     return res.status(404).json({
@@ -68,10 +69,10 @@ const getRoleById = async (req, res) => {
 
 const getAllRoles = async (req, res) => {
   try {
-    const resp = await Role.find({});
+    const resp = await Role.find({}).lean();
     return res.status(200).json({
       success: true,
-      data: resp,
+      data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
     });
   } catch (error) {
     return res.status(404).json({
@@ -83,7 +84,7 @@ const getAllRoles = async (req, res) => {
 
 const getRoleByName = async (req, res) => {
   try {
-    const userInfo = await User.findById(req.userId);
+    const userInfo = await User.findById(req.userId).lean();
     const resp = await Role.find({ name: { $in: userInfo.rolesName } });
     return res.status(200).json({
       success: true,

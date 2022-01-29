@@ -6,6 +6,15 @@ module.exports = merge(common, {
   devtool: 'eval-cheap-module-source-map',
   devServer: {
     historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        secure: false,
+      },
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
   },
   cache: {
     type: 'memory',
@@ -17,7 +26,7 @@ module.exports = merge(common, {
   },
   externals: {
     config: JSON.stringify({
-      baseUrl: 'http://localhost:3000/api',
+      rejectRegister: false,
     }),
   },
 });

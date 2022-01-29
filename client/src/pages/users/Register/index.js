@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import config from 'config';
 
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
@@ -54,7 +55,7 @@ function Register() {
 
       <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
         <Space>
-          <Button type="primary" htmlType="submit" disabled>
+          <Button type="primary" htmlType="submit" disabled={config.rejectRegister}>
             注册
           </Button>
           <Button type="link" href="/users/login">

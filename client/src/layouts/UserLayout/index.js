@@ -16,7 +16,7 @@ function UsersLayout({ children }) {
             <span className="login-title">DataHouse</span>
           </div>
           <div className="login-desc">
-            <a className="login-desc-link" href="https://expyhist.github.io">leafsYang的博客</a>
+            <span>YangHua自建的小型数据中台</span>
           </div>
           <div className="login-main">
             {children}

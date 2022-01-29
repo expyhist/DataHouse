@@ -1,9 +1,8 @@
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const config = require('../config/auth-config');
 const User = require('../models/user-model');
-const { initalUsers } = require('../config/db-config');
+const parseTimeToLocale = require('../utils/parseTimeToLocale');
 
 const signup = async (req, res) => {
   try {
@@ -92,10 +91,10 @@ const deleteUserById = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const resp = await User.find({});
+    const resp = await User.find({}).lean();
     return res.status(200).json({
       success: true,
-      data: resp,
+      data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
     });
   } catch (error) {
     return res.status(404).json({
@@ -107,26 +106,10 @@ const getAllUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
   try {
-    const resp = await User.findById(req.params.id);
+    const resp = await User.findById(req.params.id).lean();
     return res.status(200).json({
       success: true,
-      data: resp,
-    });
-  } catch (error) {
-    return res.status(404).json({
-      success: false,
-      error: error.toString(),
-    });
-  }
-};
-
-const setInitalUsers = async (req, res) => {
-  mongoose.connection.db.dropCollection('users');
-  try {
-    const resp = await User.insertMany(initalUsers);
-    return res.status(200).json({
-      success: true,
-      data: resp,
+      data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
     });
   } catch (error) {
     return res.status(404).json({
@@ -143,5 +126,4 @@ module.exports = {
   deleteUserById,
   getUserById,
   getAllUsers,
-  setInitalUsers,
 };

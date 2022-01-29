@@ -33,6 +33,7 @@ function Login() {
       localStorage.setItem('rolesName', resp.rolesName);
       message.success('登录成功', 3);
       history.push('/demands');
+      location.reload();
     } catch (err) {
       message.error(`登录失败，错误:${err.data.message}`, 3);
     }

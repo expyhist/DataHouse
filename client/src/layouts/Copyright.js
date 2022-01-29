@@ -7,7 +7,7 @@ function Copyright() {
     <Typography style={{ textAlign: 'center' }}>
       {'Copyright © '}
       <a type="link" href="https://expyhist.github.io/" target="_blank" rel="noreferrer">
-        yanghua博客
+        leafsYang的博客
       </a>
       {` 2021~${new Date().getFullYear()}.`}
     </Typography>

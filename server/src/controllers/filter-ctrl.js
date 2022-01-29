@@ -1,5 +1,6 @@
 const Filter = require('../models/filter-model');
 const ApiTable = require('../models/apitable-model');
+const parseTimeToLocale = require('../utils/parseTimeToLocale');
 
 const createFilter = async (req, res) => {
   const r = await ApiTable.findById(req.body.apiTableId);
@@ -63,10 +64,10 @@ const deleteFilterById = async (req, res) => {
 
 const getFilterById = async (req, res) => {
   try {
-    const resp = await Filter.findById(req.params.id);
+    const resp = await Filter.findById(req.params.id).lean();
     return res.status(200).json({
       success: true,
-      data: resp,
+      data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
     });
   } catch (error) {
     return res.status(404).json({
@@ -78,10 +79,10 @@ const getFilterById = async (req, res) => {
 
 const getAllFilters = async (req, res) => {
   try {
-    const resp = await Filter.find({});
+    const resp = await Filter.find({}).lean();
     return res.status(200).json({
       success: true,
-      data: resp,
+      data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
     });
   } catch (error) {
     return res.status(404).json({

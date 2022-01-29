@@ -1,10 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import config from 'config';
 
 export const apisSlice = createApi({
   reducerPath: 'datahouse',
   baseQuery: fetchBaseQuery({
-    baseUrl: config.baseUrl,
+    baseUrl: '/api',
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {

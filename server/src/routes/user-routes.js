@@ -23,5 +23,4 @@ module.exports = (router) => {
     .delete(userCtrl.deleteUserById);
 
   router.get('/users', userCtrl.getAllUsers);
-  router.get('/setinitalusers', userCtrl.setInitalUsers);
 };

@@ -36,8 +36,15 @@ export const sysConfigsSlice = apisSlice.injectEndpoints({
       },
       invalidatesTags: (result, error, arg) => [{ type: 'Menu', _id: arg._id }],
     }),
+
     getRoles: builder.query({
       query: () => '/roles',
+      providesTags: (result) => (result?.data.length === 0
+        ? [
+          ...result.data.map(({ _id }) => ({ type: 'Role', _id })),
+          ...[{ type: 'Role', operation: 'Add' }],
+        ]
+        : ['Role']),
     }),
     getRole: builder.query({
       query: (id) => `/role/${id}`,

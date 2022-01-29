@@ -1,4 +1,5 @@
 const Demand = require('../models/demand-model');
+const parseTimeToLocale = require('../utils/parseTimeToLocale');
 
 const createDemand = async (req, res) => {
   try {
@@ -50,10 +51,10 @@ const deleteDemandById = async (req, res) => {
 
 const getDemandById = async (req, res) => {
   try {
-    const resp = await Demand.findById(req.params.id);
+    const resp = await Demand.findById(req.params.id).lean();
     return res.status(200).json({
       success: true,
-      data: resp,
+      data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
     });
   } catch (error) {
     return res.status(404).json({
@@ -65,10 +66,11 @@ const getDemandById = async (req, res) => {
 
 const getAllDemands = async (req, res) => {
   try {
-    const resp = await Demand.find({});
+    const resp = await Demand.find({}).lean();
+
     return res.status(200).json({
       success: true,
-      data: resp,
+      data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
     });
   } catch (error) {
     return res.status(404).json({
