@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 import Table from 'antd/lib/table';
 import Space from 'antd/lib/space';
@@ -9,7 +10,7 @@ import message from 'antd/lib/message';
 import Result from 'antd/lib/result';
 
 import AddRoleModal from './AddRoleModal';
-// import UpdateRoleModal from './UpdateRoleModal';
+import UpdateRoleModal from './UpdateRoleModal';
 import { defineConfig } from '@/../config/config';
 import { useGetRolesQuery, useDeleteRoleMutation } from '../sysConfigsSlice';
 
@@ -41,7 +42,12 @@ function RolesTable({ dataSource, loading }) {
     key: 'action',
     render: (text, record) => (
       <Space direction="horizontal">
-        {/* <UpdateRoleModal initialValues={record} /> */}
+        {/* <Button type="link">
+          <NavLink to={`/sysconfigs/roles/single/${record._id}`}>
+            详情
+          </NavLink>
+        </Button> */}
+        <UpdateRoleModal initialValues={record} />
         <Popconfirm
           title="Sure to delete?"
           onConfirm={
@@ -90,9 +96,9 @@ function RolesList() {
   } else if (isSuccess) {
     content = <RolesTable dataSource={data.data} loading={!isSuccess} />;
   } else if (isError && error.data.message !== 'Unauthorized') {
-    content = <Result status="error" title="未能获得菜单列表数据" />;
+    content = <Result status="error" title="未能获得权限列表数据" />;
   } else {
-    content = <Result status="error" title="无权获得菜单列表数据" />;
+    content = <Result status="error" title="无权获得权限列表数据" />;
   }
 
   return (

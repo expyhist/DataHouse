@@ -32,10 +32,10 @@ export const apisSlice = createApi({
         };
       },
     }),
-    getRolesByName: builder.mutation({
+    getAuthsById: builder.mutation({
       query(data) {
         return {
-          url: '/rolesbyname',
+          url: '/authsbyid',
           method: 'POST',
           body: data,
         };
@@ -47,5 +47,5 @@ export const apisSlice = createApi({
 export const {
   useGetMenusQuery,
   useGetMenusByAccessMutation,
-  useGetRolesByNameMutation,
+  useGetAuthsByIdMutation,
 } = apisSlice;

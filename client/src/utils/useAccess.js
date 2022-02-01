@@ -1,40 +1,17 @@
 import { useEffect, useState } from 'react';
 
-import { useGetRolesByNameMutation } from './apisSlice';
-
-const psuhObjToArray = (obj, arr) => {
-  Object.entries(obj).forEach(([key, value]) => {
-    if (Array.isArray(key)) {
-      arr.push(...key);
-    } else arr.push(key);
-    if (Array.isArray(value)) {
-      arr.push(...value);
-    } else arr.push(value);
-  });
-  return arr;
-};
+import { useGetAuthsByIdMutation } from './apisSlice';
 
 export const useAccess = () => {
   const [access, setAccess] = useState({});
-  const [getRolesByName] = useGetRolesByNameMutation();
+  const [getAuthsById] = useGetAuthsByIdMutation();
 
   useEffect(() => {
     (async () => {
-      const result = {};
       if (localStorage.getItem('token')) {
-        const resp = await getRolesByName();
-        const auths = resp.data.data.map((item) => item.auth);
-        const authsArray = auths.reduce((acc, cur) => {
-          const arr = [];
-          cur.forEach((item) => psuhObjToArray(item, arr));
-          return acc.concat(arr);
-        }, []);
-        authsArray.forEach((item) => {
-          result[item] = true;
-          return null;
-        });
+        const resp = await getAuthsById();
+        setAccess(resp.data.data);
       }
-      setAccess(result);
     })();
   }, []);
 

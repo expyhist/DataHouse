@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackBar = require('webpackbar');
-const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -60,6 +59,5 @@ module.exports = {
       favicon: './public/favicon.ico',
     }),
     new WebpackBar(),
-    new MomentLocalesPlugin(),
   ],
 };

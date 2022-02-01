@@ -4,6 +4,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 const common = require('./webpack.common');
 
@@ -35,5 +36,6 @@ module.exports = merge(common, {
     new BundleAnalyzerPlugin(),
     new WebpackManifestPlugin(),
     new CleanWebpackPlugin(),
+    new MomentLocalesPlugin(),
   ],
 });

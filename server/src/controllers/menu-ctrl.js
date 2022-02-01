@@ -90,7 +90,6 @@ const getAllMenus = async (req, res) => {
 
       const auths = [];
       resp
-        .filter((item) => Array.isArray(item.auth) && item.auth.length > 0)
         .forEach((item) => {
           const { auth, path } = item;
           return auth.forEach((ele) => auths.push({ path: ele, name: ele, parentPath: path }));
@@ -98,7 +97,7 @@ const getAllMenus = async (req, res) => {
 
       const menuData = [...resp, ...auths].map((item) => {
         const { path: key, name: title, parentPath } = { ...item };
-        return { key, title, parentPath };
+        return { key, title, parentPath, value: key };
       });
 
       return res.status(200).json({
