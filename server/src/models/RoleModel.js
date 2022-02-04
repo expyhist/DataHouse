@@ -5,7 +5,7 @@ const Role = new mongoose.Schema(
   {
     name: { type: String, require: true, unique: true },
     auth: [
-      { type: Map, of: Array },
+      { type: Map, of: Array, unique: true },
     ],
   },
   {
@@ -15,4 +15,4 @@ const Role = new mongoose.Schema(
 
 Role.plugin(uniqueValidator);
 
-module.exports = mongoose.model('roles', Role);
+module.exports = Role;

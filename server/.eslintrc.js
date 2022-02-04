@@ -1,4 +1,5 @@
 module.exports = {
+  // parser: "@babel/eslint-parser",
   env: {
     browser: true,
     commonjs: true,
@@ -9,7 +10,7 @@ module.exports = {
     'airbnb-base',
   ],
   parserOptions: {
-    ecmaVersion: 12,
+    ecmaVersion: 13,
   },
   rules: {
     'no-underscore-dangle': 'off',

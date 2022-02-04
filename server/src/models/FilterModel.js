@@ -28,4 +28,4 @@ const Filter = new mongoose.Schema(
 
 Filter.plugin(uniqueValidator);
 
-module.exports = mongoose.model('filters', Filter);
+module.exports = Filter;

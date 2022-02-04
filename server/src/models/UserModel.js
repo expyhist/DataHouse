@@ -1,9 +1,18 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const rules = require('../utils/rules');
 
 const User = new mongoose.Schema(
   {
-    email: { type: String, require: true, unique: true },
+    email: {
+      type: String,
+      require: true,
+      unique: true,
+      validate: {
+        validator: rules.email,
+        message: (props) => `${props.value} is not a valid email!`,
+      },
+    },
     password: { type: String, require: true },
     rolesName: [
       {
@@ -18,4 +27,4 @@ const User = new mongoose.Schema(
 
 User.plugin(uniqueValidator);
 
-module.exports = mongoose.model('users', User);
+module.exports = User;

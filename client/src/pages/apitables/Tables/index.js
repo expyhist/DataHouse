@@ -35,7 +35,8 @@ function ApiTable() {
   } else if (isSuccess) {
     content = <Table dataSource={dataSource} columns={columns} rowKey="uuid" loading={!isSuccess} />;
     const urlParams = parseParamFromURL(data.data.url);
-    payload = { ...urlParams, ...data.data.defaultParams, id };
+    const defaultParamsObj = JSON.parse(data.data.defaultParams);
+    payload = { ...urlParams, ...defaultParamsObj, id };
   } else if (isError && error.data.message !== 'Unauthorized') {
     content = <Result status="error" title="未能获得报表数据" />;
   } else {
@@ -45,7 +46,7 @@ function ApiTable() {
   return (
     <>
       {
-        isSuccess && <TableFilter filterId={data.data.connection?.filters} payload={payload} />
+        isSuccess && <TableFilter filterId={data.data?.connection?.filters} payload={payload} />
       }
       <Access
         accessible={access.GetTableData}

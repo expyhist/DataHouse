@@ -7,7 +7,7 @@ export const configsSlice = apisSlice.injectEndpoints({
       providesTags: (result) => (result?.data.length === 0
         ? [
           ...result.data.map(({ _id }) => ({ type: 'Config', _id })),
-          ...[{ type: 'Menu', operation: 'Add' }],
+          ...[{ type: 'Config', operation: 'Add' }],
         ]
         : ['Config']),
     }),
@@ -23,7 +23,7 @@ export const configsSlice = apisSlice.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: [],
+      invalidatesTags: [{ type: 'Config', operation: 'Add' }],
     }),
     deleteConfig: builder.mutation({
       query(id) {

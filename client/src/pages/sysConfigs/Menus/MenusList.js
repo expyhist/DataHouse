@@ -82,7 +82,7 @@ function MenusList() {
     isSuccess,
     isError,
     error,
-  } = useGetMenusQuery('normal');
+  } = useGetMenusQuery();
 
   let content;
 

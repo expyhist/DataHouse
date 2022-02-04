@@ -69,8 +69,8 @@ function ConfigsTable({ dataSource, loading, access }) {
                 try {
                   await deleteConfig(record._id);
                   message.success('配置删除成功', 3);
-                  if (record.connection?.filters) {
-                    await deleteFilter(record.connection.filters);
+                  if (record?.connection?.filters) {
+                    await deleteFilter(record?.connection?.filters);
                     message.success('筛选条件删除成功', 3);
                   }
                   if (record.connection?.menus) {

@@ -1,9 +1,18 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const rules = require('../utils/rules');
 
 const Menu = new mongoose.Schema(
   {
-    path: { type: String, require: true, unique: true },
+    path: {
+      type: String,
+      require: true,
+      unique: true,
+      validate: {
+        validator: rules.path,
+        message: (props) => `${props.value} is not a valid path!`,
+      },
+    },
     name: { type: String, require: true, unique: true },
     icon: { type: String },
     auth: { type: Array },
@@ -16,4 +25,4 @@ const Menu = new mongoose.Schema(
 
 Menu.plugin(uniqueValidator);
 
-module.exports = mongoose.model('menus', Menu);
+module.exports = Menu;

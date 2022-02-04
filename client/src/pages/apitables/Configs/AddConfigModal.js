@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
@@ -6,7 +6,6 @@ import message from 'antd/lib/message';
 
 import { defineConfig } from '@/../config/config';
 import { useAddNewConfigMutation } from './configsSlice';
-import { useAddNewMenuMutation } from '@/pages/sysConfigs/sysConfigsSlice';
 import withModalForm from '@/utils/withModalForm';
 import FormInModal from '@/utils/FormInModal';
 
@@ -57,39 +56,18 @@ const CreateConfigForm = withModalForm(ConfigForm);
 
 function AddConfigModal() {
   const [visible, setVisible] = useState(false);
-  const [newConfig, setNewConfig] = useState({});
   const [addNewConfig] = useAddNewConfigMutation();
-  const [addNewMenu] = useAddNewMenuMutation();
 
   const onCreate = async (formData) => {
     try {
-      const resp = await addNewConfig(formData).unwrap();
-      setNewConfig(resp);
+      await addNewConfig(formData).unwrap();
       setVisible(false);
       message.success('配置添加成功', 3);
+      message.success('菜单添加成功', 3);
     } catch (err) {
-      message.error(`配置添加失败，错误:${err.data.error}`, 3);
+      message.error(`配置和菜单添加失败，错误:${err.data.error}`, 3);
     }
   };
-
-  useEffect(async () => {
-    if (Object.keys(newConfig).length !== 0) {
-      try {
-        await addNewMenu({
-          apiTableId: newConfig.id,
-          parentPath: '/tables/databoard/:id',
-          path: `/tables/databoard/${newConfig.id}`,
-          name: newConfig.title,
-          icon: '',
-          auth: ['ExportTable', 'GetTableData'],
-        }).unwrap();
-        message.success('菜单添加成功', 3);
-        // await
-      } catch (error) {
-        message.error(`菜单添加失败，错误:${error.data.error}`, 3);
-      }
-    }
-  }, [newConfig]);
 
   return (
     <CreateConfigForm

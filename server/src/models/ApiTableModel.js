@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-
 const uniqueValidator = require('mongoose-unique-validator');
+const rules = require('../utils/rules');
 
 const ApiTable = new mongoose.Schema(
   {
@@ -9,10 +9,7 @@ const ApiTable = new mongoose.Schema(
       require: true,
       unique: true,
       validate: {
-        validator: (val) => {
-          const urlRegex = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
-          return urlRegex.test(val);
-        },
+        validator: rules.url,
         message: (props) => `${props.value} is not a valid url!`,
       },
     },
@@ -29,4 +26,4 @@ const ApiTable = new mongoose.Schema(
 
 ApiTable.plugin(uniqueValidator);
 
-module.exports = mongoose.model('apitables', ApiTable);
+module.exports = ApiTable;

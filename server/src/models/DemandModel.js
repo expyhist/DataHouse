@@ -24,4 +24,4 @@ const Demand = new mongoose.Schema(
 
 Demand.plugin(uniqueValidator);
 
-module.exports = mongoose.model('demands', Demand);
+module.exports = Demand;

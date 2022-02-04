@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 
 import Table from 'antd/lib/table';
 import Space from 'antd/lib/space';
@@ -42,11 +41,6 @@ function RolesTable({ dataSource, loading }) {
     key: 'action',
     render: (text, record) => (
       <Space direction="horizontal">
-        {/* <Button type="link">
-          <NavLink to={`/sysconfigs/roles/single/${record._id}`}>
-            详情
-          </NavLink>
-        </Button> */}
         <UpdateRoleModal initialValues={record} />
         <Popconfirm
           title="Sure to delete?"

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/auth-config');
-const User = require('../models/user-model');
+const UserDao = require('../dao/UserDao');
 
 module.exports = (req, res, next) => {
   const token = req.headers['x-access-token'];
@@ -14,8 +14,8 @@ module.exports = (req, res, next) => {
       return res.status(401).send({ message: 'Unauthorized' });
     }
     req.userId = decoded.id;
-    const user = await User.findById(decoded.id);
-    if (!user) {
+    const userInfo = await UserDao.getById(decoded.id);
+    if (!userInfo) {
       return res.status(401).send({ message: 'Unauthorized' });
     }
     next();

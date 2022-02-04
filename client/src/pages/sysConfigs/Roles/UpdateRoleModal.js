@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import message from 'antd/lib/message';
-import TreeSelect  from 'antd/lib/tree-select';
+import TreeSelect from 'antd/lib/tree-select';
 
 import { defineConfig } from '@/../config/config';
-import { useGetMenusQuery } from '@/utils/apisSlice';
+import { useGetMenusByTreeQuery } from '@/utils/apisSlice';
 import { useUpdateRoleMutation } from '../sysConfigsSlice';
 import withModalForm from '@/utils/withModalForm';
 import FormInModal from '@/utils/FormInModal';
@@ -24,7 +24,7 @@ const layout = {
 function RoleForm({ form, initialValues, treeData }) {
   const { sysConfigsColumnsInfo } = defineConfig;
   const { SHOW_ALL } = TreeSelect;
-  
+
   const name = 'update_role_form_in_modal';
   const entriesData = sysConfigsColumnsInfo.UpdateRoleFormColumns;
   const mapFn = ([key, value]) => {
@@ -40,11 +40,11 @@ function RoleForm({ form, initialValues, treeData }) {
             treeData={treeData}
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-            treeCheckable={true}
+            treeCheckable
             showCheckedStrategy={SHOW_ALL}
-            showSearch={true}
-            allowClear={true}
-            treeDefaultExpandAll={true}
+            showSearch
+            allowClear
+            treeDefaultExpandAll
             placeholder="输入并搜索"
           />
         );
@@ -91,24 +91,22 @@ function UpdateRoleModal({ initialValues }) {
       return acc.concat(arr);
     }, []);
 
-
   const onCreate = async (formData) => {
     try {
-      console.log(formData);
-      // await updateRole(formData).unwrap();
-      // setVisible(false);
-      // message.success('权限更新成功', 3);
+      await updateRole(formData).unwrap();
+      setVisible(false);
+      message.success('权限更新成功', 3);
     } catch (err) {
       message.error(`权限更新失败，错误:${err.data.error}`, 3);
     }
   };
-  
+
   const {
     data,
     isLoading,
     isSuccess,
     isError,
-  } = useGetMenusQuery('menusTree');
+  } = useGetMenusByTreeQuery();
 
   if (isLoading || isError) {
     return null;
@@ -129,7 +127,7 @@ function UpdateRoleModal({ initialValues }) {
           setVisible(false);
         }}
         okText="Update"
-        initialValues={{...initialValues, auth: initalAuths}}
+        initialValues={{ ...initialValues, auth: initalAuths }}
         treeData={data.data}
       />
     )

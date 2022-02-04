@@ -20,7 +20,7 @@ function RoleForm({ form }) {
     isLoading,
     isSuccess,
     isError,
-  } = useGetMenusQuery('normal');
+  } = useGetMenusQuery();
 
   if (isLoading || isError) {
     return null;
@@ -29,18 +29,18 @@ function RoleForm({ form }) {
   const name = 'create_roles_form_in_modal';
   const entriesData = sysConfigsColumnsInfo.AddRoleFormColumns;
   const mapFn = ([key, value]) => {
-    let rules = [{ required: true, message: `请输入${value}!` }];
+    const rules = [{ required: true, message: `请输入${value}!` }];
     let content = <Input />;
     switch (key) {
       case 'auth':
         content = (
-          <Select 
-            mode="multiple" 
+          <Select
+            mode="multiple"
             placeholder="Please select a value"
           >
             {
               isSuccess && data.data
-                .filter((item) => item.parentPath === "")
+                .filter((item) => item.parentPath === '')
                 .map((item) => (
                   <Option value={item.path} key={item.path}>
                     {item.path}
@@ -48,7 +48,7 @@ function RoleForm({ form }) {
                 ))
             }
           </Select>
-        )
+        );
         break;
       default:
     }
@@ -73,7 +73,7 @@ function AddRoleModal() {
   const [visible, setVisible] = useState(false);
   const [addNewRole] = useAddNewRoleMutation();
 
-  const onCreate = async (formData) => { 
+  const onCreate = async (formData) => {
     try {
       if (Array.isArray(formData.auth)) {
         const authObj = formData.auth.map((item) => {
@@ -81,7 +81,7 @@ function AddRoleModal() {
           obj[item] = [];
           return obj;
         });
-        await addNewRole({...formData, ...{auth: authObj}}).unwrap();
+        await addNewRole({ ...formData, ...{ auth: authObj } }).unwrap();
         setVisible(false);
         message.success('角色添加成功', 3);
       }

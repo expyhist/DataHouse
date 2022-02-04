@@ -18,7 +18,7 @@ function HeaderMenu() {
     isLoading,
     isSuccess,
     isError,
-  } = useGetMenusQuery('normal');
+  } = useGetMenusQuery();
 
   if (isLoading || isError) {
     return null;
