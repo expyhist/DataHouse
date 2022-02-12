@@ -10,14 +10,13 @@ module.exports = (router) => {
   router
     .route('/apitable')
     .all(verifyHeaders, verifyPayload(['url', 'title', 'author', 'applicant'], null, 4))
-    // .post(ApiTableService.baseCreate)
     .post(ApiTableService.transCreate);
 
   router
     .route('/apitable/:id')
     .all(verifyHeaders, verifyExistsById(ApiTable), verifyPayload(['url', 'title', 'author', 'applicant'], null, 4))
-    .put(ApiTableService.baseUpdateById)
-    .delete(ApiTableService.baseDeleteById)
+    .put(ApiTableService.transUpdate)
+    .delete(ApiTableService.transDelete)
     .get(ApiTableService.baseGetById);
 
   router.get('/apitables', ApiTableService.baseGetAll);

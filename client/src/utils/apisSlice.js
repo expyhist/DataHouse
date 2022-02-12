@@ -12,25 +12,15 @@ export const apisSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Config', 'Filter', 'Demand', 'Menu', 'User'],
+  tagTypes: ['Config', 'Filter', 'Demand', 'Menu', 'User', 'Role'],
   endpoints: (builder) => ({
     getMenus: builder.query({
       query: () => '/menus',
-      providesTags: (result) => (result?.data.length === 0
-        ? [
-          ...result.data.map(({ _id }) => ({ type: 'Menu', _id })),
-          ...[{ type: 'Menu', operation: 'Add' }, { type: 'Config', operation: 'Add' }],
-        ]
-        : ['Menu']),
+      providesTags: ['Menu'],
     }),
     getMenusByTree: builder.query({
       query: () => '/menus/tree',
-      providesTags: (result) => (result?.data.length === 0
-        ? [
-          ...result.data.map(({ _id }) => ({ type: 'Menu', _id })),
-          ...[{ type: 'Menu', operation: 'Add' }],
-        ]
-        : ['Menu']),
+      providesTags: ['MenuTree'],
     }),
     getMenusByAccess: builder.mutation({
       query(data) {
@@ -41,10 +31,10 @@ export const apisSlice = createApi({
         };
       },
     }),
-    getAuthsById: builder.mutation({
+    getAuths: builder.mutation({
       query(data) {
         return {
-          url: '/authsbyid',
+          url: '/auths',
           method: 'POST',
           body: data,
         };
@@ -57,5 +47,5 @@ export const {
   useGetMenusQuery,
   useGetMenusByTreeQuery,
   useGetMenusByAccessMutation,
-  useGetAuthsByIdMutation,
+  useGetAuthsMutation,
 } = apisSlice;

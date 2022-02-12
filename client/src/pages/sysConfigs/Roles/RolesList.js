@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import Table from 'antd/lib/table';
 import Space from 'antd/lib/space';
@@ -11,10 +11,15 @@ import Result from 'antd/lib/result';
 import AddRoleModal from './AddRoleModal';
 import UpdateRoleModal from './UpdateRoleModal';
 import { defineConfig } from '@/../config/config';
+import { useGetMenusByTreeQuery } from '@/utils/apisSlice';
 import { useGetRolesQuery, useDeleteRoleMutation } from '../sysConfigsSlice';
 
 function RolesTable({ dataSource, loading }) {
   if (loading === true) return <Table columns={null} dataSource={null} loading={loading} />;
+
+  const {
+    data,
+  } = useGetMenusByTreeQuery();
 
   const [deleteRole] = useDeleteRoleMutation();
   const { sysConfigsColumnsInfo } = defineConfig;
@@ -41,7 +46,14 @@ function RolesTable({ dataSource, loading }) {
     key: 'action',
     render: (text, record) => (
       <Space direction="horizontal">
-        <UpdateRoleModal initialValues={record} />
+        {
+          useMemo(() => (
+            <UpdateRoleModal
+              treeData={data?.data}
+              initialValues={record}
+            />
+          ), [data?.data.length])
+        }
         <Popconfirm
           title="Sure to delete?"
           onConfirm={

@@ -60,10 +60,10 @@ export const defineConfig = {
   },
   userColumnsInfo: {
     UsersListColumns: {
-      email: '邮件', password: '密码', rolesName: '角色', createdAt: '创建时间',
+      email: '邮箱', password: '密码', rolesName: '角色', createdAt: '创建时间',
     },
     UpdateUserFormColumns: {
-      _id: 'id', email: '邮件', password: '密码', rolesName: '角色',
+      _id: 'id', email: '邮箱', password: '密码', rolesName: '角色',
     },
   },
   sortList: {

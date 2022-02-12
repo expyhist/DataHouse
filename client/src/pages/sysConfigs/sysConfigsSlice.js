@@ -4,7 +4,7 @@ export const sysConfigsSlice = apisSlice.injectEndpoints({
   endpoints: (builder) => ({
     getMenu: builder.query({
       query: (id) => `/menu/${id}`,
-      providesTags: (result, error, arg) => [{ type: 'Menu', _id: arg }],
+      providesTags: ['SingleMenu'],
     }),
     addNewMenu: builder.mutation({
       query(data) {
@@ -14,16 +14,16 @@ export const sysConfigsSlice = apisSlice.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: [{ type: 'Menu', operation: 'Add' }],
+      invalidatesTags: ['Menu'],
     }),
     deleteMenu: builder.mutation({
       query(id) {
         return {
           url: `/menu/${id}`,
-          method: 'DElETE',
+          method: 'DELETE',
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'Menu', _id: arg._id }],
+      invalidatesTags: ['Menu'],
     }),
     updateMenu: builder.mutation({
       query(data) {
@@ -34,21 +34,16 @@ export const sysConfigsSlice = apisSlice.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'Menu', _id: arg._id }],
+      invalidatesTags: ['Menu'],
     }),
 
     getRoles: builder.query({
       query: () => '/roles',
-      providesTags: (result) => (result?.data.length === 0
-        ? [
-          ...result.data.map(({ _id }) => ({ type: 'Role', _id })),
-          ...[{ type: 'Role', operation: 'Add' }],
-        ]
-        : ['Role']),
+      providesTags: ['Role'],
     }),
     getRole: builder.query({
       query: (id) => `/role/${id}`,
-      providesTags: (result, error, arg) => [{ type: 'Role', _id: arg }],
+      providesTags: ['SingleRole'],
     }),
     addNewRole: builder.mutation({
       query(data) {
@@ -58,16 +53,16 @@ export const sysConfigsSlice = apisSlice.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: [{ type: 'Role', operation: 'Add' }],
+      invalidatesTags: ['Role'],
     }),
     deleteRole: builder.mutation({
       query(id) {
         return {
           url: `/role/${id}`,
-          method: 'DElETE',
+          method: 'DELETE',
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'Role', _id: arg._id }],
+      invalidatesTags: ['Role'],
     }),
     updateRole: builder.mutation({
       query(data) {
@@ -78,7 +73,7 @@ export const sysConfigsSlice = apisSlice.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'Role', _id: arg._id }],
+      invalidatesTags: ['Role'],
     }),
   }),
 });

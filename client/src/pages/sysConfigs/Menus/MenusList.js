@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import Table from 'antd/lib/table';
 import Space from 'antd/lib/space';
@@ -42,7 +42,9 @@ function MenusTable({ dataSource, loading }) {
     key: 'action',
     render: (text, record) => (
       <Space direction="horizontal">
-        <UpdateMenuModal initialValues={record} />
+        {
+          useMemo(() => <UpdateMenuModal initialValues={record} />, [record])
+        }
         <Popconfirm
           title="Sure to delete?"
           onConfirm={

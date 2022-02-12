@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
@@ -6,7 +6,7 @@ import message from 'antd/lib/message';
 import TreeSelect from 'antd/lib/tree-select';
 
 import { defineConfig } from '@/../config/config';
-import { useGetMenusByTreeQuery } from '@/utils/apisSlice';
+import { useGetAuthsMutation } from '@/utils/apisSlice';
 import { useUpdateRoleMutation } from '../sysConfigsSlice';
 import withModalForm from '@/utils/withModalForm';
 import FormInModal from '@/utils/FormInModal';
@@ -53,7 +53,7 @@ function RoleForm({ form, initialValues, treeData }) {
     }
     return (
       <Form.Item
-        key={key}
+        key={key + value}
         label={value}
         name={key}
         rules={rules}
@@ -68,32 +68,22 @@ function RoleForm({ form, initialValues, treeData }) {
 
 const UpdateRoleForm = withModalForm(RoleForm);
 
-function UpdateRoleModal({ initialValues }) {
+function UpdateRoleModal({ treeData, initialValues }) {
   const [visible, setVisible] = useState(false);
+  const [initalAuths, setInitalAuths] = useState([]);
   const [updateRole] = useUpdateRoleMutation();
+  const [getAuths] = useGetAuthsMutation();
 
-  const pushObjToArray = (obj, arr) => {
-    Object.entries(obj).forEach(([key, value]) => {
-      if (Array.isArray(key)) {
-        arr.push(...key);
-      } else arr.push(key);
-      if (Array.isArray(value)) {
-        arr.push(...value);
-      } else arr.push(value);
-    });
-    return arr;
-  };
-
-  const initalAuths = initialValues.auth
-    .reduce((acc, cur) => {
-      const arr = [];
-      pushObjToArray(cur, arr);
-      return acc.concat(arr);
-    }, []);
+  useEffect(() => {
+    (async () => {
+      const resp = await getAuths({ roleName: initialValues.name });
+      setInitalAuths(Object.keys(resp.data?.data));
+    })();
+  }, []);
 
   const onCreate = async (formData) => {
     try {
-      await updateRole(formData).unwrap();
+      await updateRole({ ...formData, ...{ menusTree: treeData } }).unwrap();
       setVisible(false);
       message.success('权限更新成功', 3);
     } catch (err) {
@@ -101,36 +91,23 @@ function UpdateRoleModal({ initialValues }) {
     }
   };
 
-  const {
-    data,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useGetMenusByTreeQuery();
-
-  if (isLoading || isError) {
-    return null;
-  }
-
   return (
-    isSuccess && (
-      <UpdateRoleForm
-        buttonType="link"
-        buttonTitle="更新"
-        onClick={() => {
-          setVisible(true);
-        }}
-        visible={visible}
-        title="更新菜单"
-        onCreate={onCreate}
-        onCancel={() => {
-          setVisible(false);
-        }}
-        okText="Update"
-        initialValues={{ ...initialValues, auth: initalAuths }}
-        treeData={data.data}
-      />
-    )
+    <UpdateRoleForm
+      buttonType="link"
+      buttonTitle="更新"
+      onClick={() => {
+        setVisible(true);
+      }}
+      visible={visible}
+      title="更新菜单"
+      onCreate={onCreate}
+      onCancel={() => {
+        setVisible(false);
+      }}
+      okText="Update"
+      initialValues={{ ...initialValues, auth: initalAuths }}
+      treeData={treeData}
+    />
   );
 }
 

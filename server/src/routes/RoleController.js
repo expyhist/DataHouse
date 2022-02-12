@@ -9,7 +9,7 @@ module.exports = (router) => {
   router
     .route('/role')
     .all(verifyHeaders, verifyPayload(['name'], null, 1))
-    .post(RoleService.baseGetAll);
+    .post(RoleService.baseCreate);
 
   router
     .route('/role/:id')
@@ -19,6 +19,6 @@ module.exports = (router) => {
     .get(RoleService.baseGetById);
 
   router.get('/roles', RoleService.baseGetAll);
-  router.post('/authsbyid', RoleService.getAuthsById);
+  router.post('/auths', RoleService.getAuths);
   router.get('/setinitalroles', RoleService.setInitalRoles);
 };

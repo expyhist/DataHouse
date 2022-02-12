@@ -7,10 +7,10 @@ class FilterService extends BaseService {
     super(FilterDao);
   }
 
-  baseCreate = async (req, res) => {
-    const apiTableInfo = await ApiTableDao.baseGetById(req.body.apiTableId);
+  transCreate = async (req, res) => {
+    const apiTableInfo = await ApiTableDao.getById(req.body.apiTableId);
 
-    if (apiTableInfo?.connection.get('filters')) {
+    if (apiTableInfo.connection.filters) {
       return res.status(400).json({
         success: false,
         error: 'Filter already exist',
@@ -19,7 +19,7 @@ class FilterService extends BaseService {
 
     try {
       const resp = await this.instance.add(req.body);
-      await apiTableInfo.connection.set('filters', resp._id);
+      await ApiTableDao.updateById(req.body.apiTableId, { $set: { 'connection.filters': resp._id } });
       return res.status(201).json({
         success: true,
         id: resp._id,

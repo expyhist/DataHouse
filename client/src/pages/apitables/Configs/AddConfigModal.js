@@ -18,7 +18,7 @@ function ConfigForm({ form }) {
     title: '',
     author: localStorage.getItem('email'),
     applicant: localStorage.getItem('email'),
-    defaultParams: '',
+    defaultParams: '{}',
   };
   const entriesData = apiTablesColumnsInfo.AddConfigFormColumns;
   const mapFn = ([key, value]) => {
@@ -60,7 +60,7 @@ function AddConfigModal() {
 
   const onCreate = async (formData) => {
     try {
-      await addNewConfig(formData).unwrap();
+      await addNewConfig({ ...formData, ...{ defaultParams: '{}' } }).unwrap();
       setVisible(false);
       message.success('配置添加成功', 3);
       message.success('菜单添加成功', 3);

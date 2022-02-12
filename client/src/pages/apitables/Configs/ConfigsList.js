@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Table from 'antd/lib/table';
@@ -15,15 +15,11 @@ import Access from '@/utils/Access';
 import { AccessContext } from '@/utils/AccessContext';
 import { defineConfig } from '@/../config/config';
 import { useGetConfigsQuery, useDeleteConfigMutation } from './configsSlice';
-import { useDeleteFilterMutation } from '../Filters/filtersSlice';
-import { useDeleteMenuMutation } from '@/pages/sysConfigs/sysConfigsSlice';
 
 function ConfigsTable({ dataSource, loading, access }) {
   if (loading === true) return (<Table columns={null} dataSource={null} loading={loading} />);
 
   const [deleteConfig] = useDeleteConfigMutation();
-  const [deleteFilter] = useDeleteFilterMutation();
-  const [deleteMenu] = useDeleteMenuMutation();
   const { apiTablesColumnsInfo } = defineConfig;
 
   const columns = Object.entries(apiTablesColumnsInfo.ConfigsListColumns)
@@ -50,7 +46,9 @@ function ConfigsTable({ dataSource, loading, access }) {
       <Space direction="vertical">
 
         <Access accessible={access.AddNewFilter}>
-          <AddFiltersModal id={record._id} url={record.url} />
+          {
+            useMemo(() => <AddFiltersModal id={record._id} url={record.url} />, [record])
+          }
         </Access>
 
         <Access accessible={access.GetConfig}>
@@ -67,16 +65,10 @@ function ConfigsTable({ dataSource, loading, access }) {
             onConfirm={
               async () => {
                 try {
-                  await deleteConfig(record._id);
-                  message.success('配置删除成功', 3);
-                  if (record?.connection?.filters) {
-                    await deleteFilter(record?.connection?.filters);
-                    message.success('筛选条件删除成功', 3);
-                  }
-                  if (record.connection?.menus) {
-                    await deleteMenu(record.connection.menus);
-                    message.success('菜单删除成功', 3);
-                  }
+                  const resp = await deleteConfig(record._id);
+                  resp.data.info.split(',').forEach((ele) => {
+                    message.success(`${ele}删除成功`, 3);
+                  });
                 } catch (err) {
                   message.error(`配置删除失败，错误:${err.data.error}`, 3);
                 }

@@ -41,7 +41,7 @@ function SingleConfig() {
             }
           </Descriptions>
         </Card>
-        <SingleFilter id={data.data?.connection?.filters} url={singleConfig.url} />
+        <SingleFilter id={data.data.connection?.filters} url={singleConfig.url} />
       </>
     )
   );

@@ -4,13 +4,11 @@ export const demandsSlice = apisSlice.injectEndpoints({
   endpoints: (builder) => ({
     getDemands: builder.query({
       query: () => '/demands',
-      providesTags: (result) => (result?.data.lenght === 0
-        ? [...result.data.map(({ _id }) => ({ type: 'Demand', _id })), ...[{ type: 'Demand', operation: 'Add' }]]
-        : ['Demand']),
+      providesTags: ['Demand'],
     }),
     getDemand: builder.query({
       query: (id) => `/demand/${id}`,
-      providesTags: (result, error, arg) => [{ type: 'Demand', _id: arg }],
+      providesTags: ['SingleDemand'],
     }),
     addNewDemand: builder.mutation({
       query(data) {
@@ -20,13 +18,13 @@ export const demandsSlice = apisSlice.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: [{ type: 'Demand', operation: 'Add' }],
+      invalidatesTags: ['Demand'],
     }),
     deleteDemand: builder.mutation({
       query(id) {
         return {
           url: `/demand/${id}`,
-          method: 'DElETE',
+          method: 'DELETE',
         };
       },
       invalidatesTags: ['Demand'],
@@ -40,7 +38,7 @@ export const demandsSlice = apisSlice.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'Demand', _id: arg._id }],
+      invalidatesTags: ['SingleDemand'],
     }),
   }),
 });

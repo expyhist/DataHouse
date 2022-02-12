@@ -11,21 +11,23 @@ class MenuService extends BaseService {
   getMenusByTree = async (req, res) => {
     try {
       const resp = await this.instance.getAll();
-      const listToTree = (items, key = '', link = 'parentPath') => items
-        .filter((item) => item[link] === key)
-        .map((item) => ({ ...item, children: listToTree(items, item.key) }));
+      const listToTree = (items, path = '', link = 'parentPath') => items
+        .filter((item) => item[link] === path)
+        .map((item) => ({ ...item, children: listToTree(items, item.path) }));
 
       const auths = [];
-      resp
-        .forEach((item) => {
-          const { auth, path } = item;
-          return auth.forEach((ele) => auths.push({ path: ele, name: ele, parentPath: path }));
-        });
+      resp.forEach((item) => {
+        const { auth, path } = item;
+        return auth.forEach((ele) => auths.push({ path: ele, name: ele, parentPath: path }));
+      });
 
       const menuData = [...resp, ...auths].map((item) => {
-        const { path: key, name: title, parentPath } = { ...item };
+        const { path, name, parentPath } = item;
+        const key = path;
+        const value = path;
+        const title = name;
         return {
-          key, title, parentPath, value: key,
+          key, title, parentPath, value, path,
         };
       });
 

@@ -9,7 +9,7 @@ module.exports = (router) => {
   router
     .route('/filter')
     .all(verifyHeaders, verifyPayload(['apiTableId'], 'apiTableId', null))
-    .post(FilterService.baseCreate);
+    .post(FilterService.transCreate);
 
   router
     .route('/filter/:id')

@@ -18,7 +18,7 @@ function SingleFilter({ id, url }) {
     return null;
   }
 
-  // 不要使用Json.parse or Json.stringify, 会清空value
+  // 不要使用JSON.parse or JSON.stringify, 会清空value
   const regex = /rangeDate|singleDate|text|enum/;
 
   return (
@@ -34,7 +34,7 @@ function SingleFilter({ id, url }) {
             extra={<UpdateFilterModal filterId={id} singleFilter={data.data} url={url} />}
           >
             {
-              Object.entries(data?.data).map(([key, value]) => {
+              Object.entries(data.data).map(([key, value]) => {
                 if (regex.test(key)) {
                   return (
                     <Descriptions.Item label={key} key={key}>

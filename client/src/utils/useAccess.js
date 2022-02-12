@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 
-import { useGetAuthsByIdMutation } from './apisSlice';
+import { useGetAuthsMutation } from './apisSlice';
 
 export const useAccess = () => {
   const [access, setAccess] = useState({});
-  const [getAuthsById] = useGetAuthsByIdMutation();
+  const [getAuths] = useGetAuthsMutation();
 
   useEffect(() => {
     (async () => {
       if (localStorage.getItem('token')) {
-        const resp = await getAuthsById();
-        setAccess(resp.data.data);
+        const resp = await getAuths();
+        setAccess(resp.data?.data);
       }
     })();
   }, []);

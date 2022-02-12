@@ -5,6 +5,11 @@ const common = require('./webpack.common');
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'eval-cheap-module-source-map',
+  output: {
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].chunk.js',
+    publicPath: '/',
+  },
   devServer: {
     hot: true,
     historyApiFallback: true,
@@ -20,11 +25,6 @@ module.exports = merge(common, {
   },
   cache: {
     type: 'memory',
-  },
-  output: {
-    filename: '[name].bundle.js',
-    chunkFilename: '[name].chunk.js',
-    publicPath: '/',
   },
   externals: {
     config: JSON.stringify({

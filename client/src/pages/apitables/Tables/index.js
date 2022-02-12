@@ -46,7 +46,7 @@ function ApiTable() {
   return (
     <>
       {
-        isSuccess && <TableFilter filterId={data.data?.connection?.filters} payload={payload} />
+        isSuccess && <TableFilter filterId={data.data.connection?.filters} payload={payload} />
       }
       <Access
         accessible={access.GetTableData}

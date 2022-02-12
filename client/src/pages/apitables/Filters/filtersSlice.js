@@ -23,7 +23,7 @@ export const filtersSlice = apisSlice.injectEndpoints({
   endpoints: (builder) => ({
     getFilter: builder.query({
       query: (id) => `/filter/${id}`,
-      providesTags: (result, error, arg) => [{ type: 'Filter', _id: arg }],
+      providesTags: ['SingleFilter'],
     }),
     addNewFilter: builder.mutation({
       query: (data) => ({
@@ -31,16 +31,16 @@ export const filtersSlice = apisSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: [{ type: 'Filter', operation: 'Add' }],
+      invalidatesTags: ['SingleFilter'],
     }),
     deleteFilter: builder.mutation({
       query(id) {
         return {
           url: `/filter/${id}`,
-          method: 'DElETE',
+          method: 'DELETE',
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'Filter', _id: arg }],
+      invalidatesTags: ['SingleFilter'],
     }),
     updateFilter: builder.mutation({
       query(data) {
@@ -51,7 +51,7 @@ export const filtersSlice = apisSlice.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: (result, error, arg) => [{ type: 'Filter', _id: arg.filterId }, 'Menus'],
+      invalidatesTags: ['SingleFilter'],
     }),
   }),
 });
