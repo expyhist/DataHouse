@@ -4,7 +4,7 @@ const common = require('./webpack.common');
 
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'eval-cheap-module-source-map',
+  devtool: 'eval-cheap-source-map',
   output: {
     filename: '[name].bundle.js',
     chunkFilename: '[name].chunk.js',
@@ -22,6 +22,7 @@ module.exports = merge(common, {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
+    compress: true,
   },
   cache: {
     type: 'memory',

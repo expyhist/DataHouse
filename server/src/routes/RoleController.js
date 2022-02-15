@@ -1,4 +1,4 @@
-const Role = require('../models/RoleModel');
+const RoleDao = require('../dao/RoleDao');
 const RoleService = require('../service/RoleService');
 
 const verifyPayload = require('../utils/verifyPayload');
@@ -13,7 +13,7 @@ module.exports = (router) => {
 
   router
     .route('/role/:id')
-    .all(verifyHeaders, verifyExistsById(Role), verifyPayload(['name'], null, 1))
+    .all(verifyHeaders, verifyExistsById(RoleDao), verifyPayload(['name'], null, 1))
     .put(RoleService.baseUpdateById)
     .delete(RoleService.baseDeleteById)
     .get(RoleService.baseGetById);

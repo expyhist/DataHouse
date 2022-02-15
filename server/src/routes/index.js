@@ -1,8 +1,8 @@
 const express = require('express');
 
-const verifyToken = require('../utils/verifyToken');
-
 const router = express.Router();
+
+const verifyToken = require('../utils/verifyToken');
 
 router.all(/^.*(?<!sign.*|set.*)$/, verifyToken);
 

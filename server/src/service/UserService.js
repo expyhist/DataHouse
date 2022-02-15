@@ -39,6 +39,7 @@ class UserService extends BaseService {
 
       if (!resp || !passwordIsValid) {
         return res.status(401).send({
+          success: false,
           token: null,
           message: 'Invalid Password or Username!',
         });
@@ -50,7 +51,6 @@ class UserService extends BaseService {
         success: true,
         id: resp._id,
         email: resp.email,
-        roles: resp.roles,
         rolesName: resp.rolesName,
         token,
         tokenExpires: jwt.verify(token, config.secret).exp * 1000,

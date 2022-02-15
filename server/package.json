@@ -15,6 +15,7 @@
     "date-fns": "^2.28.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "helmet": "^5.0.2",
     "immer": "^9.0.7",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.7",
@@ -22,8 +23,6 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.0",
-    "@babel/eslint-parser": "^7.17.0",
     "eslint": "^8.8.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-standard": "^16.0.3",

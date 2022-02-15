@@ -22,7 +22,7 @@ function PrivateLayout({ children }) {
 
   useEffect(() => {
     (async () => {
-      if (Object.keys(access).length !== 0) {
+      if (access && Object.keys(access).length !== 0) {
         const resp = await getMenusByAccess({ path: Object.keys(access) });
         const singleMenuData = resp.data.data.filter((item) => item.path === path);
         setMenuData(singleMenuData);

@@ -1,4 +1,4 @@
-const Demand = require('../models/DemandModel');
+const DemandDao = require('../dao/DemandDao');
 const DemandService = require('../service/DemandService');
 
 const verifyPayload = require('../utils/verifyPayload');
@@ -13,7 +13,7 @@ module.exports = (router) => {
 
   router
     .route('/demand/:id')
-    .all(verifyHeaders, verifyExistsById(Demand), verifyPayload(['description', 'content', 'applicant', 'reviewStatus', 'status'], null, 5))
+    .all(verifyHeaders, verifyExistsById(DemandDao), verifyPayload(['description', 'content', 'applicant', 'reviewStatus', 'status'], null, 5))
     .put(DemandService.baseUpdateById)
     .delete(DemandService.baseDeleteById)
     .get(DemandService.baseGetById);

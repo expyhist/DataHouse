@@ -16,7 +16,7 @@ const SysConfigsPage = lazy(() => import('./pages/sysConfigs'));
 const UsersPage = lazy(() => import('./pages/users'));
 
 function App() {
-  const access = useAccess();
+  const access = useAccess() || {};
   return (
     <AccessProvider access={access}>
       <Router>

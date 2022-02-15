@@ -34,7 +34,7 @@ function FiltersNum({ initialValues }) {
                 label={value}
                 name={value}
                 rules={[
-                  { required: true },
+                  { required: true, message: `请输入${value}!` },
                   { type: 'number', message: '请输入数字!', transform: (val) => parseInt(val, 10) },
                 ]}
                 normalize={(val) => parseInt(val, 10)}

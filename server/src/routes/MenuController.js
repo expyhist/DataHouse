@@ -1,4 +1,4 @@
-const Menu = require('../models/MenuModel');
+const MenuDao = require('../dao/MenuDao');
 const MenuService = require('../service/MenuService');
 
 const verifyPayload = require('../utils/verifyPayload');
@@ -13,7 +13,7 @@ module.exports = (router) => {
 
   router
     .route('/menu/:id')
-    .all(verifyHeaders, verifyExistsById(Menu), verifyPayload(['path', 'name'], null, 2))
+    .all(verifyHeaders, verifyExistsById(MenuDao), verifyPayload(['path', 'name'], null, 2))
     .put(MenuService.baseUpdateById)
     .delete(MenuService.baseDeleteById)
     .get(MenuService.baseGetById);

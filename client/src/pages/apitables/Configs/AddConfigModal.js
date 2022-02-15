@@ -29,7 +29,18 @@ function ConfigForm({ form }) {
         rules = [{ required: true, message: `请输入${value}!` }, { type: 'url', message: `请输入正确 ${value}!` }];
         break;
       case 'defaultParams':
-        rules = [];
+        rules = [
+          { required: true, message: `请输入${value}!` },
+          {
+            validator: async (_, defaultParams) => {
+              try {
+                JSON.parse(defaultParams);
+              } catch (error) {
+                return Promise.reject(new Error('输入正确的JSON格式。如{}，{"a": 1, "b": 2}'));
+              }
+            },
+          },
+        ];
         break;
       case 'applicant':
       case 'author':
@@ -60,10 +71,11 @@ function AddConfigModal() {
 
   const onCreate = async (formData) => {
     try {
-      await addNewConfig({ ...formData, ...{ defaultParams: '{}' } }).unwrap();
+      const resp = await addNewConfig(formData).unwrap();
       setVisible(false);
-      message.success('配置添加成功', 3);
-      message.success('菜单添加成功', 3);
+      resp.info.split(',').forEach((ele) => {
+        message.success(`${ele}删除成功`, 3);
+      });
     } catch (err) {
       message.error(`配置和菜单添加失败，错误:${err.data.error}`, 3);
     }

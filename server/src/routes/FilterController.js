@@ -1,4 +1,4 @@
-const Filter = require('../models/FilterModel');
+const FilterDao = require('../dao/FilterDao');
 const FilterService = require('../service/FilterService');
 
 const verifyPayload = require('../utils/verifyPayload');
@@ -13,7 +13,7 @@ module.exports = (router) => {
 
   router
     .route('/filter/:id')
-    .all(verifyHeaders, verifyExistsById(Filter), verifyPayload(['rangeDate', 'singleDate', 'text', 'enum'], null, null))
+    .all(verifyHeaders, verifyExistsById(FilterDao), verifyPayload(['rangeDate', 'singleDate', 'text', 'enum'], null, null))
     .put(FilterService.baseUpdateById)
     .delete(FilterService.baseDeleteById)
     .get(FilterService.baseGetById);

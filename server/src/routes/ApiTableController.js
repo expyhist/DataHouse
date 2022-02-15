@@ -1,4 +1,4 @@
-const ApiTable = require('../models/ApiTableModel');
+const ApiTableDao = require('../dao/ApiTableDao');
 const ApiTableService = require('../service/ApiTableService');
 const ApiTableDataService = require('../service/ApiTableDataService');
 
@@ -14,7 +14,7 @@ module.exports = (router) => {
 
   router
     .route('/apitable/:id')
-    .all(verifyHeaders, verifyExistsById(ApiTable), verifyPayload(['url', 'title', 'author', 'applicant'], null, 4))
+    .all(verifyHeaders, verifyExistsById(ApiTableDao), verifyPayload(['url', 'title', 'author', 'applicant'], null, 4))
     .put(ApiTableService.transUpdate)
     .delete(ApiTableService.transDelete)
     .get(ApiTableService.baseGetById);

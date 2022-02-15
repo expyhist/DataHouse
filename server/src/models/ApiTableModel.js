@@ -17,7 +17,13 @@ const ApiTable = new mongoose.Schema(
     author: { type: String, require: true },
     applicant: { type: String, require: true },
     connection: { type: Map, of: mongoose.Schema.Types.ObjectId },
-    defaultParams: { type: mongoose.Schema.Types.Mixed },
+    defaultParams: {
+      type: mongoose.Schema.Types.Mixed,
+      validate: {
+        validator: rules.json,
+        message: (props) => `${props.value} is not a valid json!`,
+      },
+    },
   },
   {
     timestamps: true,

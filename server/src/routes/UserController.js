@@ -1,4 +1,4 @@
-const User = require('../models/UserModel');
+const UserDao = require('../dao/UserDao');
 const UserService = require('../service/UserService');
 
 const verifyPayload = require('../utils/verifyPayload');
@@ -18,7 +18,7 @@ module.exports = (router) => {
 
   router
     .route('/user/:id')
-    .all(verifyHeaders, verifyExistsById(User), verifyPayload(['email', 'password'], null, 2))
+    .all(verifyHeaders, verifyExistsById(UserDao), verifyPayload(['email', 'password'], null, 2))
     .get(UserService.baseGetById)
     .put(UserService.baseUpdateById)
     .delete(UserService.baseDeleteById);

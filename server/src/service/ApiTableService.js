@@ -27,8 +27,10 @@ class ApiTableService extends BaseService {
 
   transCreate = async (req, res) => {
     try {
+      let info;
       const apiTableInfo = await this.instance.add({ ...req.body, ...{ connection: new Map() } });
       const { _id, title } = apiTableInfo;
+      info = '配置';
       const menuPayload = {
         parentPath: '/tables/databoard/:id',
         path: `/tables/databoard/${_id}`,
@@ -38,11 +40,13 @@ class ApiTableService extends BaseService {
       };
       const menuInfo = await MenuDao.add(menuPayload);
       await this.instance.updateById(_id, { $set: { 'connection.menus': menuInfo._id } });
+      info += ',菜单';
 
       return res.status(201).json({
         success: true,
         id: _id,
         title,
+        info,
         message: `${this.instance.getModalName()} created`,
       });
     } catch (error) {
@@ -79,9 +83,7 @@ class ApiTableService extends BaseService {
       let info;
       const apiTableInfo = await this.instance.deleteById(req.params.id);
       const { connection } = apiTableInfo;
-      if (apiTableInfo) {
-        info = '配置';
-      }
+      info = '配置';
       if (connection.get('menus')) {
         await MenuDao.deleteById(connection.get('menus'));
         info += ',菜单';
