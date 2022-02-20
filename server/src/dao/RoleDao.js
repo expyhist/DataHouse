@@ -8,4 +8,4 @@ class RoleDao extends BaseDao {
   }
 }
 
-module.exports = new RoleDao();
+module.exports = RoleDao;

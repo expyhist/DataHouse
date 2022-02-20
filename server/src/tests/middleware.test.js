@@ -1,26 +1,19 @@
-const mongoose = require('mongoose');
 const supertest = require('supertest');
 
+const testConnection = require('./testMongodb');
 const createServer = require('./testServer');
-const dbConfig = require('../src/config/db-config');
-const randomMongoObjectId = require('../src/utils/randomMongoObjectId');
-
-beforeEach((done) => {
-  mongoose
-    .connect(
-      `mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB_TEST}`,
-      dbConfig.CONNECTIONOPTIONS,
-      () => done(),
-    );
-});
-
-afterEach((done) => {
-  mongoose.connection.close(() => done());
-});
-
-const app = createServer();
+const MockDao = require('../mock/MockDao');
+const MockService = require('../mock/MockService');
 
 describe('test middleware', () => {
+  const MockDaoInstance = new MockDao(testConnection);
+  const MockServiceInstance = new MockService(MockDaoInstance);
+  const app = createServer(MockServiceInstance);
+
+  afterAll(async () => {
+    await testConnection.close();
+  });
+
   test('Create: should not create when some keys are lost', async () => {
     await supertest(app)
       .post('/api/test/mock')
@@ -79,16 +72,6 @@ describe('test middleware', () => {
       .then((res) => {
         expect(res.body.success).toBe(false);
         expect(res.body.error).toBe('The length of id is error');
-      });
-  });
-
-  test('should not get when id is not exists', async () => {
-    await supertest(app)
-      .get(`/api/test/mock/${randomMongoObjectId()}`)
-      .expect(400)
-      .then((res) => {
-        expect(res.body.success).toBe(false);
-        expect(res.body.error).toBe('The id is not existent');
       });
   });
 });

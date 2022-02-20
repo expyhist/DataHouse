@@ -5,63 +5,60 @@ const BaseService = require('./BaseService');
 const UserDao = require('../dao/UserDao');
 
 class UserService extends BaseService {
-  constructor() {
-    super(UserDao);
+  constructor(daoInstance) {
+    super(daoInstance || new UserDao());
   }
 
-  signup = async (req, res) => {
+  signup = async (body) => {
     try {
-      const resp = await this.instance.add({
-        ...req.body,
-        ...{ password: bcrypt.hashSync(req.body.password, 8) },
+      const resp = await this.dao.add({
+        ...body,
+        ...{ password: bcrypt.hashSync(body.password, 8) },
       });
-      return res.status(201).json({
+      return {
         success: true,
         id: resp._id,
         message: 'user created',
-      });
+      };
     } catch (error) {
-      return res.status(422).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 
-  signin = async (req, res) => {
+  signin = async (body) => {
     try {
-      const resp = await this.instance.getOne({ email: req.body.email });
+      const resp = await this.dao.getOne({ email: body.email });
 
       const passwordIsValid = bcrypt.compareSync(
-        req.body.password,
+        body.password,
         resp ? resp.password : '',
       );
 
       if (!resp || !passwordIsValid) {
-        return res.status(401).send({
-          success: false,
-          token: null,
-          message: 'Invalid Password or Username!',
-        });
+        throw new Error('Invalid Password or Username!');
       }
 
       const token = jwt.sign({ id: resp._id }, config.secret, { expiresIn: '1d' });
 
-      return res.status(200).json({
+      return {
         success: true,
         id: resp._id,
         email: resp.email,
         rolesName: resp.rolesName,
         token,
         tokenExpires: jwt.verify(token, config.secret).exp * 1000,
-      });
+      };
     } catch (error) {
-      return res.status(404).json({
+      return {
         success: false,
+        token: null,
         error: error.toString(),
-      });
+      };
     }
   };
 }
 
-module.exports = new UserService();
+module.exports = UserService;

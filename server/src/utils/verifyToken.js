@@ -14,9 +14,10 @@ module.exports = (req, res, next) => {
       return res.status(401).send({ message: 'Unauthorized' });
     }
     req.userId = decoded.id;
-    const userInfo = await UserDao.getById(decoded.id);
+    const UserDaoInstance = new UserDao();
+    const userInfo = await UserDaoInstance.getById(decoded.id);
     if (!userInfo) {
-      return res.status(401).send({ message: 'Unauthorized' });
+      return res.status(401).send({ message: 'user is not existent' });
     }
     next();
   });

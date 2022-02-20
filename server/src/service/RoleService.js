@@ -1,46 +1,50 @@
 const mongoose = require('mongoose');
+
 const BaseService = require('./BaseService');
 const RoleDao = require('../dao/RoleDao');
 const UserDao = require('../dao/UserDao');
 const MenuDao = require('../dao/MenuDao');
+
 const objToArray = require('../utils/objToArray');
 const filterTreeData = require('../utils/filterTreeData');
 const treeToList = require('../utils/treeToList');
 
 class RoleService extends BaseService {
-  constructor() {
-    super(RoleDao);
+  constructor(daoInstance) {
+    super(daoInstance || new RoleDao());
+    this.UserDaoInstance = new UserDao(daoInstance?.connection);
+    this.MenuDaoInstance = new MenuDao(daoInstance?.connection);
   }
 
-  baseUpdateById = async (req, res) => {
-    const { menusTree, auth } = req.body;
+  baseUpdateById = async (id, body) => {
+    const { menusTree, auth } = body;
 
     const keepCondition = (item) => auth.includes(item.key);
 
     try {
       const filterAuth = filterTreeData(menusTree, keepCondition);
-      const resp = await this.instance.updateById(req.params.id, { auth: treeToList(filterAuth) });
-      return res.status(200).json({
+      const resp = await this.dao.updateById(id, { auth: treeToList(filterAuth) });
+      return {
         success: true,
         id: resp._id,
-        message: `${this.instance.getModalName()} updated`,
-      });
+        message: `${this.dao.getModalName()} updated`,
+      };
     } catch (error) {
-      return res.status(404).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 
-  getAuths = async (req, res) => {
+  getAuths = async (userId, body) => {
     let resp;
 
-    if (req.body.roleName) {
-      resp = await this.instance.get({ name: req.body.roleName });
+    if (body.roleName) {
+      resp = await this.dao.get({ name: body.roleName });
     } else {
-      const userInfo = await UserDao.getById(req.userId);
-      resp = await this.instance.get({ name: { $in: userInfo.rolesName } });
+      const userInfo = await this.UserDaoInstance.getById(userId);
+      resp = await this.dao.get({ name: { $in: userInfo.rolesName } });
     }
 
     try {
@@ -54,19 +58,19 @@ class RoleService extends BaseService {
         }
       }
 
-      return res.status(200).json({
+      return {
         success: true,
         data: result || {},
-      });
+      };
     } catch (error) {
-      return res.status(404).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 
-  setInitalRoles = async (req, res) => {
+  setInitalRoles = async () => {
     mongoose.connection.db.dropCollection('roles');
 
     const setDataForRole = (menuData, auths, filterFn) => {
@@ -80,7 +84,7 @@ class RoleService extends BaseService {
     };
 
     try {
-      const menuData = await MenuDao.getAll();
+      const menuData = await this.MenuDaoInstance.getAll();
       const adminAuth = [];
       const guestAuth = [];
 
@@ -91,22 +95,22 @@ class RoleService extends BaseService {
       setDataForRole(menuData, adminAuth);
       setDataForRole(menuData, guestAuth, filterFnForGuest);
 
-      const resp = await this.instance.insertMany([
+      const resp = await this.dao.insertMany([
         { name: 'admin', auth: adminAuth },
         { name: 'guest', auth: guestAuth },
       ]);
 
-      return res.status(200).json({
+      return {
         success: true,
         data: resp,
-      });
+      };
     } catch (error) {
-      return res.status(404).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 }
 
-module.exports = new RoleService();
+module.exports = RoleService;

@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { useRouteMatch, NavLink } from 'react-router-dom';
+import { Base64 } from 'js-base64';
 
 import Layout from 'antd/lib/layout';
 import Menu from 'antd/lib/menu';
 import * as Icons from '@ant-design/icons';
+
+import { useGetMenusByAccessQuery } from '@/utils/apisSlice';
+
+import { AccessContext } from '@/utils/AccessContext';
 
 const recursiveMenu = (menuData) => {
   const { SubMenu } = Menu;
@@ -35,22 +40,39 @@ const recursiveMenu = (menuData) => {
   });
 };
 
-function SiderMenu({ menuData }) {
+function SiderMenu() {
   const [collapsed, setCollapsed] = useState(true);
+  const access = useContext(AccessContext);
+  const { path } = useRouteMatch();
 
   const { Sider } = Layout;
 
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetMenusByAccessQuery(Base64.encode(Object.keys(access).toString()));
+
+  if (isLoading || isError) {
+    return null;
+  }
+
+  const singleMenuData = isSuccess && data.data.filter((item) => item.path === path);
+
   return (
-    <Sider
-      collapsible
-      collapsed={collapsed}
-      onCollapse={() => setCollapsed(!collapsed)}
-      style={{ background: 'white' }}
-    >
-      <Menu mode="inline" style={{ borderRight: 0 }}>
-        {menuData ? menuData.map((item) => recursiveMenu(item.children)) : null}
-      </Menu>
-    </Sider>
+    isSuccess && (
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={() => setCollapsed(!collapsed)}
+        style={{ background: 'white' }}
+      >
+        <Menu mode="inline" style={{ borderRight: 0 }}>
+          {singleMenuData.map((item) => recursiveMenu(item.children))}
+        </Menu>
+      </Sider>
+    )
   );
 }
 

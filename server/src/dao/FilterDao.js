@@ -2,10 +2,10 @@ const Filter = require('../models/FilterModel');
 const BaseDao = require('./BaseDao');
 
 class FilterDao extends BaseDao {
-  constructor() {
-    super('filters', Filter);
+  constructor(connection) {
+    super('filters', Filter, connection);
     this.model = super.getModel();
   }
 }
 
-module.exports = new FilterDao();
+module.exports = FilterDao;

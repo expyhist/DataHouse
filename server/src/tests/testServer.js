@@ -3,10 +3,12 @@ const helmet = require('helmet');
 
 const router = express.Router();
 
-require('../mock/MockController')(router);
+const MockController = require('../mock/MockController');
 
-module.exports = () => {
+module.exports = (service) => {
   const app = express();
+
+  MockController(router, service);
 
   app.use(helmet());
   app.use(express.urlencoded({ extended: true }));

@@ -1,34 +1,35 @@
+const axios = require('axios');
+const { v4: uuidv4 } = require('uuid');
+const { produce } = require('immer');
+
 const BaseService = require('./BaseService');
 const ApiTableDao = require('../dao/ApiTableDao');
 const MenuDao = require('../dao/MenuDao');
 const FilterDao = require('../dao/FilterDao');
 
+const getDataWithUUID = (data) => {
+  const result = produce(data, (draft) => {
+    draft.map((obj) => {
+      const newObj = obj;
+      const uuid = Object.prototype.hasOwnProperty.call(obj, 'uuid') ? obj.uuid : uuidv4();
+      newObj.uuid = uuid;
+      return newObj;
+    });
+  });
+  return result;
+};
+
 class ApiTableService extends BaseService {
-  constructor() {
-    super(ApiTableDao);
+  constructor(daoInstance) {
+    super(daoInstance || new ApiTableDao());
+    this.MenuDaoInstance = new MenuDao(daoInstance?.connection);
+    this.FilterDaoInstance = new FilterDao(daoInstance?.connection);
   }
 
-  baseCreate = async (req, res) => {
-    try {
-      const resp = await this.instance.add({ ...req.body, ...{ connection: new Map() } });
-      return res.status(201).json({
-        success: true,
-        id: resp._id,
-        title: resp.title,
-        message: `${this.instance.getModalName()} created`,
-      });
-    } catch (error) {
-      return res.status(422).json({
-        success: false,
-        error: error.toString(),
-      });
-    }
-  };
-
-  transCreate = async (req, res) => {
+  transCreate = async (body) => {
     try {
       let info;
-      const apiTableInfo = await this.instance.add({ ...req.body, ...{ connection: new Map() } });
+      const apiTableInfo = await this.dao.add({ ...body, ...{ connection: new Map() } });
       const { _id, title } = apiTableInfo;
       info = '配置';
       const menuPayload = {
@@ -38,72 +39,106 @@ class ApiTableService extends BaseService {
         icon: '',
         auth: [`${title}-ExportTable`, `${title}-GetTableData`],
       };
-      const menuInfo = await MenuDao.add(menuPayload);
-      await this.instance.updateById(_id, { $set: { 'connection.menus': menuInfo._id } });
+      const menuInfo = await this.MenuDaoInstance.add(menuPayload);
+      await this.dao.updateById(_id, { $set: { 'connection.menus': menuInfo._id } });
       info += ',菜单';
 
-      return res.status(201).json({
+      return {
         success: true,
         id: _id,
         title,
         info,
-        message: `${this.instance.getModalName()} created`,
-      });
+        message: `${this.dao.getModalName()} created`,
+      };
     } catch (error) {
-      return res.status(422).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 
-  transUpdate = async (req, res) => {
+  transUpdate = async (id, body) => {
     try {
-      const apiTableInfo = await this.instance.updateById(req.params.id, req.body);
+      const apiTableInfo = await this.dao.updateById(id, body);
       const { title, connection } = apiTableInfo;
-      const menuInfo = await MenuDao.getById(connection.get('menus'));
+      const menuInfo = await this.MenuDaoInstance.getById(connection.get('menus'));
       if (title !== menuInfo.name) {
-        await MenuDao.updateById(connection.get('menus'), { ...menuInfo, ...{ name: title } });
+        await this.MenuDaoInstance.updateById(connection.get('menus'), { ...menuInfo, ...{ name: title } });
       }
 
-      return res.status(201).json({
+      return {
         success: true,
-        message: `${this.instance.getModalName()} updated`,
-      });
+        message: `${this.dao.getModalName()} updated`,
+      };
     } catch (error) {
-      return res.status(422).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 
-  transDelete = async (req, res) => {
+  transDelete = async (id) => {
     try {
       let info;
-      const apiTableInfo = await this.instance.deleteById(req.params.id);
+      const apiTableInfo = await this.dao.deleteById(id);
       const { connection } = apiTableInfo;
       info = '配置';
       if (connection.get('menus')) {
-        await MenuDao.deleteById(connection.get('menus'));
+        await this.MenuDaoInstance.deleteById(connection.get('menus'));
         info += ',菜单';
       }
       if (connection.get('filters')) {
-        await FilterDao.deleteById(connection.get('filters'));
+        await this.FilterDaoInstance.deleteById(connection.get('filters'));
         info += ',筛选条件';
       }
-      return res.status(201).json({
+      return {
         success: true,
         info,
-        message: `${this.instance.getModalName()} delete`,
-      });
+        message: `${this.dao.getModalName()} delete`,
+      };
     } catch (error) {
-      return res.status(422).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
+    }
+  };
+
+  getApiTableData = async (id, body) => {
+    try {
+      const apiUrl = await this.dao.getById(id);
+
+      let baseUrl;
+      let tableData;
+      let result;
+
+      if (!/appCode/.test(apiUrl)) {
+        baseUrl = apiUrl.url;
+        tableData = await axios.get(baseUrl);
+        result = getDataWithUUID(tableData.data);
+      } else {
+        [baseUrl] = apiUrl.url.match(/(.*)(?=\?)/g);
+        tableData = await axios.get(baseUrl, { params: body });
+        const { totalNum, rows } = tableData.data.data;
+        if (totalNum) {
+          result = getDataWithUUID(rows);
+        }
+        result = [];
+      }
+
+      return {
+        success: true,
+        data: result,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.toString(),
+      };
     }
   };
 }
 
-module.exports = new ApiTableService();
+module.exports = ApiTableService;

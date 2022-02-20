@@ -2,9 +2,9 @@ const BaseService = require('./BaseService');
 const DemandDao = require('../dao/DemandDao');
 
 class DemandService extends BaseService {
-  constructor() {
-    super(DemandDao);
+  constructor(daoInstance) {
+    super(daoInstance || new DemandDao());
   }
 }
 
-module.exports = new DemandService();
+module.exports = DemandService;

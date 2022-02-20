@@ -1,88 +1,96 @@
 const parseTimeToLocale = require('../utils/parseTimeToLocale');
 
 class BaseService {
-  constructor(instance) {
-    this.instance = instance;
+  constructor(dao) {
+    this.dao = dao;
   }
 
-  getInstance = () => this.instance;
+  getDaoInstance = () => this.dao;
 
-  baseGetAll = async (req, res) => {
+  baseGetAll = async () => {
     try {
-      const resp = await this.instance.getAll();
-      return res.status(200).json({
+      const resp = await this.dao.getAll();
+      return {
         success: true,
         data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
-      });
+      };
     } catch (error) {
-      return res.status(404).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 
-  baseGetById = async (req, res) => {
+  baseGetById = async (id) => {
     try {
-      const resp = await this.instance.getById(req.params.id);
-      return res.status(200).json({
+      if (!this.dao.isExists(id)) {
+        throw new Error('The id is not existent');
+      }
+      const resp = await this.dao.getById(id);
+      return {
         success: true,
         data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
-      });
+      };
     } catch (error) {
-      return res.status(404).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 
-  baseCreate = async (req, res) => {
+  baseCreate = async (body) => {
     try {
-      const resp = await this.instance.add(req.body);
-      return res.status(201).json({
+      const resp = await this.dao.add(body);
+      return {
         success: true,
         id: resp._id,
-        title: resp.title,
-        message: `${this.instance.getModalName()} created`,
-      });
+        message: `${this.dao.getModalName()} created`,
+      };
     } catch (error) {
-      return res.status(422).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 
-  baseUpdateById = async (req, res) => {
+  baseUpdateById = async (id, body) => {
     try {
-      const resp = await this.instance.updateById(req.params.id, req.body);
-      return res.status(201).json({
+      if (!this.dao.isExists(id)) {
+        throw new Error('The id is not existent');
+      }
+      const resp = await this.dao.updateById(body);
+      return {
         success: true,
         id: resp._id,
-        message: `${this.instance.getModalName()} updated`,
-      });
+        message: `${this.dao.getModalName()} updated`,
+      };
     } catch (error) {
-      return res.status(404).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 
-  baseDeleteById = async (req, res) => {
+  baseDeleteById = async (id) => {
     try {
-      const resp = await this.instance.deleteById(req.params.id);
-      return res.status(200).json({
+      if (!this.dao.isExists(id)) {
+        throw new Error('The id is not existent');
+      }
+      const resp = await this.dao.deleteById(id);
+      return {
         success: true,
         id: resp._id,
-        message: `${this.instance.model.modelName.replace('s', '')} updated`,
-      });
+        message: `${this.dao.getModalName()} delete`,
+      };
     } catch (error) {
-      return res.status(404).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 }

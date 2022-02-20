@@ -1,16 +1,18 @@
 const mongoose = require('mongoose');
+const { Base64 } = require('js-base64');
+
 const BaseService = require('./BaseService');
 const MenuDao = require('../dao/MenuDao');
 const { initalMenus } = require('../config/db-config');
 
 class MenuService extends BaseService {
-  constructor() {
-    super(MenuDao);
+  constructor(daoInstance) {
+    super(daoInstance || new MenuDao());
   }
 
-  getMenusByTree = async (req, res) => {
+  getMenusByTree = async () => {
     try {
-      const resp = await this.instance.getAll();
+      const resp = await this.dao.getAll();
       const listToTree = (items, path = '', link = 'parentPath') => items
         .filter((item) => item[link] === path)
         .map((item) => ({ ...item, children: listToTree(items, item.path) }));
@@ -31,53 +33,54 @@ class MenuService extends BaseService {
         };
       });
 
-      return res.status(200).json({
+      return {
         success: true,
         data: listToTree(menuData),
-      });
+      };
     } catch (error) {
-      return res.status(404).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 
-  getMenusByAccess = async (req, res) => {
+  getMenusByAccess = async (encodeAccess) => {
     try {
-      const resp = await this.instance.get({ path: { $in: req.body.path } });
+      const access = Base64.decode(encodeAccess);
+      const resp = await this.dao.get({ path: { $in: access.split(',') } });
 
       const listToTree = (items, path = '', link = 'parentPath') => items
         .filter((item) => item[link] === path)
         .map((item) => ({ ...item, children: listToTree(items, item.path) }));
 
-      return res.status(200).json({
+      return {
         success: true,
         data: listToTree(resp),
-      });
+      };
     } catch (error) {
-      return res.status(404).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 
-  setInitalMenus = async (req, res) => {
+  setInitalMenus = async () => {
     mongoose.connection.db.dropCollection('menus');
     try {
-      const resp = await this.instance.insertMany(initalMenus);
-      return res.status(200).json({
+      const resp = await this.dao.insertMany(initalMenus);
+      return {
         success: true,
         data: resp,
-      });
+      };
     } catch (error) {
-      return res.status(404).json({
+      return {
         success: false,
         error: error.toString(),
-      });
+      };
     }
   };
 }
 
-module.exports = new MenuService();
+module.exports = MenuService;

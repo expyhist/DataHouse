@@ -2,10 +2,10 @@ const ApiTable = require('../models/ApiTableModel');
 const BaseDao = require('./BaseDao');
 
 class ApiTableDao extends BaseDao {
-  constructor() {
-    super('apitables', ApiTable);
+  constructor(connection) {
+    super('apitables', ApiTable, connection);
     this.model = super.getModel();
   }
 }
 
-module.exports = new ApiTableDao();
+module.exports = ApiTableDao;

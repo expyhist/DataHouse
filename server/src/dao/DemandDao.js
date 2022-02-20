@@ -2,10 +2,10 @@ const Demand = require('../models/DemandModel');
 const BaseDao = require('./BaseDao');
 
 class DemandDao extends BaseDao {
-  constructor() {
-    super('demands', Demand);
+  constructor(connection) {
+    super('demands', Demand, connection);
     this.model = super.getModel();
   }
 }
 
-module.exports = new DemandDao();
+module.exports = DemandDao;
