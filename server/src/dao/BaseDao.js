@@ -1,10 +1,8 @@
-const prodConncetion = require('../mongodb');
-
 class BaseDao {
   constructor(documentName, schema, connection) {
     this.documentName = documentName;
     this.schema = schema;
-    this.connection = connection || prodConncetion;
+    this.connection = connection || require('../mongodb'); // 按需加载
     this.model = this.connection.model(this.documentName, this.schema);
   }
 

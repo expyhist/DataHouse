@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { Base64 } = require('js-base64');
 
 const BaseService = require('./BaseService');
 const RoleDao = require('../dao/RoleDao');
@@ -16,9 +17,8 @@ class RoleService extends BaseService {
     this.MenuDaoInstance = new MenuDao(daoInstance?.connection);
   }
 
-  baseUpdateById = async (id, body) => {
+  transUpdateById = async (id, body) => {
     const { menusTree, auth } = body;
-
     const keepCondition = (item) => auth.includes(item.key);
 
     try {
@@ -37,11 +37,14 @@ class RoleService extends BaseService {
     }
   };
 
-  getAuths = async (userId, body) => {
+  getAuths = async (userId, encodeBody) => {
+    const body = JSON.parse(Base64.decode(encodeBody));
     let resp;
 
-    if (body.roleName) {
-      resp = await this.dao.get({ name: body.roleName });
+    console.log(body);
+
+    if (body.rolesName) {
+      resp = await this.dao.get({ name: body.rolesName });
     } else {
       const userInfo = await this.UserDaoInstance.getById(userId);
       resp = await this.dao.get({ name: { $in: userInfo.rolesName } });

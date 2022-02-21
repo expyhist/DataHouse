@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Base64 } from 'js-base64';
 
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
@@ -6,7 +7,7 @@ import message from 'antd/lib/message';
 import TreeSelect from 'antd/lib/tree-select';
 
 import { defineConfig } from '@/../config/config';
-import { useGetAuthsMutation } from '@/utils/apisSlice';
+import { useGetAuthsQuery } from '@/utils/apisSlice';
 import { useUpdateRoleMutation } from '../sysConfigsSlice';
 import withModalForm from '@/utils/withModalForm';
 import FormInModal from '@/utils/FormInModal';
@@ -70,16 +71,20 @@ const UpdateRoleForm = withModalForm(RoleForm);
 
 function UpdateRoleModal({ treeData, initialValues }) {
   const [visible, setVisible] = useState(false);
-  const [initalAuths, setInitalAuths] = useState([]);
   const [updateRole] = useUpdateRoleMutation();
-  const [getAuths] = useGetAuthsMutation();
 
-  useEffect(() => {
-    (async () => {
-      const resp = await getAuths({ roleName: initialValues.name });
-      setInitalAuths(Object.keys(resp.data?.data));
-    })();
-  }, []);
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetAuthsQuery(Base64.encode(JSON.stringify({ rolesName: initialValues.name })));
+
+  if (isLoading || isError) {
+    return null;
+  }
+
+  const filterAuth = isSuccess && Object.keys(data.data).filter((item) => !/^(\/\w+)+/.test(item));
 
   const onCreate = async (formData) => {
     try {
@@ -92,22 +97,24 @@ function UpdateRoleModal({ treeData, initialValues }) {
   };
 
   return (
-    <UpdateRoleForm
-      buttonType="link"
-      buttonTitle="更新"
-      onClick={() => {
-        setVisible(true);
-      }}
-      visible={visible}
-      title="更新菜单"
-      onCreate={onCreate}
-      onCancel={() => {
-        setVisible(false);
-      }}
-      okText="Update"
-      initialValues={{ ...initialValues, auth: initalAuths }}
-      treeData={treeData}
-    />
+    isSuccess && (
+      <UpdateRoleForm
+        buttonType="link"
+        buttonTitle="更新"
+        onClick={() => {
+          setVisible(true);
+        }}
+        visible={visible}
+        title="更新菜单"
+        onCreate={onCreate}
+        onCancel={() => {
+          setVisible(false);
+        }}
+        okText="Update"
+        initialValues={{ ...initialValues, auth: filterAuth }}
+        treeData={treeData}
+      />
+    )
   );
 }
 

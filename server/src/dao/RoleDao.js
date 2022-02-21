@@ -2,8 +2,8 @@ const Role = require('../models/RoleModel');
 const BaseDao = require('./BaseDao');
 
 class RoleDao extends BaseDao {
-  constructor() {
-    super('roles', Role);
+  constructor(connection) {
+    super('roles', Role, connection);
     this.model = super.getModel();
   }
 }

@@ -62,7 +62,8 @@ function SingleTableFilter({ filtersType, filtersOption }) {
   );
 }
 
-function TableFilter({ payload, filterId }) {
+function TableFilter({ configInfo, payload }) {
+  const { connection, title } = configInfo;
   const access = useContext(AccessContext);
   const [getTableData] = useGetTableDataMutation();
   const tableContent = useSelector((state) => state.tableContent);
@@ -74,7 +75,7 @@ function TableFilter({ payload, filterId }) {
     isLoading,
     isSuccess,
     isError,
-  } = useGetFilterQuery(filterId);
+  } = useGetFilterQuery(connection?.filters);
 
   if (isLoading || isError) {
     return null;
@@ -149,14 +150,14 @@ function TableFilter({ payload, filterId }) {
     >
       <ManyTableFilter />
       <Form.Item>
-        <Access accessible={access.GetTableData}>
+        <Access accessible={access[`${title}-GetTableData`]}>
           <Button type="primary" htmlType="submit">
             查询
           </Button>
         </Access>
       </Form.Item>
       <Form.Item>
-        <Access accessible={access.GetTableData}>
+        <Access accessible={access[`${title}-GetTableData`]}>
           <ExportTable dataSource={dataSource} />
         </Access>
       </Form.Item>

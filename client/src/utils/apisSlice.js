@@ -16,7 +16,7 @@ export const apisSlice = createApi({
   endpoints: (builder) => ({
     getMenus: builder.query({
       query: () => '/menus',
-      providesTags: ['Menu'],
+      providesTags: ['Menu', 'Config'],
     }),
     getMenusByTree: builder.query({
       query: () => '/menus/tree',
@@ -26,14 +26,9 @@ export const apisSlice = createApi({
       query: (access) => `/menus/${access}`,
       providesTags: ['SiderMenu'],
     }),
-    getAuths: builder.mutation({
-      query(data) {
-        return {
-          url: '/auths',
-          method: 'POST',
-          body: data,
-        };
-      },
+    getAuths: builder.query({
+      query: (role) => `/auths/${role}`,
+      providesTags: ['Auth'],
     }),
   }),
 });
@@ -42,5 +37,5 @@ export const {
   useGetMenusQuery,
   useGetMenusByTreeQuery,
   useGetMenusByAccessQuery,
-  useGetAuthsMutation,
+  useGetAuthsQuery,
 } = apisSlice;

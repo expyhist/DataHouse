@@ -38,7 +38,7 @@ export const configsSlice = apisSlice.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['SingleConfig'],
+      invalidatesTags: ['Config', 'SingleConfig'],
     }),
   }),
 });

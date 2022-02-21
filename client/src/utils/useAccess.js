@@ -1,19 +1,18 @@
-import { useEffect, useState } from 'react';
+import { Base64 } from 'js-base64';
 
-import { useGetAuthsMutation } from './apisSlice';
+import { useGetAuthsQuery } from './apisSlice';
 
 export const useAccess = () => {
-  const [access, setAccess] = useState({});
-  const [getAuths] = useGetAuthsMutation();
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetAuthsQuery(Base64.encode('{}'));
 
-  useEffect(() => {
-    (async () => {
-      if (localStorage.getItem('token')) {
-        const resp = await getAuths();
-        setAccess(resp.data?.data);
-      }
-    })();
-  }, []);
+  if (isLoading || isError) {
+    return { '/test': true };
+  }
 
-  return access;
+  return isSuccess && data.data;
 };

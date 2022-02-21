@@ -10,9 +10,9 @@ class RoleController extends BaseController {
     super(new RoleService());
   }
 
-  baseUpdateById = async (req, res) => {
+  transUpdateById = async (req, res) => {
     try {
-      const resp = await this.service.baseUpdateById();
+      const resp = await this.service.transUpdateById(req.params.id, req.body);
       return res.status(200).json(resp);
     } catch (error) {
       return res.status(404).json(error);
@@ -21,7 +21,7 @@ class RoleController extends BaseController {
 
   getAuths = async (req, res) => {
     try {
-      const resp = await this.service.getAuths(req.userId, req.body);
+      const resp = await this.service.getAuths(req.userId, req.params.role);
       return res.status(200).json(resp);
     } catch (error) {
       return res.status(404).json(error);
@@ -49,11 +49,11 @@ module.exports = (router) => {
   router
     .route('/role/:id')
     .all(verifyHeaders, verifyExistsById(), verifyPayload(['name'], null, 1))
-    .put(RoleControllerInstance.baseUpdateById)
+    .put(RoleControllerInstance.transUpdateById)
     .delete(RoleControllerInstance.baseDeleteById)
     .get(RoleControllerInstance.baseGetById);
 
   router.get('/roles', RoleControllerInstance.baseGetAll);
-  router.post('/auths', RoleControllerInstance.getAuths);
+  router.get('/auths/:role', RoleControllerInstance.getAuths);
   router.get('/setinitalroles', RoleControllerInstance.setInitalRoles);
 };
