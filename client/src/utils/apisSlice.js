@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { Base64 } from 'js-base64';
 
 export const apisSlice = createApi({
   reducerPath: 'datahouse',
@@ -6,8 +7,10 @@ export const apisSlice = createApi({
     baseUrl: '/api',
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
+      const email = localStorage.getItem('email');
+      const base64Token = Base64.encode(JSON.stringify({ token, email }));
       if (token) {
-        headers.set('x-access-token', token);
+        headers.set('x-access-token', base64Token);
       }
       return headers;
     },

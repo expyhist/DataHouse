@@ -3,7 +3,8 @@ import { NavLink } from 'react-router-dom';
 
 import Button from 'antd/lib/button';
 import Menu from 'antd/lib/menu';
-import { LoginOutlined } from '@ant-design/icons';
+import Avatar from 'antd/lib/avatar';
+import { LoginOutlined, UserOutlined } from '@ant-design/icons';
 
 import { AccessContext } from '@/utils/AccessContext';
 import { useGetMenusQuery } from '@/utils/apisSlice';
@@ -29,6 +30,12 @@ function HeaderMenu() {
     return item.parentPath === '' && accessList.includes(item.path);
   });
 
+  const loginOut = () => {
+    localStorage.removeItem('email');
+    localStorage.removeItem('rolesName');
+    localStorage.removeItem('token');
+  };
+
   return (
     <Menu
       theme="dark"
@@ -50,8 +57,11 @@ function HeaderMenu() {
       }
       <Menu.Item key="/loginout">
         <NavLink to="/users/login">
-          <Button danger type="text" icon={<LoginOutlined />} onClick={() => localStorage.clear()} />
+          <Button danger type="text" icon={<LoginOutlined />} onClick={loginOut} />
         </NavLink>
+      </Menu.Item>
+      <Menu.Item key="/profile">
+        <Avatar icon={<UserOutlined />} />
       </Menu.Item>
     </Menu>
   );

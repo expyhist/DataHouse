@@ -36,10 +36,10 @@ describe('test filter', () => {
 
   test('TransCreate: should create a filters of connection when filter is created', async () => {
     const apiTableBody = {
-      url: 'https://www.test.com',
-      title: 'test',
-      author: 'test',
-      applicant: 'test',
+      url: 'https://www.test1.com',
+      title: 'test1',
+      author: 'test1',
+      applicant: 'test1',
       defaultParams: '{}',
     };
     newApiTableInfo = await apiTableServiceInstance.baseCreate(apiTableBody);

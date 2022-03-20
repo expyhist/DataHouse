@@ -157,7 +157,7 @@ function TableFilter({ configInfo, payload }) {
         </Access>
       </Form.Item>
       <Form.Item>
-        <Access accessible={access[`${title}-GetTableData`]}>
+        <Access accessible={access[`${title}-ExportTable`]}>
           <ExportTable dataSource={dataSource} />
         </Access>
       </Form.Item>

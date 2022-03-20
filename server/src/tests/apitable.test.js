@@ -37,7 +37,7 @@ describe('test apitable', () => {
     };
     const res = await apiTableServiceInstance.baseCreate(body);
     expect(res.success).toBe(false);
-    expect(res.error).toBe('ValidationError: defaultParams: Unexpected number in JSON at position 1');
+    expect(res.error).toBe('ValidationError: defaultParams: {1} is not a valid json!');
   });
 
   let newApiTableInfo;

@@ -39,9 +39,8 @@ class RoleService extends BaseService {
 
   getAuths = async (userId, encodeBody) => {
     const body = JSON.parse(Base64.decode(encodeBody));
-    let resp;
 
-    console.log(body);
+    let resp;
 
     if (body.rolesName) {
       resp = await this.dao.get({ name: body.rolesName });

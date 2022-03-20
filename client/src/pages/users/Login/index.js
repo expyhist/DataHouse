@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
@@ -21,6 +21,9 @@ function Login() {
     if (formData.remember) {
       localStorage.setItem('rememberCheckbox', formData.remember);
       localStorage.setItem('remerberEmail', formData.email);
+    } else if (rememberCheckbox) {
+      localStorage.removeItem('rememberCheckbox');
+      localStorage.removeItem('remerberEmail');
     }
 
     try {
@@ -48,7 +51,7 @@ function Login() {
       autoComplete="off"
       initialValues={{
         email: remerberEmail || 'guest@datahouse.com',
-        password: 'guest@datahouse.com',
+        password: remerberEmail ? '' : 'guest@datahouse.com',
       }}
     >
       <Form.Item

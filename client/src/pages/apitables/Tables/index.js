@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import Table from 'antd/lib/table';

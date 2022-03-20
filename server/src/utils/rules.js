@@ -70,7 +70,11 @@ const rules = {
     return typeof value === 'string' && !!value.match(pattern.path);
   },
   json(value) {
-    return typeof value === 'string' && JSON.parse(value);
+    try {
+      return typeof value === 'string' && JSON.parse(value);
+    } catch (error) {
+      return false;
+    }
   },
 };
 
