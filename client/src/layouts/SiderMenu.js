@@ -25,7 +25,7 @@ const recursiveMenu = (menuData) => {
     if (children.length === 0) {
       return (
         <Menu.Item key={path} icon={<MenuIcon />}>
-          <NavLink to={{pathname: path, state: {prevPath: location.pathname}}}>
+          <NavLink to={{ pathname: path, state: { prevPath: location.pathname } }}>
             {name}
           </NavLink>
         </Menu.Item>

@@ -59,8 +59,10 @@ function RolesTable({ dataSource, loading }) {
           onConfirm={
               async () => {
                 try {
-                  await deleteRole(record._id);
-                  message.success('角色删除成功', 3);
+                  const resp = await deleteRole(record._id);
+                  if (resp?.data.success) {
+                    message.success('角色删除成功', 3);
+                  }
                 } catch (err) {
                   message.error(`角色删除失败，错误:${err.data.error}`, 3);
                 }

@@ -1,3 +1,11 @@
+import React from 'react';
+import {
+  CheckCircleOutlined,
+  SyncOutlined,
+  ClockCircleOutlined,
+  MinusCircleOutlined,
+} from '@ant-design/icons';
+
 export const defineConfig = {
   filtersInfo: {
     rangeDate: {
@@ -31,12 +39,23 @@ export const defineConfig = {
     UpdateConfigFormColumns: {
       _id: 'id', url: 'url链接', title: '标题', author: '创建人', applicant: '申请人', defaultParams: 'url参数的默认值'
     },
+    SingleConfigColumns: {
+      _id: 'id', url: 'url链接', title: '标题', author: '创建人', applicant: '申请人', defaultParams: 'url参数的默认值', createdAt: '创建时间', updatedAt: '更新时间'
+    }
   },
   demandsColumnsInfo: {
     DemandsListColumns: {
-      description: '需求详情', content: '需求字段', applicant: '申请人', status: '需求状态', createdAt: '创建时间',
+      description: '需求详情', cols: '需求字段', applicant: '申请人', status: '需求状态', createdAt: '创建时间',
     },
-    AddDemandFormColumns: { description: '需求详情', content: '需求字段', applicant: '申请人' },
+    DemandsListStatusTags: [
+      { status: 'finish', icon: <CheckCircleOutlined />, color: 'success' },
+      { status: 'processing', icon: <SyncOutlined spin />, color: 'processing' },
+      { status: 'waiting', icon: <ClockCircleOutlined />, color: 'default' },
+      { status: 'stop', icon: <MinusCircleOutlined />, color: 'default' },
+    ],
+    AddDemandFormColumns: {
+      description: '需求描述', cols: '需求字段', applicant: '申请人', executor: '分析师',  expectedTime: '期望时间', isUrgency: '是否紧急' 
+    },
   },
   sysConfigsColumnsInfo: {
     MenusListColumns: {

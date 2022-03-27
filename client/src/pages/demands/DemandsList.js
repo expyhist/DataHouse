@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Table from 'antd/lib/table';
@@ -9,49 +9,22 @@ import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import Result from 'antd/lib/result';
 import Tag from 'antd/lib/tag';
-import {
-  CheckCircleOutlined,
-  SyncOutlined,
-  ClockCircleOutlined,
-  MinusCircleOutlined,
-} from '@ant-design/icons';
 
 import Access from '@/utils/Access';
 import { AccessContext } from '@/utils/AccessContext';
 import { defineConfig } from '@/../config/config';
 import { useGetDemandsQuery, useDeleteDemandMutation } from './demandsSlice';
-import AddDemandForm from './AddDemandModal';
 
-const statusTag = (content) => {
-  if (content === 'finish') {
-    return (
-      <Tag icon={<CheckCircleOutlined />} color="success">
-        finish
-      </Tag>
-    );
-  } if (content === 'processing') {
-    return (
-      <Tag icon={<SyncOutlined spin />} color="processing">
-        processing
-      </Tag>
-    );
-  } if (content === 'waiting') {
-    return (
-      <Tag icon={<ClockCircleOutlined />} color="default">
-        waiting
-      </Tag>
-    );
-  } if (content === 'stop') {
-    return (
-      <Tag icon={<MinusCircleOutlined />} color="default">
-        stop
-      </Tag>
-    );
-  }
+const statusTag = (status, demandsListStatusTags) => {
+  const filterStatusTag = demandsListStatusTags.filter((demandsListStatusTag) => {
+    const demandStatus = demandsListStatusTag.status;
+    return demandStatus === status;
+  })[0];
+
   return (
-    <Tooltip placement="topLeft" title={content}>
-      {content}
-    </Tooltip>
+    <Tag icon={filterStatusTag.icon} color={filterStatusTag.color}>
+      {filterStatusTag.status}
+    </Tag>
   );
 };
 
@@ -62,17 +35,31 @@ function DemandsTable({ dataSource, loading, access }) {
   const { demandsColumnsInfo } = defineConfig;
 
   const columns = Object.entries(demandsColumnsInfo.DemandsListColumns)
-    .map(([key, value]) => ({
-      title: value,
-      dataIndex: key,
-      key,
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (content) => statusTag(content),
-      sorter: (a, b) => a[key].localeCompare(b[key]),
-      sortDirections: ['descend', 'ascend'],
-    }));
+    .map(([key, value]) => {
+      let renderFn = (content) => (
+        <Tooltip placement="topLeft" title={content}>
+          {content}
+        </Tooltip>
+      );
+      if (key === 'status') {
+        renderFn = (content) => useMemo(() => {
+          const demandsListStatusTags = demandsColumnsInfo.DemandsListStatusTags;
+          return statusTag(content, demandsListStatusTags);
+        }, [content]);
+      }
+
+      return {
+        title: value,
+        dataIndex: key,
+        key,
+        ellipsis: {
+          showTitle: false,
+        },
+        render: renderFn,
+        sorter: (a, b) => a[key].localeCompare(b[key]),
+        sortDirections: ['descend', 'ascend'],
+      };
+    });
 
   columns.push({
     title: '操作',
@@ -82,7 +69,7 @@ function DemandsTable({ dataSource, loading, access }) {
 
         <Access accessible={access.GetDeamnd}>
           <Button type="link">
-            <NavLink to={`/demand/single/${record._id}`}>
+            <NavLink to={`/demands/single/${record._id}`}>
               详情
             </NavLink>
           </Button>
@@ -94,8 +81,10 @@ function DemandsTable({ dataSource, loading, access }) {
             onConfirm={
                 async () => {
                   try {
-                    await deleteDemand(record._id);
-                    message.success('需求删除成功', 3);
+                    const resp = await deleteDemand(record._id);
+                    if (resp?.data.success) {
+                      message.success('需求删除成功', 3);
+                    }
                   } catch (err) {
                     message.error(`需求删除失败，错误:${err.data.error}`, 3);
                   }
@@ -147,13 +136,13 @@ function DemandsList() {
 
   return (
     <>
-      {
-        isSuccess && (
-          <Access accessible={access.AddNewDemand}>
-            <AddDemandForm />
-          </Access>
-        )
-      }
+      <Access accessible={access.AddNewDemand}>
+        <NavLink to="/demands/add">
+          <Button type="primary">
+            新增
+          </Button>
+        </NavLink>
+      </Access>
       <Access
         accessible={access.GetDemands}
         fallback={<Result status="error" title="无权限获得配置中心数据，请向管理员申请" />}

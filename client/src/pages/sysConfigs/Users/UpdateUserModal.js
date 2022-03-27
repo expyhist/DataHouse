@@ -9,7 +9,7 @@ import { defineConfig } from '@/../config/config';
 import { useGetRolesQuery } from '../sysConfigsSlice';
 import { useUpdateUserMutation } from '@/pages/users/usersSlice';
 import withModalForm from '@/utils/withModalForm';
-import FormInModal from '@/utils/FormInModal';
+import PrivateForm from '@/utils/PrivateForm';
 
 function UserForm({ form, initialValues }) {
   const { Option } = Select;
@@ -67,7 +67,7 @@ function UserForm({ form, initialValues }) {
     );
   };
 
-  return FormInModal(form, name, entriesData, mapFn, initialValues);
+  return PrivateForm(form, name, entriesData, mapFn, initialValues);
 }
 
 const UpdateUserForm = withModalForm(UserForm);

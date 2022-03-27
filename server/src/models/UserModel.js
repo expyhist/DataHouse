@@ -6,14 +6,14 @@ const User = new mongoose.Schema(
   {
     email: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
       validate: {
         validator: rules.email,
         message: (props) => `${props.value} is not a valid email!`,
       },
     },
-    password: { type: String, require: true },
+    password: { type: String, required: true },
     rolesName: [
       {
         type: String,

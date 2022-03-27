@@ -3,13 +3,15 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 const Demand = new mongoose.Schema(
   {
-    description: { type: String, unique: true, require: true },
-    content: { type: String, unique: true, require: true },
-    applicant: { type: String, require: true },
-    author: { type: String, require: true },
+    description: { type: String, unique: true, required: true },
+    cols: { type: String, unique: true, required: true },
+    applicant: { type: String, required: true },
+    executor: { type: String, required: true },
+    expectedTime: { type: String, required: true },
+    isUrgency: { type: Number, enum: [0, 1] },
     sql: { type: String },
-    status: { type: String, require: true },
-    reviewStatus: { type: String, require: true },
+    status: { type: String, required: true },
+    reviewStatus: { type: String, required: true },
     tag: [
       { type: String },
     ],

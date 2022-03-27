@@ -9,7 +9,7 @@ import { defineConfig } from '@/../config/config';
 import { useAddNewMenuMutation } from '../sysConfigsSlice';
 import { useGetMenusQuery } from '@/utils/apisSlice';
 import withModalForm from '@/utils/withModalForm';
-import FormInModal from '@/utils/FormInModal';
+import PrivateForm from '@/utils/PrivateForm';
 
 function MenuForm({ form }) {
   const { Option } = Select;
@@ -75,7 +75,7 @@ function MenuForm({ form }) {
     );
   };
 
-  return FormInModal(form, name, entriesData, mapFn);
+  return PrivateForm(form, name, entriesData, mapFn);
 }
 
 const CreateMenuForm = withModalForm(MenuForm);

@@ -10,7 +10,7 @@ import { defineConfig } from '@/../config/config';
 import { useGetAuthsQuery } from '@/utils/apisSlice';
 import { useUpdateRoleMutation } from '../sysConfigsSlice';
 import withModalForm from '@/utils/withModalForm';
-import FormInModal from '@/utils/FormInModal';
+import PrivateForm from '@/utils/PrivateForm';
 
 const layout = {
   labelCol: {
@@ -64,7 +64,7 @@ function RoleForm({ form, initialValues, treeData }) {
     );
   };
 
-  return FormInModal(form, name, entriesData, mapFn, initialValues, layout);
+  return PrivateForm(form, name, entriesData, mapFn, initialValues, false, null, layout);
 }
 
 const UpdateRoleForm = withModalForm(RoleForm);

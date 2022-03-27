@@ -3,7 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 const Role = new mongoose.Schema(
   {
-    name: { type: String, require: true, unique: true },
+    name: { type: String, required: true, unique: true },
     auth: [
       { type: Map, of: Array, unique: true },
     ],

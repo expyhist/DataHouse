@@ -66,9 +66,11 @@ function ConfigsTable({ dataSource, loading, access }) {
               async () => {
                 try {
                   const resp = await deleteConfig(record._id);
-                  resp.data.info.split(',').forEach((ele) => {
-                    message.success(`${ele}删除成功`, 3);
-                  });
+                  if (resp?.data.success) {
+                    resp.data.info.split(',').forEach((ele) => {
+                      message.success(`${ele}删除成功`, 3);
+                    });
+                  }
                 } catch (err) {
                   message.error(`配置删除失败，错误:${err.data.error}`, 3);
                 }

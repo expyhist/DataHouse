@@ -56,8 +56,10 @@ function UsersTable({ dataSource, loading }) {
           onConfirm={
               async () => {
                 try {
-                  await deleteUser(record._id);
-                  message.success('用户删除成功', 3);
+                  const resp = await deleteUser(record._id);
+                  if (resp?.data.success) {
+                    message.success('用户删除成功', 3);
+                  }
                 } catch (err) {
                   message.error(`用户删除失败，错误:${err.data.error}`, 3);
                 }

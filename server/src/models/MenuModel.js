@@ -6,17 +6,17 @@ const Menu = new mongoose.Schema(
   {
     path: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
       validate: {
         validator: rules.path,
         message: (props) => `${props.value} is not a valid path!`,
       },
     },
-    name: { type: String, require: true, unique: true },
+    name: { type: String, required: true, unique: true },
     icon: { type: String },
     auth: { type: Array },
-    parentPath: { type: String, require: true },
+    parentPath: { type: String, required: true },
   },
   {
     timestamps: true,

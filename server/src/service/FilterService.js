@@ -15,12 +15,20 @@ class FilterService extends BaseService {
       }
       const apiTableInfo = await this.ApiTableDaoInstance.getById(body.apiTableId);
 
-      if (apiTableInfo.connection?.filters) {
+      if (apiTableInfo?.filters) {
         throw new Error('Filter is already existent');
       }
 
       const resp = await this.dao.add(body);
-      await this.ApiTableDaoInstance.updateById(body.apiTableId, { $set: { 'connection.filters': resp._id } });
+      const newApiTableInfo = await this.ApiTableDaoInstance.updateById(
+        body.apiTableId,
+        { $set: { filters: resp._id } },
+      );
+
+      if (!newApiTableInfo.filters) {
+        throw new Error('filters of apitable do not updated');
+      }
+
       return {
         success: true,
         id: resp._id,

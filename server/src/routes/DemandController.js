@@ -16,12 +16,12 @@ const DemandControllerInstance = new DemandController();
 module.exports = (router) => {
   router
     .route('/demand')
-    .all(verifyHeaders, verifyPayload(['description', 'content', 'applicant', 'reviewStatus', 'status'], null, 5))
+    .all(verifyHeaders, verifyPayload(['description', 'cols', 'applicant', 'executor', 'expectedTime', 'reviewStatus', 'status'], null, 7))
     .post(DemandControllerInstance.baseCreate);
 
   router
     .route('/demand/:id')
-    .all(verifyHeaders, verifyExistsById(), verifyPayload(['description', 'content', 'applicant', 'reviewStatus', 'status'], null, 5))
+    .all(verifyHeaders, verifyExistsById(), verifyPayload(['description', 'cols', 'applicant', 'executor', 'expectedTime', 'reviewStatus', 'status'], null, 7))
     .put(DemandControllerInstance.baseUpdateById)
     .delete(DemandControllerInstance.baseDeleteById)
     .get(DemandControllerInstance.baseGetById);

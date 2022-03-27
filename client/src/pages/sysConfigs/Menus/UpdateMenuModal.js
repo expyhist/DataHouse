@@ -7,7 +7,7 @@ import message from 'antd/lib/message';
 import { defineConfig } from '@/../config/config';
 import { useUpdateMenuMutation } from '../sysConfigsSlice';
 import withModalForm from '@/utils/withModalForm';
-import FormInModal from '@/utils/FormInModal';
+import PrivateForm from '@/utils/PrivateForm';
 
 function MenuForm({ form, initialValues }) {
   const { sysConfigsColumnsInfo } = defineConfig;
@@ -52,7 +52,7 @@ function MenuForm({ form, initialValues }) {
     );
   };
 
-  return FormInModal(form, name, entriesData, mapFn, initialValues);
+  return PrivateForm(form, name, entriesData, mapFn, initialValues);
 }
 
 const UpdateMenuForm = withModalForm(MenuForm);

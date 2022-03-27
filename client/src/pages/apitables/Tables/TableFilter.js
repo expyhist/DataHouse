@@ -3,7 +3,7 @@ import produce from 'immer';
 import { useSelector, useDispatch } from 'react-redux';
 
 import message from 'antd/lib/message';
-import { DatePicker } from 'antd';
+import DatePicker from 'antd/lib/date-picker';
 import Button from 'antd/lib/button';
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
@@ -62,8 +62,8 @@ function SingleTableFilter({ filtersType, filtersOption }) {
   );
 }
 
-function TableFilter({ configInfo, payload }) {
-  const { connection, title } = configInfo;
+function TableFilter({ apitableInfo, payload }) {
+  const { filters, title } = apitableInfo;
   const access = useContext(AccessContext);
   const [getTableData] = useGetTableDataMutation();
   const tableContent = useSelector((state) => state.tableContent);
@@ -75,7 +75,7 @@ function TableFilter({ configInfo, payload }) {
     isLoading,
     isSuccess,
     isError,
-  } = useGetFilterQuery(connection?.filters);
+  } = useGetFilterQuery(filters);
 
   if (isLoading || isError) {
     return null;

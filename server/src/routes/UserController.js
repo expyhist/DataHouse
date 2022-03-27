@@ -10,18 +10,18 @@ class UserController extends BaseController {
     super(new UserService());
   }
 
-  signup = async (req, res) => {
+  signUp = async (req, res) => {
     try {
-      const resp = await this.service.signup(req.body);
+      const resp = await this.service.signUp(req.body);
       return res.status(201).json(resp);
     } catch (error) {
       return res.status(422).json(error);
     }
   };
 
-  signin = async (req, res) => {
+  signIn = async (req, res) => {
     try {
-      const resp = await this.service.signin(req.body);
+      const resp = await this.service.signIn(req.body);
       return res.status(200).json(resp);
     } catch (error) {
       return res.status(422).json(error);
@@ -35,12 +35,12 @@ module.exports = (router) => {
   router
     .route('/user/signup')
     .all(verifyHeaders, verifyPayload(['email', 'password'], null, 2))
-    .post(UserControllerInstance.signup);
+    .post(UserControllerInstance.signUp);
 
   router
     .route('/user/signin')
     .all(verifyHeaders, verifyPayload(['email', 'password'], null, 2))
-    .post(UserControllerInstance.signin);
+    .post(UserControllerInstance.signIn);
 
   router
     .route('/user/:id')

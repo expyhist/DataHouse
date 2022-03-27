@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon ./src/index.js",
     "lint": "yarn run eslint .",
-    "test": "jest ./src/tests/",
+    "test": "jest ./src/tests/all.test.js",
     "coverage": "jest --coverage"
   },
   "dependencies": {

@@ -28,10 +28,9 @@ class ApiTableService extends BaseService {
 
   transCreate = async (body) => {
     try {
-      let info;
-      const apiTableInfo = await this.dao.add({ ...body, ...{ connection: new Map() } });
+      let info = '配置';
+      const apiTableInfo = await this.dao.add(body);
       const { _id, title } = apiTableInfo;
-      info = '配置';
       const menuPayload = {
         parentPath: '/tables/databoard/:id',
         path: `/tables/databoard/${_id}`,
@@ -40,7 +39,7 @@ class ApiTableService extends BaseService {
         auth: [`${title}-ExportTable`, `${title}-GetTableData`],
       };
       const menuInfo = await this.MenuDaoInstance.add(menuPayload);
-      await this.dao.updateById(_id, { $set: { 'connection.menus': menuInfo._id } });
+      await this.dao.updateById(_id, { $set: { menus: menuInfo._id } });
       info += ',菜单';
 
       return {
@@ -61,10 +60,10 @@ class ApiTableService extends BaseService {
   transUpdate = async (id, body) => {
     try {
       const apiTableInfo = await this.dao.updateById(id, body);
-      const { title, connection } = apiTableInfo;
-      const menuInfo = await this.MenuDaoInstance.getById(connection.get('menus'));
+      const { title, menus } = apiTableInfo;
+      const menuInfo = await this.MenuDaoInstance.getById(menus);
       if (title !== menuInfo.name) {
-        await this.MenuDaoInstance.updateById(connection.get('menus'), { ...menuInfo, ...{ name: title } });
+        await this.MenuDaoInstance.updateById(menus, { ...menuInfo, ...{ name: title } });
       }
 
       return {
@@ -81,22 +80,21 @@ class ApiTableService extends BaseService {
 
   transDelete = async (id) => {
     try {
-      let info;
+      let info = '配置';
       const apiTableInfo = await this.dao.deleteById(id);
-      const { connection } = apiTableInfo;
-      info = '配置';
-      if (connection.get('menus')) {
-        await this.MenuDaoInstance.deleteById(connection.get('menus'));
+      const { menus, filters } = apiTableInfo;
+      if (menus) {
+        await this.MenuDaoInstance.deleteById(menus);
         info += ',菜单';
       }
-      if (connection.get('filters')) {
-        await this.FilterDaoInstance.deleteById(connection.get('filters'));
+      if (filters) {
+        await this.FilterDaoInstance.deleteById(filters);
         info += ',筛选条件';
       }
       return {
         success: true,
         info,
-        message: `${this.dao.getModalName()} delete`,
+        message: `${this.dao.getModalName()} deleted`,
       };
     } catch (error) {
       return {

@@ -24,7 +24,8 @@ class BaseService {
 
   baseGetById = async (id) => {
     try {
-      if (!this.dao.isExists(id)) {
+      const isExists = await this.dao.isExists(id);
+      if (!isExists) {
         throw new Error('The id is not existent');
       }
       const resp = await this.dao.getById(id);
@@ -58,10 +59,11 @@ class BaseService {
 
   baseUpdateById = async (id, body) => {
     try {
-      if (!this.dao.isExists(id)) {
+      const isExists = await this.dao.isExists(id);
+      if (!isExists) {
         throw new Error('The id is not existent');
       }
-      const resp = await this.dao.updateById(body);
+      const resp = await this.dao.updateById(id, body);
       return {
         success: true,
         id: resp._id,
@@ -77,14 +79,15 @@ class BaseService {
 
   baseDeleteById = async (id) => {
     try {
-      if (!this.dao.isExists(id)) {
+      const isExists = await this.dao.isExists(id);
+      if (!isExists) {
         throw new Error('The id is not existent');
       }
       const resp = await this.dao.deleteById(id);
       return {
         success: true,
         id: resp._id,
-        message: `${this.dao.getModalName()} delete`,
+        message: `${this.dao.getModalName()} deleted`,
       };
     } catch (error) {
       return {

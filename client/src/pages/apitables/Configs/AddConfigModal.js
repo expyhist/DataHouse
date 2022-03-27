@@ -7,7 +7,7 @@ import message from 'antd/lib/message';
 import { defineConfig } from '@/../config/config';
 import { useAddNewConfigMutation } from './configsSlice';
 import withModalForm from '@/utils/withModalForm';
-import FormInModal from '@/utils/FormInModal';
+import PrivateForm from '@/utils/PrivateForm';
 
 function ConfigForm({ form }) {
   const { apiTablesColumnsInfo } = defineConfig;
@@ -61,7 +61,7 @@ function ConfigForm({ form }) {
     );
   };
 
-  return FormInModal(form, name, entriesData, mapFn, initialValues);
+  return PrivateForm(form, name, entriesData, mapFn, initialValues);
 }
 
 const CreateConfigForm = withModalForm(ConfigForm);

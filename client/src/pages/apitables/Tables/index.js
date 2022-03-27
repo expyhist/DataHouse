@@ -46,7 +46,7 @@ function ApiTable() {
   return (
     isSuccess && (
       <>
-        <TableFilter configInfo={data.data} payload={payload} />
+        <TableFilter apitableInfo={data.data} payload={payload} />
         <Access
           accessible={access[`${data.data.title}-GetTableData`]}
           fallback={<Result status="error" title="无权限获得该报表数据，请向管理员申请" />}

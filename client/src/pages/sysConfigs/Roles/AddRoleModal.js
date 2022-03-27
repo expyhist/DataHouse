@@ -9,7 +9,7 @@ import { defineConfig } from '@/../config/config';
 import { useAddNewRoleMutation } from '../sysConfigsSlice';
 import { useGetMenusQuery } from '@/utils/apisSlice';
 import withModalForm from '@/utils/withModalForm';
-import FormInModal from '@/utils/FormInModal';
+import PrivateForm from '@/utils/PrivateForm';
 
 function RoleForm({ form }) {
   const { Option } = Select;
@@ -64,7 +64,7 @@ function RoleForm({ form }) {
     );
   };
 
-  return FormInModal(form, name, entriesData, mapFn);
+  return PrivateForm(form, name, entriesData, mapFn);
 }
 
 const CreateRoleForm = withModalForm(RoleForm);

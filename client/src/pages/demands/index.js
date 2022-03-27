@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 
 import DemandsList from './DemandsList';
+import AddDemandModal from './AddDemand';
 // import SingleDemand from './SingleDemand';
 
 function DemandsPage() {
@@ -13,6 +14,7 @@ function DemandsPage() {
     <div>
       <Switch>
         <Route path={`${path}/list`} component={() => <DemandsList />} />
+        <Route path={`${path}/add`} component={() => <AddDemandModal />} />
         {/* <Route path={`${path}/single/:id`} children={<SingleDemand />} /> */}
         <Redirect to={`${path}/list`} />
       </Switch>

@@ -13,13 +13,13 @@ module.exports = {
     auth: [],
     parentPath: '',
     path: '/demands',
-    name: '需求系统',
+    name: '数据需求',
     icon: '',
   }, {
     auth: [],
     parentPath: '',
     path: '/tables',
-    name: '报表系统',
+    name: '数据报表',
     icon: '',
   }, {
     auth: [],

@@ -25,7 +25,7 @@ function HeaderMenu() {
     return null;
   }
 
-  const pages = isSuccess && data.data.filter((item) => {
+  const headerNames = isSuccess && data.data.filter((item) => {
     const accessList = Object.keys(access);
     return item.parentPath === '' && accessList.includes(item.path);
   });
@@ -42,10 +42,10 @@ function HeaderMenu() {
       mode="horizontal"
     >
       {
-        isSuccess && pages
+        isSuccess && headerNames
           .sort((a, b) => sortList[a.path] - sortList[b.path])
-          .map((page) => {
-            const { path, name } = page;
+          .map((headerName) => {
+            const { path, name } = headerName;
             return (
               <Menu.Item key={path}>
                 <NavLink to={path}>

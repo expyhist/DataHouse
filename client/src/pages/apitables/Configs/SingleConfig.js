@@ -7,9 +7,11 @@ import Descriptions from 'antd/lib/descriptions';
 import UpdateConfigModal from './UpdateConfigModal';
 import { useGetConfigQuery } from './configsSlice';
 import SingleFilter from '../Filters/SingleFilter';
+import { defineConfig } from '@/../config/config';
 
 function SingleConfig() {
   const { id } = useParams();
+  const { apiTablesColumnsInfo } = defineConfig;
 
   const {
     data,
@@ -21,8 +23,8 @@ function SingleConfig() {
   if (isLoading || isError) {
     return null;
   }
-
-  const singleConfig = isSuccess && JSON.parse(JSON.stringify(data.data, ['_id', 'url', 'author', 'title', 'applicant', 'defaultParams', 'createdAt', 'updatedAt']));
+  const singleConfigColumns = apiTablesColumnsInfo.SingleConfigColumns;
+  const singleConfig = isSuccess && JSON.parse(JSON.stringify(data.data, singleConfigColumns));
 
   return (
     isSuccess && (
@@ -41,7 +43,7 @@ function SingleConfig() {
             }
           </Descriptions>
         </Card>
-        <SingleFilter id={data.data.connection?.filters} url={singleConfig.url} />
+        <SingleFilter id={data.data?.filters} url={singleConfig.url} />
       </>
     )
   );

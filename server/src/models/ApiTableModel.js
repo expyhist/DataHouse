@@ -6,17 +6,18 @@ const ApiTable = new mongoose.Schema(
   {
     url: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
       validate: {
         validator: rules.url,
         message: (props) => `${props.value} is not a valid url!`,
       },
     },
-    title: { type: String, require: true, unique: true },
-    author: { type: String, require: true },
-    applicant: { type: String, require: true },
-    connection: { type: Map, of: mongoose.Schema.Types.ObjectId },
+    title: { type: String, required: true, unique: true },
+    author: { type: String, required: true },
+    applicant: { type: String, required: true },
+    filters: { type: mongoose.Schema.Types.ObjectId },
+    menus: { type: mongoose.Schema.Types.ObjectId },
     defaultParams: {
       type: mongoose.Schema.Types.Mixed,
       validate: {

@@ -9,7 +9,7 @@ class UserService extends BaseService {
     super(daoInstance || new UserDao());
   }
 
-  signup = async (body) => {
+  signUp = async (body) => {
     try {
       const resp = await this.dao.add({
         ...body,
@@ -28,7 +28,7 @@ class UserService extends BaseService {
     }
   };
 
-  signin = async (body) => {
+  signIn = async (body) => {
     try {
       const resp = await this.dao.getOne({ email: body.email });
 
