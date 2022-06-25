@@ -4,8 +4,8 @@ import {
 } from 'react-router-dom';
 
 import DemandsList from './DemandsList';
-import AddDemandModal from './AddDemand';
-// import SingleDemand from './SingleDemand';
+import AddDemand from './AddDemand';
+import SingleDemand from './SingleDemand';
 
 function DemandsPage() {
   const { path } = useRouteMatch();
@@ -14,8 +14,8 @@ function DemandsPage() {
     <div>
       <Switch>
         <Route path={`${path}/list`} component={() => <DemandsList />} />
-        <Route path={`${path}/add`} component={() => <AddDemandModal />} />
-        {/* <Route path={`${path}/single/:id`} children={<SingleDemand />} /> */}
+        <Route path={`${path}/add`} component={() => <AddDemand />} />
+        <Route path={`${path}/single/:id`} component={() => <SingleDemand />} />
         <Redirect to={`${path}/list`} />
       </Switch>
     </div>

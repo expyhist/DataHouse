@@ -61,7 +61,9 @@ function HeaderMenu() {
         </NavLink>
       </Menu.Item>
       <Menu.Item key="/profile">
-        <Avatar icon={<UserOutlined />} />
+        <NavLink to="/users/profile">
+          <Avatar icon={<UserOutlined />} />
+        </NavLink>
       </Menu.Item>
     </Menu>
   );

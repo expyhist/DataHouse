@@ -67,7 +67,7 @@ function DemandsTable({ dataSource, loading, access }) {
     render: (text, record) => (
       <Space direction="vertical">
 
-        <Access accessible={access.GetDeamnd}>
+        <Access accessible={access.GetDemand}>
           <Button type="link">
             <NavLink to={`/demands/single/${record._id}`}>
               详情

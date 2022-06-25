@@ -41,7 +41,7 @@ const recursiveMenu = (menuData) => {
 };
 
 function SiderMenu() {
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   const access = useContext(AccessContext);
   const { path } = useRouteMatch();
 

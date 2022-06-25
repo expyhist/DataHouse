@@ -1,5 +1,5 @@
 module.exports = {
-  HOST: '127.0.0.1',
+  HOST: process.env.NODE_ENV === 'docker' ? 'host.docker.internal' : 'localhost',
   PORT: 27017,
   DB: 'datahouse',
   DB_TEST: 'datahouse_test',

@@ -1,0 +1,23 @@
+version: '3'
+services:
+  dh_server:
+    container_name: server
+    restart: always
+    build:
+      context: ./
+      dockerfile: server/Dockerfile
+    ports:
+      - 3000:3000
+    command: "pm2-runtime src/index.js"
+  
+  dh_client:
+    container_name: client
+    restart: always
+    build:
+      context: ./
+      dockerfile: client/Dockerfile
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - dh_server

@@ -23,8 +23,9 @@ function SingleConfig() {
   if (isLoading || isError) {
     return null;
   }
-  const singleConfigColumns = apiTablesColumnsInfo.SingleConfigColumns;
-  const singleConfig = isSuccess && JSON.parse(JSON.stringify(data.data, singleConfigColumns));
+  const singleConfig = isSuccess && JSON.parse(
+    JSON.stringify(data.data, apiTablesColumnsInfo.SingleConfigColumns),
+  );
 
   return (
     isSuccess && (

@@ -39,9 +39,9 @@ export const defineConfig = {
     UpdateConfigFormColumns: {
       _id: 'id', url: 'url链接', title: '标题', author: '创建人', applicant: '申请人', defaultParams: 'url参数的默认值'
     },
-    SingleConfigColumns: {
-      _id: 'id', url: 'url链接', title: '标题', author: '创建人', applicant: '申请人', defaultParams: 'url参数的默认值', createdAt: '创建时间', updatedAt: '更新时间'
-    }
+    SingleConfigColumns: [
+      '_id', 'url', 'title', 'author', 'applicant', 'defaultParams', 'createdAt', 'updatedAt'
+    ]
   },
   demandsColumnsInfo: {
     DemandsListColumns: {
@@ -56,6 +56,9 @@ export const defineConfig = {
     AddDemandFormColumns: {
       description: '需求描述', cols: '需求字段', applicant: '申请人', executor: '分析师',  expectedTime: '期望时间', isUrgency: '是否紧急' 
     },
+    SingleDemandColumns: [
+      '_id', 'description', 'cols', 'applicant', 'executor', 'expectedTime', 'isUrgency', 'sql', 'status', 'reviewStatus', 'tag', 'addition', 'createdAt', 'updatedAt'
+    ]
   },
   sysConfigsColumnsInfo: {
     MenusListColumns: {
