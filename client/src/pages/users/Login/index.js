@@ -31,6 +31,12 @@ function Login() {
         email: formData.email,
         password: formData.password,
       }).unwrap();
+
+      if (!resp.token) {
+        message.error('登录失败，错误: token不存在', 3);
+        return null;
+      }
+
       localStorage.setItem('email', resp.email);
       localStorage.setItem('token', resp.token);
       localStorage.setItem('rolesName', resp.rolesName);
@@ -38,7 +44,7 @@ function Login() {
       history.push('/demands');
       location.reload();
     } catch (err) {
-      message.error(`登录失败，错误:${err.data.message}`, 3);
+      message.error('登录失败，错误: 未连接到服务器', 3);
     }
   };
 
