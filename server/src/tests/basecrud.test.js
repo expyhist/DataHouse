@@ -19,7 +19,7 @@ module.exports = (testConnection) => {
       expect(res.message).toBe('mock created');
     });
 
-    test('Create: should not create a mock', async () => {
+    test('Create: should not create a mock when body lost col2', async () => {
       const body = {
         col1: '1',
       };
@@ -35,7 +35,7 @@ module.exports = (testConnection) => {
       expect(res.data.col2).toBe('2');
     });
 
-    test('Get: should not get a mock', async () => {
+    test('Get: should not get a mock when id is not existent', async () => {
       const res = await MockServiceInstance.baseGetById(randomMongoObjectId());
       expect(res.success).toBe(false);
       expect(res.error).toBe('Error: The id is not existent');
@@ -51,7 +51,7 @@ module.exports = (testConnection) => {
       expect(res.message).toBe('mock updated');
     });
 
-    test('Update: should not update a mock', async () => {
+    test('Update: should not update a mock when id is not existent', async () => {
       const res = await MockServiceInstance.baseUpdateById(randomMongoObjectId(), {});
       expect(res.success).toBe(false);
       expect(res.error).toBe('Error: The id is not existent');
@@ -63,7 +63,7 @@ module.exports = (testConnection) => {
       expect(res.message).toBe('mock deleted');
     });
 
-    test('Delete: should not delete a mock', async () => {
+    test('Delete: should not delete a mock when id is not existent', async () => {
       const res = await MockServiceInstance.baseDeleteById(randomMongoObjectId());
       expect(res.success).toBe(false);
       expect(res.error).toBe('Error: The id is not existent');

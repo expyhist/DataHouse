@@ -1,5 +1,7 @@
 FROM node:16
 
+RUN ["mkdir", "-p", "/home/server"]
+
 WORKDIR /home/server
 
 COPY ./server /home/server
