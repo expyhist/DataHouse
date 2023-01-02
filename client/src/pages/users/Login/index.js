@@ -9,10 +9,22 @@ import Space from 'antd/lib/space';
 import message from 'antd/lib/message';
 
 import { useLoginMutation } from '../usersSlice';
+import { useGetPublicKeyQuery } from '@/utils/apisSlice';
+import { encryptedByRSA } from '@/utils/encryptedByRSA';
 
 function Login() {
   const [login] = useLoginMutation();
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetPublicKeyQuery();
   const history = useHistory();
+
+  if (isLoading || isError) {
+    return null;
+  }
 
   const rememberCheckbox = localStorage.getItem('rememberCheckbox');
   const remerberEmail = localStorage.getItem('remerberEmail');
@@ -27,13 +39,16 @@ function Login() {
     }
 
     try {
+      const { email, password } = formData;
+      const encryptedPassword = encryptedByRSA(password, data);
+
       const resp = await login({
-        email: formData.email,
-        password: formData.password,
+        email,
+        password: encryptedPassword,
       }).unwrap();
 
-      if (!resp.token) {
-        message.error('登录失败，错误: token不存在', 3);
+      if (!resp.success) {
+        message.error(resp.msg, 3);
         return null;
       }
 
@@ -44,11 +59,11 @@ function Login() {
       history.push('/demands');
       location.reload();
     } catch (err) {
-      message.error('登录失败，错误: 未连接到服务器', 3);
+      message.error(`登录失败，错误:${err.msg}`, 3);
     }
   };
 
-  return (
+  return isSuccess && (
     <Form
       name="basic"
       labelCol={{ span: 4 }}

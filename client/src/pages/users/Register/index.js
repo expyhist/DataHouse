@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import config from 'config';
+import config from 'webpackConfig';
 
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
@@ -9,18 +9,34 @@ import Space from 'antd/lib/space';
 import message from 'antd/lib/message';
 
 import { useRegisterMutation } from '../usersSlice';
+import { useGetPublicKeyQuery } from '@/utils/apisSlice';
+import { encryptedByRSA } from '@/utils/encryptedByRSA';
 
 function Register() {
   const [register] = useRegisterMutation();
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetPublicKeyQuery();
   const history = useHistory();
+
+  if (isLoading || isError) {
+    return null;
+  }
 
   const onFinish = async (formData) => {
     try {
+      const { email, password } = formData;
+      const encryptedPassword = encryptedByRSA(password, data);
+
       await register({
-        email: formData.email,
-        password: formData.password,
+        email,
+        password: encryptedPassword,
       })
         .unwrap();
+
       message.success('注册成功', 3);
       history.push('/login');
     } catch (err) {
@@ -28,7 +44,7 @@ function Register() {
     }
   };
 
-  return (
+  return isSuccess && (
     <Form
       name="basic"
       labelCol={{ span: 4 }}

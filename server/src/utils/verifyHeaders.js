@@ -3,7 +3,7 @@ module.exports = (req, res, next) => {
   if (/POST|PUT/.test(req.method) && !contentType.includes('application/json')) {
     return res.status(406).json({
       success: false,
-      error: 'Your content-type must be correct',
+      msg: 'Your content-type must be correct',
     });
   }
   next();

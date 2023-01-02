@@ -13,7 +13,7 @@ class MenuService extends BaseService {
   getMenusByTree = async () => {
     try {
       const resp = await this.dao.getAll();
-      const listToTree = (items, path = '', link = 'parentPath') => items
+      const listToTree = (items, path = '/', link = 'parentPath') => items
         .filter((item) => item[link] === path)
         .map((item) => ({ ...item, children: listToTree(items, item.path) }));
 
@@ -40,7 +40,7 @@ class MenuService extends BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
@@ -50,7 +50,7 @@ class MenuService extends BaseService {
       const access = Base64.decode(encodeAccess);
       const resp = await this.dao.get({ path: { $in: access.split(',') } });
 
-      const listToTree = (items, path = '', link = 'parentPath') => items
+      const listToTree = (items, path = '/', link = 'parentPath') => items
         .filter((item) => item[link] === path)
         .map((item) => ({ ...item, children: listToTree(items, item.path) }));
 
@@ -61,13 +61,12 @@ class MenuService extends BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
 
   setInitalMenus = async () => {
-    mongoose.connection.db.dropCollection('menus');
     try {
       const resp = await this.dao.insertMany(initalMenus);
       return {
@@ -77,7 +76,7 @@ class MenuService extends BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };

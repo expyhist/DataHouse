@@ -27,7 +27,7 @@ function HeaderMenu() {
 
   const headerNames = isSuccess && data.data.filter((item) => {
     const accessList = Object.keys(access);
-    return item.parentPath === '' && accessList.includes(item.path);
+    return item.parentPath === '/' && accessList.includes(item.path);
   });
 
   const loginOut = () => {

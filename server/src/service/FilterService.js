@@ -37,7 +37,7 @@ class FilterService extends BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };

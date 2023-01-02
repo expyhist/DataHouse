@@ -8,9 +8,17 @@ services:
       dockerfile: server/Dockerfile
     ports:
       - 3000:3000
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     command: "pm2-runtime src/index.js"
+
+  # mongodb:
+  #   image: mongo:5.0
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=datahouse
+  #     - MONGO_INITDB_ROOT_PASSWORD=datahouse
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - mongodb_data_container:/data/db
   
   dh_client:
     container_name: client

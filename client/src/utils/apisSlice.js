@@ -33,6 +33,9 @@ export const apisSlice = createApi({
       query: (role) => `/auths/${role}`,
       providesTags: ['Auth'],
     }),
+    getPublicKey: builder.query({
+      query: () => '/publickey',
+    }),
   }),
 });
 
@@ -41,4 +44,5 @@ export const {
   useGetMenusByTreeQuery,
   useGetMenusByAccessQuery,
   useGetAuthsQuery,
+  useGetPublicKeyQuery,
 } = apisSlice;

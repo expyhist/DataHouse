@@ -29,6 +29,8 @@ class BaseDao {
   deleteById = (id) => this.model.findByIdAndDelete(id);
 
   deleteMany = (idArray) => this.model.deleteMany(idArray);
+
+  insertMany = (metadataArray) => this.model.insertMany(metadataArray);
 }
 
 module.exports = BaseDao;

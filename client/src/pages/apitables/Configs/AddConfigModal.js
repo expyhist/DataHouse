@@ -75,7 +75,7 @@ function AddConfigModal() {
       const resp = await addNewConfig(formData).unwrap();
       setVisible(false);
       resp.info.split(',').forEach((ele) => {
-        message.success(`${ele}删除成功`, 3);
+        message.success(`${ele}添加成功`, 3);
       });
     } catch (err) {
       message.error(`配置和菜单添加失败，错误:${err.data.error}`, 3);

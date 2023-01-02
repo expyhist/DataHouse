@@ -43,7 +43,7 @@ module.exports = (checkedKeys, skipKeys, valueExistNum = 0) => (req, res, next) 
     if (!checkKeysExists(req.body, checkedKeys)) {
       return res.status(400).json({
         success: false,
-        error: 'You must provide correct keys of json',
+        msg: 'You must provide correct keys of json',
       });
     }
 
@@ -51,7 +51,7 @@ module.exports = (checkedKeys, skipKeys, valueExistNum = 0) => (req, res, next) 
       if (checkValuesExists(req.body, checkedKeys, skipKeys) !== valueExistNum) {
         return res.status(400).json({
           success: false,
-          error: 'You must provide correct values of json',
+          msg: 'You must provide correct values of json',
         });
       }
     }

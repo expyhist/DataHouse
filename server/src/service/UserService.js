@@ -1,8 +1,11 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const config = require('../config/auth-config');
+const decryptedByRSA = require('../utils/decryptedByRSA');
 const BaseService = require('./BaseService');
 const UserDao = require('../dao/UserDao');
+
+const { PUBLICKEY } = config;
 
 class UserService extends BaseService {
   constructor(daoInstance) {
@@ -11,9 +14,10 @@ class UserService extends BaseService {
 
   signUp = async (body) => {
     try {
+      const decryptedPassword = decryptedByRSA(body.password);
       const resp = await this.dao.add({
         ...body,
-        ...{ password: bcrypt.hashSync(body.password, 8) },
+        ...{ password: bcrypt.hashSync(decryptedPassword, 8) },
       });
       return {
         success: true,
@@ -23,7 +27,7 @@ class UserService extends BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
@@ -31,9 +35,10 @@ class UserService extends BaseService {
   signIn = async (body) => {
     try {
       const resp = await this.dao.getOne({ email: body.email });
+      const decryptedPassword = decryptedByRSA(body.password);
 
       const passwordIsValid = bcrypt.compareSync(
-        body.password,
+        decryptedPassword,
         resp ? resp.password : '',
       );
 
@@ -41,7 +46,7 @@ class UserService extends BaseService {
         throw new Error('Invalid Password or Username!');
       }
 
-      const token = jwt.sign({ id: resp._id }, config.secret, { expiresIn: '1d' });
+      const token = jwt.sign({ id: resp._id }, config.SECRET, { expiresIn: '1d' });
 
       return {
         success: true,
@@ -49,16 +54,17 @@ class UserService extends BaseService {
         email: resp.email,
         rolesName: resp.rolesName,
         token,
-        tokenExpires: jwt.verify(token, config.secret).exp * 1000,
+        tokenExpires: jwt.verify(token, config.SECRET).exp * 1000,
       };
     } catch (error) {
       return {
         success: false,
-        token: null,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
+
+  publicKey = async () => PUBLICKEY;
 }
 
 module.exports = UserService;

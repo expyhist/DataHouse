@@ -52,7 +52,7 @@ class ApiTableService extends BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
@@ -73,7 +73,7 @@ class ApiTableService extends BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
@@ -99,7 +99,7 @@ class ApiTableService extends BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
@@ -133,7 +133,7 @@ class ApiTableService extends BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };

@@ -17,7 +17,7 @@ class MenuController extends BaseController {
     } catch (error) {
       return res.status(404).json({
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       });
     }
   };

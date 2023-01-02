@@ -11,19 +11,51 @@ module.exports = {
   },
   initalMenus: [{
     auth: [],
-    parentPath: '',
+    parentPath: '/',
     path: '/demands',
     name: '数据需求',
     icon: '',
   }, {
+    auth: [
+      'GetDemands',
+      'GetDemand',
+      'AddNewDemand',
+      'DeleteDemand',
+      'UpdateDemand',
+    ],
+    parentPath: '/demands',
+    path: '/demands/list',
+    name: '需求列表',
+    icon: 'BulbOutlined',
+  }, {
     auth: [],
-    parentPath: '',
+    parentPath: '/',
     path: '/tables',
     name: '数据报表',
     icon: '',
   }, {
+    auth: [
+      'GetConfigs',
+      'GetConfig',
+      'AddNewConfig',
+      'DeleteConfig',
+      'UpdateConfig',
+      'AddNewFilter',
+      'UpdateFilter',
+    ],
+    parentPath: '/tables',
+    path: '/tables/configs/list',
+    name: '配置中心',
+    icon: 'SettingFilled',
+  }, {
     auth: [],
-    parentPath: '',
+    parentPath: '/tables',
+    path: '/tables/databoard/:id',
+    name: '仪表盘',
+    icon: 'PieChartOutlined',
+  }, {
+    auth: [],
+    parentPath: '/',
     path: '/sysconfigs',
     name: '全局配置',
     icon: '',
@@ -41,32 +73,6 @@ module.exports = {
     icon: 'OrderedListOutlined',
   }, {
     auth: [
-      'GetConfigs',
-      'GetConfig',
-      'AddNewConfig',
-      'DeleteConfig',
-      'UpdateConfig',
-      'AddNewFilter',
-      'UpdateFilter',
-    ],
-    parentPath: '/tables',
-    path: '/tables/configs/list',
-    name: '配置中心',
-    icon: 'SettingFilled',
-  }, {
-    auth: [
-      'GetDemands',
-      'GetDemand',
-      'AddNewDemand',
-      'DeleteDemand',
-      'UpdateDemand',
-    ],
-    parentPath: '/demands',
-    path: '/demands/list',
-    name: '需求列表',
-    icon: 'BulbOutlined',
-  }, {
-    auth: [
       'GetUsers',
       'DeleteUser',
       'UpdateUser',
@@ -75,12 +81,6 @@ module.exports = {
     path: '/sysconfigs/users/list',
     name: '用户列表',
     icon: 'UserOutlined',
-  }, {
-    auth: [],
-    parentPath: '/tables',
-    path: '/tables/databoard/:id',
-    name: '仪表盘',
-    icon: 'PieChartOutlined',
   }, {
     auth: [
       'GetRoles',

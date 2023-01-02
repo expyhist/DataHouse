@@ -17,7 +17,7 @@ class BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
@@ -36,7 +36,7 @@ class BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
@@ -52,7 +52,7 @@ class BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
@@ -72,7 +72,7 @@ class BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
@@ -92,7 +92,7 @@ class BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };

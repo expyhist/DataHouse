@@ -27,6 +27,7 @@ module.exports = {
     'react/prop-types': 'off',
     'react/jsx-props-no-spreading': 'off',
     'no-underscore-dangle': 'off',
+    'linebreak-style': 'off',
   },
   settings: {
     'import/resolver': {

@@ -27,6 +27,15 @@ class UserController extends BaseController {
       return res.status(422).json(error);
     }
   };
+
+  publicKey = async (req, res) => {
+    try {
+      const resp = await this.service.publicKey();
+      return res.status(200).json(resp);
+    } catch (error) {
+      return res.status(404).json(error);
+    }
+  };
 }
 
 const UserControllerInstance = new UserController();
@@ -50,4 +59,6 @@ module.exports = (router) => {
     .delete(UserControllerInstance.baseDeleteById);
 
   router.get('/users', UserControllerInstance.baseGetAll);
+
+  router.get('/publickey', UserControllerInstance.publicKey);
 };

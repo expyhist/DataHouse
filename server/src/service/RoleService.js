@@ -32,7 +32,7 @@ class RoleService extends BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
@@ -67,14 +67,12 @@ class RoleService extends BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };
 
   setInitalRoles = async () => {
-    mongoose.connection.db.dropCollection('roles');
-
     const setDataForRole = (menuData, auths, filterFn) => {
       const filteredMenuData = filterFn ? menuData.filter(filterFn) : menuData;
       filteredMenuData.forEach((item) => {
@@ -109,7 +107,7 @@ class RoleService extends BaseService {
     } catch (error) {
       return {
         success: false,
-        error: error.toString(),
+        msg: error.toString(),
       };
     }
   };

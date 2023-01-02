@@ -28,7 +28,7 @@ module.exports = merge(common, {
     ],
   },
   externals: {
-    config: JSON.stringify({
+    webpackConfig: JSON.stringify({
       rejectRegister: true,
     }),
   },
