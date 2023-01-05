@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const { Base64 } = require('js-base64');
 
 const BaseService = require('./BaseService');
@@ -38,7 +37,7 @@ class MenuService extends BaseService {
         data: listToTree(menuData),
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
@@ -59,14 +58,14 @@ class MenuService extends BaseService {
         data: listToTree(resp),
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
     }
   };
 
-  setInitalMenus = async () => {
+  setInitialMenus = async () => {
     try {
       const resp = await this.dao.insertMany(initalMenus);
       return {
@@ -74,7 +73,7 @@ class MenuService extends BaseService {
         data: resp,
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };

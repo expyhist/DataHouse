@@ -82,7 +82,7 @@ function UpdateUserModal({ initialValues }) {
       setVisible(false);
       message.success('配置更新成功', 3);
     } catch (err) {
-      message.error(`配置更新失败，错误:${err.data.error}`, 3);
+      message.error(`配置更新失败，${err.data.msg}`, 3);
     }
   };
 

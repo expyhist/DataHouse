@@ -10,4 +10,4 @@ RUN ["yarn", "global", "add", "pm2"]
 
 RUN ["yarn", "install"] 
 
-EXPOSE 3000
+EXPOSE 4000

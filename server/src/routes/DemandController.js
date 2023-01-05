@@ -21,7 +21,7 @@ module.exports = (router) => {
 
   router
     .route('/demand/:id')
-    .all(verifyHeaders, verifyExistsById(), verifyPayload(['description', 'cols', 'applicant', 'executor', 'expectedTime', 'reviewStatus', 'status'], null, 7))
+    .all(verifyHeaders, verifyExistsById, verifyPayload(['description', 'cols', 'applicant', 'executor', 'expectedTime', 'reviewStatus', 'status'], null, 7))
     .put(DemandControllerInstance.baseUpdateById)
     .delete(DemandControllerInstance.baseDeleteById)
     .get(DemandControllerInstance.baseGetById);

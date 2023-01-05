@@ -35,7 +35,7 @@ class FilterService extends BaseService {
         message: `${this.dao.getModalName()} created`,
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };

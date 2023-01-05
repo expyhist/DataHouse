@@ -35,7 +35,7 @@ function AddFiltersModal({ id, url }) {
       setVisible(false);
       message.success('筛选条件添加成功', 3);
     } catch (err) {
-      message.error(`筛选条件添加失败，错误:${err.data.error}`, 3);
+      message.error(`筛选条件添加失败，${err.data.msg}`, 3);
     }
   };
 

@@ -50,7 +50,7 @@ class ApiTableService extends BaseService {
         message: `${this.dao.getModalName()} created`,
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
@@ -71,7 +71,7 @@ class ApiTableService extends BaseService {
         message: `${this.dao.getModalName()} updated`,
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
@@ -97,7 +97,7 @@ class ApiTableService extends BaseService {
         message: `${this.dao.getModalName()} deleted`,
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
@@ -131,7 +131,7 @@ class ApiTableService extends BaseService {
         data: result,
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };

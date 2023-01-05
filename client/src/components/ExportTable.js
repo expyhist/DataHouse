@@ -18,7 +18,7 @@ function ExportTable({ dataSource }) {
         xlsx.writeFile(wb, 'result.xlsx');
       });
     } catch (err) {
-      message.error(`查询失败，错误:${err.data.error}`, 3);
+      message.error(`查询失败，${err.data.msg}`, 3);
     }
   };
 

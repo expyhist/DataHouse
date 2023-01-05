@@ -72,7 +72,7 @@ function ConfigsTable({ dataSource, loading, access }) {
                     });
                   }
                 } catch (err) {
-                  message.error(`配置删除失败，错误:${err.data.error}`, 3);
+                  message.error(`配置删除失败，${err.data.msg}`, 3);
                 }
               }
             }

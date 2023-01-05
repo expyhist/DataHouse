@@ -12,7 +12,7 @@ class BaseDao {
 
   isExists = (id) => this.model.exists({ _id: id });
 
-  getModalName = (isPlural = false) => (isPlural ? this.model.modelName : this.model.modelName.replace('s', ''));
+  getModalName = (isPlural = false) => (isPlural ? this.model.modelName : this.model.modelName.replace(/s$/, ''));
 
   getAll = () => this.model.find({}).lean();
 

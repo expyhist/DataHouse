@@ -17,6 +17,7 @@ import { useGetRolesQuery, useDeleteRoleMutation } from '../sysConfigsSlice';
 function RolesTable({ dataSource, loading }) {
   if (loading === true) return <Table columns={null} dataSource={null} loading={loading} />;
 
+  // only get data, don't need isLoading or isSuccess or isError etc
   const {
     data,
   } = useGetMenusByTreeQuery();
@@ -49,7 +50,7 @@ function RolesTable({ dataSource, loading }) {
         {
           useMemo(() => (
             <UpdateRoleModal
-              treeData={data?.data}
+              roleTreeData={data?.data}
               initialValues={record}
             />
           ), [data?.data.length])
@@ -64,7 +65,7 @@ function RolesTable({ dataSource, loading }) {
                     message.success('角色删除成功', 3);
                   }
                 } catch (err) {
-                  message.error(`角色删除失败，错误:${err.data.error}`, 3);
+                  message.error(`角色删除失败，${err.data.msg}`, 3);
                 }
               }
             }

@@ -20,7 +20,7 @@ module.exports = (router, service) => {
 
   router
     .route('/mock/:id')
-    .all(verifyHeaders, verifyExistsById(), verifyPayload(['col1', 'col2'], null, 2))
+    .all(verifyHeaders, verifyExistsById, verifyPayload(['col1', 'col2'], null, 2))
     .put(MockControllerInstance.baseUpdateById)
     .delete(MockControllerInstance.baseDeleteById)
     .get(MockControllerInstance.baseGetById);

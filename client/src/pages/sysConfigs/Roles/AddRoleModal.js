@@ -2,29 +2,28 @@ import React, { useState } from 'react';
 
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
-import Select from 'antd/lib/select';
 import message from 'antd/lib/message';
+import TreeSelect from 'antd/lib/tree-select';
 
 import { defineConfig } from '@/../config/config';
+import { useGetMenusByTreeQuery } from '@/utils/apisSlice';
 import { useAddNewRoleMutation } from '../sysConfigsSlice';
-import { useGetMenusQuery } from '@/utils/apisSlice';
 import withModalForm from '@/utils/withModalForm';
 import PrivateForm from '@/utils/PrivateForm';
 
-function RoleForm({ form }) {
-  const { Option } = Select;
+const layout = {
+  labelCol: {
+    offset: 1,
+    span: 4,
+  },
+  wrapperCol: {
+    span: 100,
+  },
+};
+
+function RoleForm({ form, roleTreeData }) {
   const { sysConfigsColumnsInfo } = defineConfig;
-
-  const {
-    data,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useGetMenusQuery();
-
-  if (isLoading || isError) {
-    return null;
-  }
+  const { SHOW_ALL } = TreeSelect;
 
   const name = 'create_roles_form_in_modal';
   const entriesData = sysConfigsColumnsInfo.AddRoleFormColumns;
@@ -34,20 +33,17 @@ function RoleForm({ form }) {
     switch (key) {
       case 'auth':
         content = (
-          <Select
-            mode="multiple"
-            placeholder="Please select a value"
-          >
-            {
-              isSuccess && data.data
-                .filter((item) => item.parentPath === '')
-                .map((item) => (
-                  <Option value={item.path} key={item.path}>
-                    {item.path}
-                  </Option>
-                ))
-            }
-          </Select>
+          <TreeSelect
+            treeData={roleTreeData}
+            style={{ width: '100%' }}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            treeCheckable
+            showCheckedStrategy={SHOW_ALL}
+            showSearch
+            allowClear
+            treeDefaultExpandAll
+            placeholder="输入并搜索"
+          />
         );
         break;
       default:
@@ -64,7 +60,7 @@ function RoleForm({ form }) {
     );
   };
 
-  return PrivateForm(form, name, entriesData, mapFn);
+  return PrivateForm(form, name, entriesData, mapFn, null, false, null, layout);
 }
 
 const CreateRoleForm = withModalForm(RoleForm);
@@ -73,24 +69,30 @@ function AddRoleModal() {
   const [visible, setVisible] = useState(false);
   const [addNewRole] = useAddNewRoleMutation();
 
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetMenusByTreeQuery();
+
+  if (isLoading || isError) {
+    return null;
+  }
+
   const onCreate = async (formData) => {
     try {
       if (Array.isArray(formData.auth)) {
-        const authObj = formData.auth.map((item) => {
-          const obj = {};
-          obj[item] = [];
-          return obj;
-        });
-        await addNewRole({ ...formData, ...{ auth: authObj } }).unwrap();
+        await addNewRole({ ...formData, ...{ menusTree: data?.data } }).unwrap();
         setVisible(false);
         message.success('角色添加成功', 3);
       }
     } catch (err) {
-      message.error(`角色添加失败，错误:${err.data.error}`, 3);
+      message.error(`角色添加失败，${err.data.msg}`, 3);
     }
   };
 
-  return (
+  return isSuccess && (
     <CreateRoleForm
       buttonTitle="新增"
       onClick={() => {
@@ -103,6 +105,7 @@ function AddRoleModal() {
         setVisible(false);
       }}
       okText="Create"
+      roleTreeData={data?.data}
     />
   );
 }

@@ -15,34 +15,34 @@ class ApiTableController extends BaseController {
       const resp = await this.service.transCreate(req.body);
       return res.status(201).json(resp);
     } catch (error) {
-      return res.status(422).json(error);
+      return res.status(400).json(error);
     }
   };
 
   transUpdate = async (req, res) => {
     try {
       const resp = await this.service.transUpdate(req.params.id, req.body);
-      return res.status(201).json(resp);
+      return res.status(200).json(resp);
     } catch (error) {
-      return res.status(422).json(error);
+      return res.status(404).json(error);
     }
   };
 
   transDelete = async (req, res) => {
     try {
       const resp = await this.service.transDelete(req.params.id);
-      return res.status(201).json(resp);
+      return res.status(200).json(resp);
     } catch (error) {
-      return res.status(422).json(error);
+      return res.status(404).json(error);
     }
   };
 
   getApiTableData = async (req, res) => {
     try {
       const resp = await this.service.getApiTableData(req.params.id, req.body);
-      return res.status(201).json(resp);
+      return res.status(200).json(resp);
     } catch (error) {
-      return res.status(422).json(error);
+      return res.status(404).json(error);
     }
   };
 }
@@ -57,7 +57,7 @@ module.exports = (router) => {
 
   router
     .route('/apitable/:id')
-    .all(verifyHeaders, verifyExistsById(), verifyPayload(['url', 'title', 'author', 'applicant'], null, 4))
+    .all(verifyHeaders, verifyExistsById, verifyPayload(['url', 'title', 'author', 'applicant'], null, 4))
     .put(ApiTableControllerInstance.transUpdate)
     .delete(ApiTableControllerInstance.transDelete)
     .get(ApiTableControllerInstance.baseGetById);

@@ -99,7 +99,7 @@ function AddDemand() {
       message.success('需求添加成功', 3);
       history.push('/demands');
     } catch (err) {
-      message.error(`需求添加失败，错误:${err.data.error}`, 3);
+      message.error(`需求添加失败，${err.data.msg}`, 3);
     }
   };
 

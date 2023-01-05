@@ -86,7 +86,7 @@ function DemandsTable({ dataSource, loading, access }) {
                       message.success('需求删除成功', 3);
                     }
                   } catch (err) {
-                    message.error(`需求删除失败，错误:${err.data.error}`, 3);
+                    message.error(`需求删除失败，${err.data.msg}`, 3);
                   }
                 }
               }

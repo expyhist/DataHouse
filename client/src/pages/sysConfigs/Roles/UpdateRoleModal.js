@@ -14,15 +14,15 @@ import PrivateForm from '@/utils/PrivateForm';
 
 const layout = {
   labelCol: {
-    offset: 2,
-    span: 3,
+    offset: 1,
+    span: 4,
   },
   wrapperCol: {
     span: 100,
   },
 };
 
-function RoleForm({ form, initialValues, treeData }) {
+function RoleForm({ form, initialValues, roleTreeData }) {
   const { sysConfigsColumnsInfo } = defineConfig;
   const { SHOW_ALL } = TreeSelect;
 
@@ -38,7 +38,7 @@ function RoleForm({ form, initialValues, treeData }) {
       case 'auth':
         content = (
           <TreeSelect
-            treeData={treeData}
+            treeData={roleTreeData}
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             treeCheckable
@@ -69,7 +69,7 @@ function RoleForm({ form, initialValues, treeData }) {
 
 const UpdateRoleForm = withModalForm(RoleForm);
 
-function UpdateRoleModal({ treeData, initialValues }) {
+function UpdateRoleModal({ roleTreeData, initialValues }) {
   const [visible, setVisible] = useState(false);
   const [updateRole] = useUpdateRoleMutation();
 
@@ -88,11 +88,11 @@ function UpdateRoleModal({ treeData, initialValues }) {
 
   const onCreate = async (formData) => {
     try {
-      await updateRole({ ...formData, ...{ menusTree: treeData } }).unwrap();
+      await updateRole({ ...formData, ...{ menusTree: roleTreeData } }).unwrap();
       setVisible(false);
       message.success('权限更新成功', 3);
     } catch (err) {
-      message.error(`权限更新失败，错误:${err.data.error}`, 3);
+      message.error(`权限更新失败，${err.data.msg}`, 3);
     }
   };
 
@@ -112,7 +112,7 @@ function UpdateRoleModal({ treeData, initialValues }) {
         }}
         okText="Update"
         initialValues={{ ...initialValues, auth: filterAuth }}
-        treeData={treeData}
+        roleTreeData={roleTreeData}
       />
     )
   );

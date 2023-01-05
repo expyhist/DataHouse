@@ -47,7 +47,7 @@ function UpdateFilterModal({ filterId, singleFilter, url }) {
       setVisible(false);
       message.success('筛选条件更新成功', 3);
     } catch (err) {
-      message.error(`筛选条件更新失败，错误:${err.data.error}`, 3);
+      message.error(`筛选条件更新失败，${err.data.msg}`, 3);
     }
   };
 

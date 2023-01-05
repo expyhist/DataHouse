@@ -5,8 +5,6 @@ const decryptedByRSA = require('../utils/decryptedByRSA');
 const BaseService = require('./BaseService');
 const UserDao = require('../dao/UserDao');
 
-const { PUBLICKEY } = config;
-
 class UserService extends BaseService {
   constructor(daoInstance) {
     super(daoInstance || new UserDao());
@@ -25,7 +23,7 @@ class UserService extends BaseService {
         message: 'user created',
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
@@ -57,14 +55,14 @@ class UserService extends BaseService {
         tokenExpires: jwt.verify(token, config.SECRET).exp * 1000,
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
     }
   };
 
-  publicKey = async () => PUBLICKEY;
+  static getPublicKey = () => config.PUBLICKEY;
 }
 
 module.exports = UserService;

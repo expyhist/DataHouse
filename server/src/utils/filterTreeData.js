@@ -4,7 +4,8 @@ module.exports = (treeData, keepCondition) => {
       return nodes;
     }
 
-    return nodes.filter((item) => {
+    return nodes.filter((node) => {
+      const item = node;
       // 先筛选子树，如果子树中没有符合条件的，children 会是 [] 或 undefined
       const filterChildren = filterNode(item.children);
       // 根据当前节点情况和子树筛选结果判断是否保留当前节点

@@ -15,7 +15,7 @@ class UserController extends BaseController {
       const resp = await this.service.signUp(req.body);
       return res.status(201).json(resp);
     } catch (error) {
-      return res.status(422).json(error);
+      return res.status(400).json(error);
     }
   };
 
@@ -24,13 +24,13 @@ class UserController extends BaseController {
       const resp = await this.service.signIn(req.body);
       return res.status(200).json(resp);
     } catch (error) {
-      return res.status(422).json(error);
+      return res.status(404).json(error);
     }
   };
 
-  publicKey = async (req, res) => {
+  getPublicKey = (req, res) => {
     try {
-      const resp = await this.service.publicKey();
+      const resp = UserService.getPublicKey();
       return res.status(200).json(resp);
     } catch (error) {
       return res.status(404).json(error);
@@ -53,12 +53,12 @@ module.exports = (router) => {
 
   router
     .route('/user/:id')
-    .all(verifyHeaders, verifyExistsById(), verifyPayload(['email', 'password'], null, 2))
+    .all(verifyHeaders, verifyExistsById, verifyPayload(['email', 'password'], null, 2))
     .get(UserControllerInstance.baseGetById)
     .put(UserControllerInstance.baseUpdateById)
     .delete(UserControllerInstance.baseDeleteById);
 
   router.get('/users', UserControllerInstance.baseGetAll);
 
-  router.get('/publickey', UserControllerInstance.publicKey);
+  router.get('/publickey', UserControllerInstance.getPublicKey);
 };

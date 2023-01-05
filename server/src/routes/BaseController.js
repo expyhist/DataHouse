@@ -28,14 +28,14 @@ class BaseController {
       const resp = await this.service.baseCreate(req.body);
       return res.status(201).json(resp);
     } catch (error) {
-      return res.status(422).json(error);
+      return res.status(400).json(error);
     }
   };
 
   baseUpdateById = async (req, res) => {
     try {
       const resp = await this.service.baseUpdateById(req.params.id, req.body);
-      return res.status(201).json(resp);
+      return res.status(200).json(resp);
     } catch (error) {
       return res.status(404).json(error);
     }

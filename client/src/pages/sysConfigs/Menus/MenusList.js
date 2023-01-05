@@ -55,7 +55,7 @@ function MenusTable({ dataSource, loading }) {
                     message.success('菜单删除成功', 3);
                   }
                 } catch (err) {
-                  message.error(`菜单删除失败，错误:${err.data.error}`, 3);
+                  message.error(`菜单删除失败，${err.data.msg}`, 3);
                 }
               }
             }

@@ -31,12 +31,12 @@ class MenuController extends BaseController {
     }
   };
 
-  setInitalMenus = async (req, res) => {
+  setInitialMenus = async (req, res) => {
     try {
       const resp = await this.service.setInitalMenus();
-      return res.status(200).json(resp);
+      return res.status(201).json(resp);
     } catch (error) {
-      return res.status(404).json(error);
+      return res.status(400).json(error);
     }
   };
 }
@@ -51,7 +51,7 @@ module.exports = (router) => {
 
   router
     .route('/menu/:id')
-    .all(verifyHeaders, verifyExistsById(), verifyPayload(['path', 'name'], null, 2))
+    .all(verifyHeaders, verifyExistsById, verifyPayload(['path', 'name'], null, 2))
     .put(MenuControllerInstance.baseUpdateById)
     .delete(MenuControllerInstance.baseDeleteById)
     .get(MenuControllerInstance.baseGetById);
@@ -59,5 +59,5 @@ module.exports = (router) => {
   router.get('/menus', MenuControllerInstance.baseGetAll);
   router.get('/menus/tree', MenuControllerInstance.getMenusByTree);
   router.get('/menus/:access', MenuControllerInstance.getMenusByAccess);
-  router.get('/setinitalmenus', MenuControllerInstance.setInitalMenus);
+  router.get('/setinitialmenus', MenuControllerInstance.setInitialMenus);
 };

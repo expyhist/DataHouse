@@ -15,7 +15,7 @@ class FilterController extends BaseController {
       const resp = await this.service.transCreate(req.body);
       return res.status(201).json(resp);
     } catch (error) {
-      return res.status(422).json(error);
+      return res.status(400).json(error);
     }
   };
 }
@@ -30,7 +30,7 @@ module.exports = (router) => {
 
   router
     .route('/filter/:id')
-    .all(verifyHeaders, verifyExistsById(), verifyPayload(['rangeDate', 'singleDate', 'text', 'enum'], null, null))
+    .all(verifyHeaders, verifyExistsById, verifyPayload(['rangeDate', 'singleDate', 'text', 'enum'], null, null))
     .put(FilterControllerInstance.baseUpdateById)
     .delete(FilterControllerInstance.baseDeleteById)
     .get(FilterControllerInstance.baseGetById);

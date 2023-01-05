@@ -15,7 +15,7 @@ class BaseService {
         data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
@@ -34,7 +34,7 @@ class BaseService {
         data: parseTimeToLocale(resp, ['createdAt', 'updatedAt']),
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
@@ -50,7 +50,7 @@ class BaseService {
         message: `${this.dao.getModalName()} created`,
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
@@ -70,7 +70,7 @@ class BaseService {
         message: `${this.dao.getModalName()} updated`,
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
@@ -90,7 +90,7 @@ class BaseService {
         message: `${this.dao.getModalName()} deleted`,
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };

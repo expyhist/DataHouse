@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const { Base64 } = require('js-base64');
 
 const BaseService = require('./BaseService');
@@ -17,20 +16,40 @@ class RoleService extends BaseService {
     this.MenuDaoInstance = new MenuDao(daoInstance?.connection);
   }
 
-  transUpdateById = async (id, body) => {
-    const { menusTree, auth } = body;
+  transCreate = async (body) => {
+    const { name, menusTree, auth } = body;
     const keepCondition = (item) => auth.includes(item.key);
 
     try {
       const filterAuth = filterTreeData(menusTree, keepCondition);
-      const resp = await this.dao.updateById(id, { auth: treeToList(filterAuth) });
+      const resp = await this.dao.add({ name, auth: treeToList(filterAuth) });
+      return {
+        success: true,
+        id: resp._id,
+        message: `${this.dao.getModalName()} created`,
+      };
+    } catch (error) {
+      throw {
+        success: false,
+        msg: error.toString(),
+      };
+    }
+  };
+
+  transUpdateById = async (id, body) => {
+    const { name, menusTree, auth } = body;
+    const keepCondition = (item) => auth.includes(item.key);
+
+    try {
+      const filterAuth = filterTreeData(menusTree, keepCondition);
+      const resp = await this.dao.updateById(id, { name, auth: treeToList(filterAuth) });
       return {
         success: true,
         id: resp._id,
         message: `${this.dao.getModalName()} updated`,
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
@@ -65,14 +84,14 @@ class RoleService extends BaseService {
         data: result || {},
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };
     }
   };
 
-  setInitalRoles = async () => {
+  setInitialRoles = async () => {
     const setDataForRole = (menuData, auths, filterFn) => {
       const filteredMenuData = filterFn ? menuData.filter(filterFn) : menuData;
       filteredMenuData.forEach((item) => {
@@ -105,7 +124,7 @@ class RoleService extends BaseService {
         data: resp,
       };
     } catch (error) {
-      return {
+      throw {
         success: false,
         msg: error.toString(),
       };

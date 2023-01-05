@@ -3,11 +3,14 @@ services:
   dh_server:
     container_name: server
     restart: always
+    environment:
+      - SERVER_ENV=Docker
+      - PORT=4000
     build:
       context: ./
       dockerfile: server/Dockerfile
     ports:
-      - 3000:3000
+      - 4000:4000
     command: "pm2-runtime src/index.js"
 
   # mongodb:

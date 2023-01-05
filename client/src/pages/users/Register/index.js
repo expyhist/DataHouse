@@ -40,7 +40,7 @@ function Register() {
       message.success('注册成功', 3);
       history.push('/login');
     } catch (err) {
-      message.error(`注册失败，错误:${err.data.error}`);
+      message.error(`注册失败，${err.data.msg}`);
     }
   };
 

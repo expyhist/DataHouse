@@ -59,7 +59,7 @@ function Login() {
       history.push('/demands');
       location.reload();
     } catch (err) {
-      message.error(`登录失败，错误:${err.msg}`, 3);
+      message.error(`登录失败，${err.data.msg}`, 3);
     }
   };
 

@@ -136,7 +136,7 @@ function TableFilter({ apitableInfo, payload }) {
         );
       }
     } catch (err) {
-      message.error(`报表获取失败，错误:${err.data.error}`, 3);
+      message.error(`报表获取失败，${err.data.msg}`, 3);
     }
 
     return null;
