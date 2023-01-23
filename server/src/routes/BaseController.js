@@ -10,7 +10,16 @@ class BaseController {
       const resp = await this.service.baseGetAll();
       return res.status(200).json(resp);
     } catch (error) {
-      return res.status(404).json(error);
+      if (Object.prototype.hasOwnProperty.call(error, 'msg')) {
+        return res.status(400).json({
+          success: error.success,
+          msg: error.msg,
+        });
+      }
+      return res.status(500).json({
+        success: false,
+        msg: error,
+      });
     }
   };
 
@@ -19,7 +28,16 @@ class BaseController {
       const resp = await this.service.baseGetById(req.params.id);
       return res.status(200).json(resp);
     } catch (error) {
-      return res.status(404).json(error);
+      if (Object.prototype.hasOwnProperty.call(error, 'msg')) {
+        return res.status(404).json({
+          success: error.success,
+          msg: error.msg,
+        });
+      }
+      return res.status(500).json({
+        success: false,
+        msg: error,
+      });
     }
   };
 
@@ -37,7 +55,16 @@ class BaseController {
       const resp = await this.service.baseUpdateById(req.params.id, req.body);
       return res.status(200).json(resp);
     } catch (error) {
-      return res.status(404).json(error);
+      if (Object.prototype.hasOwnProperty.call(error, 'msg')) {
+        return res.status(404).json({
+          success: error.success,
+          msg: error.msg,
+        });
+      }
+      return res.status(500).json({
+        success: false,
+        msg: error,
+      });
     }
   };
 
@@ -46,7 +73,16 @@ class BaseController {
       const resp = await this.service.baseDeleteById(req.params.id);
       return res.status(200).json(resp);
     } catch (error) {
-      return res.status(404).json(error);
+      if (Object.prototype.hasOwnProperty.call(error, 'msg')) {
+        return res.status(404).json({
+          success: error.success,
+          msg: error.msg,
+        });
+      }
+      return res.status(500).json({
+        success: false,
+        msg: error,
+      });
     }
   };
 }

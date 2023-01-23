@@ -15,7 +15,10 @@ class RoleController extends BaseController {
       const resp = await this.service.transCreate(req.body);
       return res.status(201).json(resp);
     } catch (error) {
-      return res.status(400).json(error);
+      if (Object.prototype.hasOwnProperty.call(error, 'msg')) {
+        return res.status(400).json({ msg: error.msg });
+      }
+      return res.status(500).json({ msg: error });
     }
   };
 
@@ -24,7 +27,10 @@ class RoleController extends BaseController {
       const resp = await this.service.transUpdateById(req.params.id, req.body);
       return res.status(200).json(resp);
     } catch (error) {
-      return res.status(404).json(error);
+      if (Object.prototype.hasOwnProperty.call(error, 'msg')) {
+        return res.status(404).json({ msg: error.msg });
+      }
+      return res.status(500).json({ msg: error });
     }
   };
 
@@ -33,7 +39,10 @@ class RoleController extends BaseController {
       const resp = await this.service.getAuths(req.userId, req.params.role);
       return res.status(200).json(resp);
     } catch (error) {
-      return res.status(404).json(error);
+      if (Object.prototype.hasOwnProperty.call(error, 'msg')) {
+        return res.status(404).json({ msg: error.msg });
+      }
+      return res.status(500).json({ msg: error });
     }
   };
 
@@ -42,7 +51,10 @@ class RoleController extends BaseController {
       const resp = await this.service.setInitialRoles();
       return res.status(201).json(resp);
     } catch (error) {
-      return res.status(400).json(error);
+      if (Object.prototype.hasOwnProperty.call(error, 'msg')) {
+        return res.status(400).json({ msg: error.msg });
+      }
+      return res.status(500).json({ msg: error });
     }
   };
 }

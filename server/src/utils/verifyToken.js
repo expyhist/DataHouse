@@ -19,8 +19,8 @@ module.exports = (req, res, next) => {
     return res.status(403).send({ message: 'No token provided' });
   }
 
-  jwt.verify(token, config.SECRET, async (err, decoded) => {
-    if (err) {
+  jwt.verify(token, config.SECRET, async (error, decoded) => {
+    if (error) {
       return res.status(401).send({ message: 'Unauthorized' });
     }
     req.userId = decoded.id;

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const config = require('../config/auth-config');
-const decryptedByRSA = require('../utils/decryptedByRSA');
+const { decryptedByRSA } = require('../utils/cryptedByRSA');
 const BaseService = require('./BaseService');
 const UserDao = require('../dao/UserDao');
 
@@ -36,7 +36,7 @@ class UserService extends BaseService {
       const decryptedPassword = decryptedByRSA(body.password);
 
       const passwordIsValid = bcrypt.compareSync(
-        decryptedPassword,
+        decryptedPassword.toString(),
         resp ? resp.password : '',
       );
 
@@ -57,12 +57,13 @@ class UserService extends BaseService {
     } catch (error) {
       throw {
         success: false,
+        token: null,
         msg: error.toString(),
       };
     }
   };
 
-  static getPublicKey = () => config.PUBLICKEY;
+  getPublicKey = () => config.PUBLICKEY;
 }
 
 module.exports = UserService;

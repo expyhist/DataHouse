@@ -36,7 +36,7 @@ function ConfigForm({ form }) {
               try {
                 JSON.parse(defaultParams);
                 return true;
-              } catch (error) {
+              } catch (err) {
                 return Promise.reject(new Error('输入正确的JSON格式。如{}，{"a": 1, "b": 2}'));
               }
             },

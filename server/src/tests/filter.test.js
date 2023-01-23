@@ -38,12 +38,15 @@ module.exports = (testConnection) => {
           endDate: 'end_date',
         }],
       };
-      const filterInfo = await filterServiceInstance.transCreate(body);
-      expect(filterInfo.success).toBe(false);
-      expect(filterInfo.error).toBe('Error: apiTableId is not existent');
+      try {
+        await filterServiceInstance.transCreate(body);
+      } catch (error) {
+        expect(error.success).toBe(false);
+        expect(error.msg).toBe('Error: apiTableId is not existent');
+      }
     });
 
-    test('TransCreate: should create a filters of apitable when filter is created', async () => {
+    test('TransCreate: should create a filters of apitable when a filter is created', async () => {
       const filterBody = {
         apiTableId: newApiTableInfo.id,
         rangeDate: [{
@@ -94,9 +97,12 @@ module.exports = (testConnection) => {
           endDate: 'end_date',
         }],
       };
-      const filterInfo = await filterServiceInstance.transCreate(body);
-      expect(filterInfo.success).toBe(false);
-      expect(filterInfo.error).toBe('Error: Filter is already existent');
+      try {
+        await filterServiceInstance.transCreate(body);
+      } catch (error) {
+        expect(error.success).toBe(false);
+        expect(error.msg).toBe('Error: Filter is already existent');
+      }
     });
   });
 };

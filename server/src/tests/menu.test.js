@@ -18,9 +18,12 @@ module.exports = (testConnection) => {
         auth: 'test',
         parentPath: 'test',
       };
-      const res = await menuServiceInstance.baseCreate(body);
-      expect(res.success).toBe(false);
-      expect(res.error).toBe('ValidationError: path: test is not a valid path!');
+      try {
+        await menuServiceInstance.baseCreate(body);
+      } catch (error) {
+        expect(error.success).toBe(false);
+        expect(error.msg).toBe('ValidationError: path: test is not a valid path!');
+      }
     });
   });
 };

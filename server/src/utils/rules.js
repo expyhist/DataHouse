@@ -25,7 +25,7 @@ const rules = {
     }
     try {
       return !!new RegExp(value);
-    } catch (e) {
+    } catch (error) {
       return false;
     }
   },

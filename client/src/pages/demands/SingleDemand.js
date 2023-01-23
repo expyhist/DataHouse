@@ -47,7 +47,7 @@ function SingleDemand() {
               marginBottom: 32,
             }}
             bordered
-            // extra={<UpdateConfigModal singleConfig={singleConfig} />}
+            // extra={<UpdateDemandModal singleDemand={singleDemand} />}
           >
             {
               Object.entries(singleDemand).map(([key, value]) => (key !== '_id' ? (<Descriptions.Item label={key} key={key}>{value}</Descriptions.Item>) : null))

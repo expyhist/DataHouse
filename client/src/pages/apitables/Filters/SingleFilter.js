@@ -3,10 +3,11 @@ import React from 'react';
 import Card from 'antd/lib/card';
 import Descriptions from 'antd/lib/descriptions';
 
+import Access from '@/utils/Access';
 import UpdateFilterModal from './UpdateFilterModal';
 import { useGetFilterQuery } from './filtersSlice';
 
-function SingleFilter({ id, url }) {
+function SingleFilter({ id, url, accessible }) {
   const {
     data,
     isLoading,
@@ -31,7 +32,11 @@ function SingleFilter({ id, url }) {
               marginBottom: 32,
             }}
             bordered
-            extra={<UpdateFilterModal filterId={id} singleFilter={data.data} url={url} />}
+            extra={(
+              <Access accessible={accessible}>
+                <UpdateFilterModal filterId={id} singleFilter={data.data} url={url} />
+              </Access>
+            )}
           >
             {
               Object.entries(data.data).map(([key, value]) => {

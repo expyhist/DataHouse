@@ -1,3 +1,4 @@
+const { encryptedByRSA } = require('../utils/cryptedByRSA');
 const UserDao = require('../dao/UserDao');
 const UserService = require('../service/UserService');
 
@@ -5,6 +6,8 @@ module.exports = (testConnection) => {
   describe('test user', () => {
     const userDaoInstance = new UserDao(testConnection);
     const userServiceInstance = new UserService(userDaoInstance);
+    const truePassword = encryptedByRSA('test');
+    const falsePassword = encryptedByRSA('abc');
 
     afterAll(async () => {
       await userDaoInstance.deleteMany({});
@@ -13,17 +16,20 @@ module.exports = (testConnection) => {
     test('SingUp: should not create a user when email is invalid', async () => {
       const body = {
         email: 'test',
-        password: 'test',
+        password: truePassword,
       };
-      const res = await userServiceInstance.signUp(body);
-      expect(res.success).toBe(false);
-      expect(res.error).toBe('ValidationError: email: test is not a valid email!');
+      try {
+        await userServiceInstance.signUp(body);
+      } catch (error) {
+        expect(error.success).toBe(false);
+        expect(error.msg).toBe('ValidationError: email: test is not a valid email!');
+      }
     });
 
     test('SingUp: should create a user', async () => {
       const body = {
         email: 'test@datahouse.com',
-        password: 'test',
+        password: truePassword,
         rolesName: ['guest'],
       };
       const res = await userServiceInstance.signUp(body);
@@ -34,18 +40,21 @@ module.exports = (testConnection) => {
     test('SingIn: should not login when email or password is error', async () => {
       const body = {
         email: 'test@datahouse.com',
-        password: 'abc',
+        password: falsePassword,
       };
-      const res = await userServiceInstance.signIn(body);
-      expect(res.success).toBe(false);
-      expect(res.token).toBeNull();
-      expect(res.error).toBe('Error: Invalid Password or Username!');
+      try {
+        await userServiceInstance.signIn(body);
+      } catch (error) {
+        expect(error.success).toBe(false);
+        expect(error.token).toBeNull();
+        expect(error.msg).toBe('Error: Invalid Password or Username!');
+      }
     });
 
     test('SingIn: should login when both email and password are right ', async () => {
       const body = {
         email: 'test@datahouse.com',
-        password: 'test',
+        password: truePassword,
       };
       const res = await userServiceInstance.signIn(body);
       expect(res.success).toBe(true);

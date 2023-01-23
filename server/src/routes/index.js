@@ -4,7 +4,7 @@ const router = express.Router();
 
 const verifyToken = require('../utils/verifyToken');
 
-router.all(/^.*(?<!sign.*|set.*|publickey*)$/, verifyToken);
+router.all(/^.*(?<!sign.*|set.*|publickey.*)$/, verifyToken);
 
 require('./ApiTableController')(router);
 require('./DemandController')(router);

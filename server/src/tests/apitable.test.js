@@ -17,9 +17,12 @@ module.exports = (testConnection) => {
         applicant: '4',
         defaultParams: '{}',
       };
-      const res = await apiTableServiceInstance.baseCreate(body);
-      expect(res.success).toBe(false);
-      expect(res.error).toBe('ValidationError: url: 1 is not a valid url!');
+      try {
+        await apiTableServiceInstance.baseCreate(body);
+      } catch (error) {
+        expect(error.success).toBe(false);
+        expect(error.msg).toBe('ValidationError: url: 1 is not a valid url!');
+      }
     });
 
     test('Create: should not create a config of apitable when defaultParams is invalid', async () => {
@@ -30,9 +33,12 @@ module.exports = (testConnection) => {
         applicant: 'test',
         defaultParams: '{1}',
       };
-      const res = await apiTableServiceInstance.baseCreate(body);
-      expect(res.success).toBe(false);
-      expect(res.error).toBe('ValidationError: defaultParams: {1} is not a valid json!');
+      try {
+        await apiTableServiceInstance.baseCreate(body);
+      } catch (error) {
+        expect(error.success).toBe(false);
+        expect(error.msg).toBe('ValidationError: defaultParams: {1} is not a valid json!');
+      }
     });
 
     test('TransCreate: should create a menu when config of apitable is created', async () => {

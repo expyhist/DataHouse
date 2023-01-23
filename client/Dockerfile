@@ -14,7 +14,7 @@ RUN ["yarn", "build"]
 
 # ======================== nginx and https ========================
 
-FROM nginx:1.18 as production-stage
+FROM nginx:1.20 as production-stage
 
 COPY ./client/nginx.conf /etc/nginx/nginx.conf
 

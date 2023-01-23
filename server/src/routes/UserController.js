@@ -15,7 +15,10 @@ class UserController extends BaseController {
       const resp = await this.service.signUp(req.body);
       return res.status(201).json(resp);
     } catch (error) {
-      return res.status(400).json(error);
+      if (Object.prototype.hasOwnProperty.call(error, 'msg')) {
+        return res.status(400).json({ msg: error.msg });
+      }
+      return res.status(500).json({ msg: error });
     }
   };
 
@@ -24,16 +27,22 @@ class UserController extends BaseController {
       const resp = await this.service.signIn(req.body);
       return res.status(200).json(resp);
     } catch (error) {
-      return res.status(404).json(error);
+      if (Object.prototype.hasOwnProperty.call(error, 'msg')) {
+        return res.status(404).json({ msg: error.msg });
+      }
+      return res.status(500).json({ msg: error });
     }
   };
 
   getPublicKey = (req, res) => {
     try {
-      const resp = UserService.getPublicKey();
+      const resp = this.service.getPublicKey();
       return res.status(200).json(resp);
     } catch (error) {
-      return res.status(404).json(error);
+      if (Object.prototype.hasOwnProperty.call(error, 'msg')) {
+        return res.status(404).json({ msg: error.msg });
+      }
+      return res.status(500).json({ msg: error });
     }
   };
 }
